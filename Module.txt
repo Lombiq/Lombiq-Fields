@@ -1,13 +1,15 @@
-﻿Name: Lombiq - Orchard Content Fields
-AntiForgery: enabled
+﻿AntiForgery: enabled
 Author: Lombiq Technologies Ltd.
 Website: http://lombiq.com
 Version: 1.0
 OrchardVersion: 1.8
-Description: Useful Content Fields.
 Features:
     Lombiq.Fields:
+        Name: Lombiq Fields
+        Category: Fields
+        Description: Useful Content Fields.
+    Lombiq.Fields.MediaLibraryUploadField:
         Name: Media Library Upload Field
         Category: Fields
         Description: A modified version of Media Library Picker Field that enables users to upload files.
-        Dependencies: Orchard.Fields, Orchard.Tokens, Orchard.MediaProcessing
+        Dependencies: Lombiq.Fields, Orchard.MediaLibrary, Orchard.MediaProcessing, Orchard.Tokens, Piedone.HelpfulLibraries

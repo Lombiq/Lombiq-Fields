@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -53,6 +53,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Mvc, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -67,17 +68,17 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Styles\media-library-upload-field.css">
+      <DependentUpon>media-library-upload-field.less</DependentUpon>
+    </Content>
+    <Content Include="Styles\media-library-upload-field.min.css">
+      <DependentUpon>media-library-upload-field.css</DependentUpon>
+    </Content>
     <Content Include="Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
     <Content Include="Properties\AssemblyInfo.cs" />
     <Content Include="Module.txt" />
-    <Folder Include="Properties" />
-    <Folder Include="Controllers" />
-    <Folder Include="Views" />
-    <Folder Include="Models" />
-    <Folder Include="Scripts" />
-    <Folder Include="Styles" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Orchard\Orchard.Framework.csproj">
@@ -88,6 +89,51 @@
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Orchard.MediaLibrary\Orchard.MediaLibrary.csproj">
+      <Project>{73a7688a-5bd3-4f7e-adfa-ce36c5a10e3b}</Project>
+      <Name>Orchard.MediaLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Tokens\Orchard.Tokens.csproj">
+      <Project>{6f759635-13d7-4e94-bcc9-80445d63f117}</Project>
+      <Name>Orchard.Tokens</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Piedone.HelpfulLibraries\Piedone.HelpfulLibraries.csproj">
+      <Project>{ea61ad10-39d6-41a9-b12b-227f50c54158}</Project>
+      <Name>Piedone.HelpfulLibraries</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Placement.info">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Styles\media-library-upload-field.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Drivers\MediaLibraryUploadFieldDriver.cs" />
+    <Compile Include="Fields\MediaLibraryUploadField.cs" />
+    <Compile Include="Handlers\MediaLibraryUploadFieldHandler.cs" />
+    <Compile Include="ResourceManifest.cs" />
+    <Compile Include="Settings\MediaLibraryUploadFieldEditorEvents.cs" />
+    <Compile Include="Settings\MediaLibraryUploadFieldSettings.cs" />
+    <Compile Include="ViewModels\MediaLibraryUploadFieldViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\MediaLibraryUploadFieldSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\MediaLibraryUpload.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\MediaLibraryUpload.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\MediaLibraryUpload.Summary.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\MediaLibraryUpload.SummaryAdmin.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

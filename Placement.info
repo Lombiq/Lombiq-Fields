@@ -1,0 +1,20 @@
+﻿<Placement>
+  <!-- FIELDS -->
+
+  <!-- MediaLibraryUploadField -->
+  <Place Fields_MediaLibraryUpload_Edit="Content:before" />
+
+  <Match DisplayType="Detail">
+    <Place Fields_MediaLibraryUpload="Content:after" />
+  </Match>
+
+  <Match DisplayType="Summary">
+    <Place Fields_MediaLibraryUpload_Summary="Content:after" />
+  </Match>
+
+  <Match DisplayType="SummaryAdmin">
+    <Place Fields_MediaLibraryUpload_SummaryAdmin="Content:after" />
+  </Match>
+  
+  <!-- END FIELDS -->
+</Placement>

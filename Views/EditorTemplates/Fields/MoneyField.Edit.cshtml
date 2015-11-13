@@ -1,0 +1,13 @@
+﻿@model Lombiq.Fields.ViewModels.MoneyFieldViewModel
+@using System.Globalization
+
+<fieldset>
+    <div>
+        @Html.LabelFor(m => Model.Value)
+        @Html.LabelFor(m => Model.Value.ToString(CultureInfo.InvariantCulture), @T("The currency is only readable").Text, new { @class = "forcheckbox" })
+    </div>
+    <div>
+        @Html.LabelFor(m => Model.CurrencyIsoCode, @T("Currency"))
+        @Html.TextAreaFor(m => Model.CurrencyIsoCode, new { @class = "text medium" })
+    </div>
+</fieldset>

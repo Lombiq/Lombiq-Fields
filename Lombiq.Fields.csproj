@@ -24,6 +24,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,6 +49,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Money, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libs\Money\Money.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -55,19 +60,20 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
-    <Reference Include="System.Web.Mvc, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\lib\aspnetmvc\System.Web.Mvc.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Libs\Money\Money.dll" />
     <Content Include="Styles\media-library-upload-field.css">
       <DependentUpon>media-library-upload-field.less</DependentUpon>
     </Content>
@@ -107,18 +113,27 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\media-library-upload-field.less" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\MoneyFieldConstants.cs" />
     <Compile Include="Drivers\MediaLibraryUploadFieldDriver.cs" />
+    <Compile Include="Drivers\MoneyFieldDriver.cs" />
     <Compile Include="Fields\MediaLibraryUploadField.cs" />
+    <Compile Include="Fields\MoneyField.cs" />
     <Compile Include="Handlers\MediaLibraryUploadFieldHandler.cs" />
+    <Compile Include="Handlers\MoneyFieldHandler.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Settings\MediaLibraryUploadFieldEditorEvents.cs" />
     <Compile Include="Settings\MediaLibraryUploadFieldSettings.cs" />
+    <Compile Include="Settings\MoneyFieldEditorEvents.cs" />
+    <Compile Include="Settings\MoneyFieldSettings.cs" />
     <Compile Include="ViewModels\MediaLibraryUploadFieldViewModel.cs" />
+    <Compile Include="ViewModels\MoneyFieldViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DefinitionTemplates\MediaLibraryUploadFieldSettings.cshtml" />
@@ -134,6 +149,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Fields\MediaLibraryUpload.SummaryAdmin.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\MoneyFieldSettings.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\MoneyField.Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\MoneyField.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

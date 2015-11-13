@@ -1,6 +1,6 @@
 ﻿<Placement>
   <!-- FIELDS -->
-
+  
   <!-- MediaLibraryUploadField -->
   <Place Fields_MediaLibraryUpload_Edit="Content:before" />
 

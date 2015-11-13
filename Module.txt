@@ -12,4 +12,9 @@ Features:
         Name: Media Library Upload Field
         Category: Fields
         Description: A modified version of Media Library Picker Field that enables users to upload files.
-        Dependencies: Lombiq.Fields, Orchard.MediaLibrary, Orchard.MediaProcessing, Orchard.Tokens, Piedone.HelpfulLibraries
+        Dependencies: Lombiq.Fields, Orchard.MediaLibrary, Orchard.MediaProcessing, Orchard.Tokens, Piedone.HelpfulLibraries.
+	Lombiq.Fields.MoneyField:
+        Name: Money Field
+        Category: Fields
+        Description: A field to choose amount and currency for money.
+        Dependencies: Lombiq.Fields

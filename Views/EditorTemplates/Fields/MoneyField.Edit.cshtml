@@ -3,6 +3,9 @@
 
 <fieldset>
     <div>
+        @Html.Label("MoneyfieldEdit:")
+    </div>
+    <div>
         @Html.LabelFor(m => Model.Value)
         @Html.LabelFor(m => Model.Value.ToString(CultureInfo.InvariantCulture), @T("The currency is only readable").Text, new { @class = "forcheckbox" })
     </div>

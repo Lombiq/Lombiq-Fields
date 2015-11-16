@@ -89,15 +89,18 @@ namespace Lombiq.Fields.Drivers
                     }
                 }
 
-                Decimal value;
-                if (Decimal.TryParse(viewModel.Value, NumberStyles.Any, _cultureInfo.Value, out value))
+                if (!string.IsNullOrEmpty(viewModel.Value))
                 {
-                    field.Value = value;
-                }
-                else
-                {
-                    updater.AddModelError(GetPrefix(field, part), T("{0} is an invalid number", field.DisplayName));
-                    field.Value = null;
+                    Decimal value;
+                    if (Decimal.TryParse(viewModel.Value, NumberStyles.Any, _cultureInfo.Value, out value))
+                    {
+                        field.Value = value;
+                    }
+                    else
+                    {
+                        updater.AddModelError(GetPrefix(field, part), T("{0} is an invalid number", field.Value));
+                        field.Value = null;
+                    }
                 }
             }
 

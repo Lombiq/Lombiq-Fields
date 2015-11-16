@@ -2,7 +2,11 @@
 @using System.Globalization
 @{
     var field = (MoneyField)Model.ContentField;
-}
-<div>
-    @Html.LabelFor(m => field.MoneyPart.ToString(CultureInfo.InvariantCulture), @T("Currency"))
-</div>
+}<fieldset>
+    <div>
+        @Html.LabelFor(m => field.MoneyPart.ToString(CultureInfo.InvariantCulture), @T("Currency"))
+    </div>
+    <div>
+        @Html.Label("Moneyfield")
+    </div>
+</fieldset>

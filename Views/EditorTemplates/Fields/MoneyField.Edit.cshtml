@@ -1,16 +1,27 @@
 ﻿@model Lombiq.Fields.ViewModels.MoneyFieldViewModel
-@using System.Globalization
+@using Lombiq.Fields.Settings;
+
+@{
+    var settings = Model.Field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>();
+}
 
 <fieldset>
     <div>
-        @Html.Label("MoneyfieldEdit:")
+        <label for="@Html.FieldIdFor(m => m.Field)">@Model.Field.DisplayName</label>
     </div>
     <div>
-        @Html.LabelFor(m => Model.Value)
-        @Html.LabelFor(m => Model.Value.ToString(CultureInfo.InvariantCulture), @T("The currency is only readable").Text, new { @class = "forcheckbox" })
+        @Html.LabelFor(m => m.Amount, T("Amount:"))
+        @Html.TextBoxFor(m => m.Amount, new { @class = "text medium" })
     </div>
     <div>
-        @Html.LabelFor(m => Model.CurrencyIsoCode, @T("Currency"))
-        @Html.TextAreaFor(m => Model.CurrencyIsoCode, new { @class = "text medium" })
+        @Html.LabelFor(m => m.CurrencyIso3LetterCode, T("Currency:"))
+        @if (settings.IsCurrencyReadOnly)
+        {
+            @Html.Label(settings.DefaultCurrency, new { @class = "text medium" })
+        }
+        else
+        {
+            @Html.TextBoxFor(m => m.CurrencyIso3LetterCode, new { @class = "text medium" })
+        }
     </div>
 </fieldset>

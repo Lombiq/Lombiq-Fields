@@ -6,12 +6,13 @@ namespace Lombiq.Fields.Settings
     [OrchardFeature("Lombiq.Fields.MoneyField")]
     public class MoneyFieldSettings
     {
-        public string DefaultCurrency { get; set; }
-        public bool IsCurrencyReadOnly { get; set; }
+        public String DefaultCurrency { get; set; }
+        public Boolean IsCurrencyReadOnly { get; set; }
+
 
         public MoneyFieldSettings()
         {
-            DefaultCurrency = Currency.Usd.Iso3LetterCode;
+            DefaultCurrency = Currency.FromCurrentCulture().Iso3LetterCode;
             IsCurrencyReadOnly = false;
         }
     }

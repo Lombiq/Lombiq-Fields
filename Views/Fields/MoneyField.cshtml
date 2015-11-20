@@ -1,12 +1,8 @@
 ﻿@using Lombiq.Fields.Fields
-@using System.Globalization
 @{
     var field = (MoneyField)Model.ContentField;
 }<fieldset>
     <div>
-        @Html.LabelFor(m => field.MoneyPart.ToString(CultureInfo.InvariantCulture), @T("Currency"))
-    </div>
-    <div>
-        @Html.Label("Moneyfield")
+        @field.MoneyPart.ToString()
     </div>
 </fieldset>

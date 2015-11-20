@@ -12,8 +12,8 @@ namespace Lombiq.Fields.ViewModels
 
         public MoneyFieldSettings Settings { get; set; }
 
-        public String CurrencyIsoCode { get; set; }
+        public String CurrencyIso3LetterCode { get; set; }
 
-        public String Value { get; set; }
+        public String Amount { get; set; }
     }
 }

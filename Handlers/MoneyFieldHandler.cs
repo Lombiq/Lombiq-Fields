@@ -5,18 +5,18 @@ using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Environment.Extensions;
 using System;
+using Orchard.Data;
 
 namespace Lombiq.Fields.Handlers
 {
     [OrchardFeature("Lombiq.Fields.MoneyField")]
     public class MoneyFieldHandler : ContentHandler
     {
-        private readonly IContentManager _contentManager;
         private readonly IContentDefinitionManager _contentDefinitionManager;
 
-        public MoneyFieldHandler(IContentManager contentManager, IContentDefinitionManager contentDefinitionManager)
+
+        public MoneyFieldHandler(IContentDefinitionManager contentDefinitionManager)
         {
-            _contentManager = contentManager;
             _contentDefinitionManager = contentDefinitionManager;
         }
 
@@ -31,16 +31,12 @@ namespace Lombiq.Fields.Handlers
 
             foreach (var field in fields)
             {
-                field.DefaultCurrencyField.Loader(() =>
-                {
-                    Currency parsedCurrency;
-
-                    return Currency.TryParse(field.DefaultCurrencyIsoCode, out parsedCurrency) ? parsedCurrency : Currency.FromCurrentCulture();
-                });
-
                 field.MoneyPartField.Loader(() =>
                 {
-                    return new Money(field.Value.Value, field.DefaultCurrency);
+                    Currency parsedCurrency;
+                    return new Money(field.Amount, !String.IsNullOrEmpty(field.CurrencyIso3LetterCode) ?
+                        Currency.TryParse(field.CurrencyIso3LetterCode, out parsedCurrency) ?
+                        parsedCurrency : Currency.FromCurrentCulture() : Currency.FromCurrentCulture());
                 });
             }
         }

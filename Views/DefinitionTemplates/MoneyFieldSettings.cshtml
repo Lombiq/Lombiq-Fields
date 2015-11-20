@@ -3,11 +3,11 @@
 <fieldset>
     <legend>@T("General field settings")</legend>
     <div>
-        @Html.CheckBoxFor(m => Model.IsCurrencyReadOnly)
-        @Html.LabelFor(m => Model.IsCurrencyReadOnly, @T("The currency is only readable").Text, new { @class = "forcheckbox" })
+        @Html.CheckBoxFor(m => m.IsCurrencyReadOnly)
+        @Html.LabelFor(m => m.IsCurrencyReadOnly, @T("The currency is only readable").Text, new { @class = "forcheckbox" })
     </div>
     <div>
-        @Html.LabelFor(m => Model.DefaultCurrency, @T("Currency"))
-        @Html.TextAreaFor(m => Model.DefaultCurrency, new { @class = "text medium" })
+        @Html.LabelFor(m => m.DefaultCurrency, @T("Currency"))
+        @Html.TextBoxFor(m => m.DefaultCurrency, new { @class = "text medium" })
     </div>
 </fieldset>

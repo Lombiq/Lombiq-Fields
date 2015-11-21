@@ -1,7 +1,7 @@
-﻿using System;
-using Orchard.ContentManagement;
+﻿using Orchard.ContentManagement;
 using Orchard.Core.Common.Utilities;
 using Orchard.Environment.Extensions;
+using System;
 
 namespace Lombiq.Fields.Fields
 {

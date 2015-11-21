@@ -1,4 +1,5 @@
 ﻿@model Lombiq.Fields.ViewModels.MoneyFieldViewModel
+@using Lombiq.Fields.Constants;
 @using Lombiq.Fields.Settings;
 
 @{
@@ -6,22 +7,22 @@
 }
 
 <fieldset>
-    <div>
-        <label for="@Html.FieldIdFor(m => m.Field)">@Model.Field.DisplayName</label>
-    </div>
+    <legend>@Model.Field.DisplayName</legend>
     <div>
         @Html.LabelFor(m => m.Amount, T("Amount:"))
-        @Html.TextBoxFor(m => m.Amount, new { @class = "text medium" })
+        @Html.TextBoxFor(m => m.Amount, new { @class = "text" })
+        <span class="hint">@T("The amount of the money.")</span>
     </div>
     <div>
         @Html.LabelFor(m => m.CurrencyIso3LetterCode, T("Currency:"))
         @if (settings.IsCurrencyReadOnly)
-        {
-            @Html.Label(settings.DefaultCurrency, new { @class = "text medium" })
+            {
+            @Html.Label(settings.DefaultCurrency, new { @class = "text small" })
         }
         else
         {
-            @Html.TextBoxFor(m => m.CurrencyIso3LetterCode, new { @class = "text medium" })
+            @Html.DropDownListFor(m => m.CurrencyIso3LetterCode, MoneyFieldConstants.Currencys)
         }
+        <span class="hint">@T("The currency of the money.")</span>
     </div>
 </fieldset>

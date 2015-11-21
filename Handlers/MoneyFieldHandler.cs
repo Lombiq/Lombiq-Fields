@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using Lombiq.Fields.Fields;
-using Orchard.ContentManagement;
+﻿using Lombiq.Fields.Fields;
+using Lombiq.Fields.Settings;
 using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Environment.Extensions;
 using System;
-using Orchard.Data;
+using System.Linq;
 
 namespace Lombiq.Fields.Handlers
 {
@@ -34,9 +33,14 @@ namespace Lombiq.Fields.Handlers
                 field.MoneyPartField.Loader(() =>
                 {
                     Currency parsedCurrency;
-                    return new Money(field.Amount, !String.IsNullOrEmpty(field.CurrencyIso3LetterCode) ?
-                        Currency.TryParse(field.CurrencyIso3LetterCode, out parsedCurrency) ?
-                        parsedCurrency : Currency.FromCurrentCulture() : Currency.FromCurrentCulture());
+
+                    Currency.TryParse(
+                        String.IsNullOrEmpty(field.CurrencyIso3LetterCode) 
+                            ? field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>().DefaultCurrency 
+                            : field.CurrencyIso3LetterCode, 
+                        out parsedCurrency); 
+                    
+                    return new Money(field.Amount, parsedCurrency);
                 });
             }
         }

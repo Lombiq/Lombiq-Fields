@@ -129,6 +129,7 @@
     <Compile Include="Fields\MoneyField.cs" />
     <Compile Include="Handlers\MediaLibraryUploadFieldHandler.cs" />
     <Compile Include="Handlers\MoneyFieldHandler.cs" />
+    <Compile Include="Helpers\CurrencyHelpers.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Settings\MediaLibraryUploadFieldEditorEvents.cs" />
     <Compile Include="Settings\MediaLibraryUploadFieldSettings.cs" />

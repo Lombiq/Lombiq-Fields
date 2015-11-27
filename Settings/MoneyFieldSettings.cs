@@ -6,7 +6,7 @@ namespace Lombiq.Fields.Settings
     [OrchardFeature("Lombiq.Fields.MoneyField")]
     public class MoneyFieldSettings
     {
-        public String DefaultCurrency { get; set; }
+        public string DefaultCurrency { get; set; }
         public Boolean IsCurrencyReadOnly { get; set; }
 
 

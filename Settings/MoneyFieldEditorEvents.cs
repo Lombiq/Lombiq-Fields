@@ -35,7 +35,7 @@ namespace Lombiq.Fields.Settings
 
             if (updateModel.TryUpdateModel(model, typeof(MoneyFieldSettings).Name, null, null))
             {
-                if (!String.IsNullOrEmpty(model.DefaultCurrency))
+                if (!string.IsNullOrEmpty(model.DefaultCurrency))
                 {
                     Currency parsedCurrency;
                     if (Currency.TryParse(model.DefaultCurrency, out parsedCurrency))

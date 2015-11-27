@@ -1,5 +1,5 @@
 ﻿@model Lombiq.Fields.ViewModels.MoneyFieldViewModel
-@using Lombiq.Fields.Constants;
+@using Lombiq.Fields.Helpers;
 @using Lombiq.Fields.Settings;
 
 @{
@@ -21,7 +21,7 @@
         }
         else
         {
-            @Html.DropDownListFor(m => m.CurrencyIso3LetterCode, MoneyFieldConstants.Currencys)
+            @Html.DropDownListFor(m => m.CurrencyIso3LetterCode, CurrencyHelpers.GetCurrencySelectListItems)
         }
         <span class="hint">@T("The currency of the money.")</span>
     </div>

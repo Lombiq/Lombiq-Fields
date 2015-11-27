@@ -16,7 +16,8 @@ namespace Lombiq.Fields.Drivers
     public class MoneyFieldDriver : ContentFieldDriver<MoneyField>
     {
         private readonly Lazy<CultureInfo> _cultureInfo;
-        private IOrchardServices _orchardServices { get; set; }
+        private readonly IOrchardServices _orchardServices;
+
 
         public Localizer T { get; set; }
 
@@ -34,106 +35,103 @@ namespace Lombiq.Fields.Drivers
         protected override DriverResult Display(ContentPart part, MoneyField field, string displayType, dynamic shapeHelper)
         {
             return ContentShape("Fields_MoneyField", GetDifferentiator(field, part), () =>
-                    shapeHelper.Fields_MoneyField()
-                    .Settings(field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>())
-                    .Value(Convert.ToString(field.Amount, _cultureInfo.Value))
-                    .DefaultCurrency(field.CurrencyIso3LetterCode));
+                    shapeHelper.Fields_MoneyField(Settings: field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>()));
+            //.Settings(field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>())
+            //.Value(Convert.ToString(field.Amount, _cultureInfo.Value))
+            //.DefaultCurrency(field.CurrencyIso3LetterCode));
         }
 
         protected override DriverResult Editor(ContentPart part, MoneyField field, dynamic shapeHelper)
         {
-            var settings = field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>();
-
             return ContentShape("Fields_MoneyField_Edit", GetDifferentiator(field, part),
                 () =>
                 {
+                    var settings = field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>();
                     var model = new MoneyFieldViewModel
                     {
                         Field = field,
                         Settings = settings,
                         Amount = Convert.ToString(field.Amount, _cultureInfo.Value),
                         CurrencyIso3LetterCode = String.IsNullOrEmpty(field.CurrencyIso3LetterCode) ? settings.DefaultCurrency : field.CurrencyIso3LetterCode
-                };
-
-            return shapeHelper.EditorTemplate(TemplateName: "Fields/MoneyField.Edit", Model: model, Prefix: GetPrefix(field, part));
-        });
+                    };
+                    return shapeHelper.EditorTemplate(TemplateName: "Fields/MoneyField.Edit", Model: model, Prefix: GetPrefix(field, part));
+                });
         }
 
-    protected override DriverResult Editor(ContentPart part, MoneyField field, IUpdateModel updater, dynamic shapeHelper)
-    {
-        var viewModel = new MoneyFieldViewModel();
-        var settings = field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>();
-
-        if (updater.TryUpdateModel(viewModel, GetPrefix(field, part), null, null))
+        protected override DriverResult Editor(ContentPart part, MoneyField field, IUpdateModel updater, dynamic shapeHelper)
         {
-            if (!settings.IsCurrencyReadOnly)
+            var viewModel = new MoneyFieldViewModel();
+            var settings = field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>();
+
+            if (updater.TryUpdateModel(viewModel, GetPrefix(field, part), null, null))
             {
-                if (!String.IsNullOrEmpty(viewModel.CurrencyIso3LetterCode))
+                if (!settings.IsCurrencyReadOnly)
                 {
-                    Currency parsedCurrency;
-                    if (Currency.TryParse(viewModel.CurrencyIso3LetterCode, out parsedCurrency))
+                    if (!string.IsNullOrEmpty(viewModel.CurrencyIso3LetterCode))
                     {
-                        field.CurrencyIso3LetterCode = viewModel.CurrencyIso3LetterCode;
+                        Currency parsedCurrency;
+                        if (Currency.TryParse(viewModel.CurrencyIso3LetterCode, out parsedCurrency))
+                        {
+                            field.CurrencyIso3LetterCode = viewModel.CurrencyIso3LetterCode;
+                        }
+                        else
+                        {
+                            updater.AddModelError("InvalidCurrencyIsoCode", T("Invalid currency iso code was given."));
+                        }
                     }
                     else
                     {
-                        updater.AddModelError("InvalidCurrencyIsoCode", T("Invalid currency iso code was given."));
+                        updater.AddModelError("CurrencyIsoCodeIsEmpty", T("Currency iso code was not given."));
                     }
                 }
                 else
                 {
-                    updater.AddModelError("CurrencyIsoCodeIsEmpty", T("Currency iso code was not given."));
+                    field.CurrencyIso3LetterCode = settings.DefaultCurrency;
+                }
+
+                decimal amount;
+
+                if (decimal.TryParse(viewModel.Amount, NumberStyles.Any, _cultureInfo.Value, out amount))
+                {
+                    field.Amount = amount;
+                }
+                else
+                {
+                    updater.AddModelError(GetPrefix(field, part), T("{0} is an invalid number", viewModel.Amount));
                 }
             }
-            else
-            {
-                field.CurrencyIso3LetterCode = settings.DefaultCurrency;
-            }
-
-            Decimal amount;
-
-            if (Decimal.TryParse(viewModel.Amount, NumberStyles.Any, _cultureInfo.Value, out amount))
-            {
-                field.Amount = amount;
-            }
-            else
-            {
-                updater.AddModelError(GetPrefix(field, part), T("{0} is an invalid number", viewModel.Amount));
-            }
+            return Editor(part, field, shapeHelper);
         }
-        return Editor(part, field, shapeHelper);
+
+
+        protected override void Importing(ContentPart part, MoneyField field, ImportContentContext context)
+        {
+            context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "Amount", amount => field.Amount = decimal.Parse(amount, CultureInfo.InvariantCulture), () => field.Amount = 0);
+            context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "CurrencyIso3LetterCode", currency => field.CurrencyIso3LetterCode = !string.IsNullOrEmpty(currency) ? currency : Currency.FromCurrentCulture().Iso3LetterCode);
+
+        }
+
+        protected override void Exporting(ContentPart part, MoneyField field, ExportContentContext context)
+        {
+            context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Amount", field.Amount.ToString(CultureInfo.InvariantCulture));
+            context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("CurrencyIso3LetterCode", !String.IsNullOrEmpty(field.CurrencyIso3LetterCode) ? field.CurrencyIso3LetterCode : Currency.FromCurrentCulture().Iso3LetterCode);
+        }
+
+        protected override void Describe(DescribeMembersContext context)
+        {
+            context.Member("Amount", typeof(decimal), T("Amount"), T("The amount of the money."));
+            context.Member("Currency", typeof(string), T("Currency"), T("The currency of the money."));
+        }
+
+
+        private static string GetPrefix(ContentField field, ContentPart part)
+        {
+            return part.PartDefinition.Name + "." + field.Name;
+        }
+
+        private static string GetDifferentiator(MoneyField field, ContentPart part)
+        {
+            return field.Name;
+        }
     }
-
-
-    protected override void Importing(ContentPart part, MoneyField field, ImportContentContext context)
-    {
-        context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "Amount", v => field.Amount = decimal.Parse(v, CultureInfo.InvariantCulture), () => field.Amount = 0);
-        context.ImportAttribute(field.FieldDefinition.Name + "." + field.Name, "CurrencyIso3LetterCode", v => field.CurrencyIso3LetterCode = !String.IsNullOrEmpty(v) ? v : Currency.FromCurrentCulture().Iso3LetterCode);
-
-    }
-
-    protected override void Exporting(ContentPart part, MoneyField field, ExportContentContext context)
-    {
-        context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Amount", field.Amount.ToString(CultureInfo.InvariantCulture));
-        context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("CurrencyIso3LetterCode", !String.IsNullOrEmpty(field.CurrencyIso3LetterCode) ? field.CurrencyIso3LetterCode : Currency.FromCurrentCulture().Iso3LetterCode);
-    }
-
-    protected override void Describe(DescribeMembersContext context)
-    {
-        context
-            .Member(null, typeof(MoneyField), T("Value"), T("The value of the field."))
-            .Enumerate<MoneyField>(() => field => new[] { field.Amount });
-    }
-
-
-    private static string GetPrefix(ContentField field, ContentPart part)
-    {
-        return part.PartDefinition.Name + "." + field.Name;
-    }
-
-    private static string GetDifferentiator(MoneyField field, ContentPart part)
-    {
-        return field.Name;
-    }
-}
 }

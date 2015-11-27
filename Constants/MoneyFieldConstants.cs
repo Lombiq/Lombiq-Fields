@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Orchard.Environment.Extensions;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
 
 namespace Lombiq.Fields.Constants
 {
+    [OrchardFeature("Lombiq.Fields.MoneyField")]
     public static class MoneyFieldConstants
     {
-        private static readonly IEnumerable<Currency> _currencys = new[]
+        public static readonly IEnumerable<Currency> Currencies = new[]
         {
           Currency.Aed,
           Currency.Afn,
@@ -176,19 +176,5 @@ namespace Lombiq.Fields.Constants
           Currency.Zmk,
           Currency.Zwd
        };
-
-
-        public static IEnumerable<SelectListItem> Currencys
-        {
-            get
-            {
-                return _currencys.Select(c =>
-                                        new SelectListItem()
-                                        {
-                                            Text = c.ToString(),
-                                            Value = c.Iso3LetterCode
-                                        }).OrderBy(c => c.Text);
-            }
-        }
     }
 };

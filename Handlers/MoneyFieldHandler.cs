@@ -30,12 +30,12 @@ namespace Lombiq.Fields.Handlers
 
             foreach (var field in fields)
             {
-                field.MoneyPartField.Loader(() =>
+                field.MoneyValueField.Loader(() =>
                 {
                     Currency parsedCurrency;
 
                     Currency.TryParse(
-                        String.IsNullOrEmpty(field.CurrencyIso3LetterCode) 
+                        string.IsNullOrEmpty(field.CurrencyIso3LetterCode) 
                             ? field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>().DefaultCurrency 
                             : field.CurrencyIso3LetterCode, 
                         out parsedCurrency); 

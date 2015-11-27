@@ -8,9 +8,9 @@ namespace Lombiq.Fields.Fields
     [OrchardFeature("Lombiq.Fields.MoneyField")]
     public class MoneyField : ContentField
     {
-        public Decimal Amount
+        public decimal Amount
         {
-            get { return Storage.Get<Decimal>("Amount"); }
+            get { return Storage.Get<decimal>("Amount"); }
             set { Storage.Set("Amount", value); }
         }
 
@@ -20,11 +20,11 @@ namespace Lombiq.Fields.Fields
             set { Storage.Set("CurrencyIso3LetterCode", value); }
         }
 
-        private readonly LazyField<Money> _moneyPart = new LazyField<Money>();
-        internal LazyField<Money> MoneyPartField { get { return _moneyPart; } }
-        public Money MoneyPart
+        private readonly LazyField<Money> _moneyValue = new LazyField<Money>();
+        internal LazyField<Money> MoneyValueField { get { return _moneyValue; } }
+        public Money MoneyValue
         {
-            get { return _moneyPart.Value; }
+            get { return _moneyValue.Value; }
         }
     }
 }

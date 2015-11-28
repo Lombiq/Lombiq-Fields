@@ -35,23 +35,24 @@ namespace Lombiq.Fields.Settings
 
             if (updateModel.TryUpdateModel(model, typeof(MoneyFieldSettings).Name, null, null))
             {
-                if (!string.IsNullOrEmpty(model.DefaultCurrency))
+                if (string.IsNullOrEmpty(model.DefaultCurrency))
+                {
+                    builder.WithSetting("MoneyFieldSettings.DefaultCurrency", Currency.FromCurrentCulture().Iso3LetterCode);
+                }
+                else
                 {
                     Currency parsedCurrency;
                     if (Currency.TryParse(model.DefaultCurrency, out parsedCurrency))
                     {
                         builder.WithSetting("MoneyFieldSettings.DefaultCurrency", model.DefaultCurrency);
-                        builder.WithSetting("MoneyFieldSettings.IsCurrencyReadOnly", model.IsCurrencyReadOnly.ToString(CultureInfo.InvariantCulture));
                     }
                     else
                     {
                         updateModel.AddModelError("InvalidCurrencyIsoCode", T("MoneyField - Invalid currency iso code was given."));
                     }
                 }
-                else
-                {
-                    updateModel.AddModelError("DefaultIsoCodeIsEmpty", T("MoneyField - Currency iso code was not given."));
-                }
+
+                builder.WithSetting("MoneyFieldSettings.IsCurrencyReadOnly", model.IsCurrencyReadOnly.ToString(CultureInfo.InvariantCulture));
             }
             yield return DefinitionTemplate(model);
         }

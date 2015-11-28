@@ -1,14 +1,12 @@
 ﻿<Placement>
   <!-- FIELDS -->
-  
+
   <!-- MoneyField -->
-  
-  <Place Fields_MoneyField="Content:5" />
-  
-  <Place Fields_MoneyField_Edit="Content:5" />
+
+  <Place Fields_MoneyField="Content:5" Fields_MoneyField_Edit="Content:5"/>
 
   <!-- MediaLibraryUploadField -->
-  
+
   <Place Fields_MediaLibraryUpload_Edit="Content:before" />
 
   <Match DisplayType="Detail">
@@ -22,6 +20,6 @@
   <Match DisplayType="SummaryAdmin">
     <Place Fields_MediaLibraryUpload_SummaryAdmin="Content:after" />
   </Match>
-  
+
   <!-- END FIELDS -->
 </Placement>

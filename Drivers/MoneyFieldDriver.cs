@@ -36,9 +36,6 @@ namespace Lombiq.Fields.Drivers
         {
             return ContentShape("Fields_MoneyField", GetDifferentiator(field, part), () =>
                     shapeHelper.Fields_MoneyField(Settings: field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>()));
-            //.Settings(field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>())
-            //.Value(Convert.ToString(field.Amount, _cultureInfo.Value))
-            //.DefaultCurrency(field.CurrencyIso3LetterCode));
         }
 
         protected override DriverResult Editor(ContentPart part, MoneyField field, dynamic shapeHelper)
@@ -51,7 +48,7 @@ namespace Lombiq.Fields.Drivers
                     {
                         Field = field,
                         Settings = settings,
-                        Amount = Convert.ToString(field.Amount, _cultureInfo.Value),
+                        Amount = field.Amount,
                         CurrencyIso3LetterCode = String.IsNullOrEmpty(field.CurrencyIso3LetterCode) ? settings.DefaultCurrency : field.CurrencyIso3LetterCode
                     };
                     return shapeHelper.EditorTemplate(TemplateName: "Fields/MoneyField.Edit", Model: model, Prefix: GetPrefix(field, part));
@@ -89,16 +86,7 @@ namespace Lombiq.Fields.Drivers
                     field.CurrencyIso3LetterCode = settings.DefaultCurrency;
                 }
 
-                decimal amount;
-
-                if (decimal.TryParse(viewModel.Amount, NumberStyles.Any, _cultureInfo.Value, out amount))
-                {
-                    field.Amount = amount;
-                }
-                else
-                {
-                    updater.AddModelError(GetPrefix(field, part), T("{0} is an invalid number", viewModel.Amount));
-                }
+                field.Amount = viewModel.Amount;
             }
             return Editor(part, field, shapeHelper);
         }

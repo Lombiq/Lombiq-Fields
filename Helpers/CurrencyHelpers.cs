@@ -1,8 +1,8 @@
 ﻿using Orchard.Environment.Extensions;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 using Lombiq.Fields.Constants;
+using System.Web.Mvc;
 
 namespace Lombiq.Fields.Helpers
 {
@@ -13,12 +13,12 @@ namespace Lombiq.Fields.Helpers
         {
             get
             {
-                return MoneyFieldConstants.Currencies.Select(c =>
+                return MoneyFieldConstants.Currencies.Select(currency =>
                                         new SelectListItem()
                                         {
-                                            Text = c.ToString(),
-                                            Value = c.Iso3LetterCode
-                                        }).OrderBy(c => c.Text);
+                                            Text = currency.ToString(),
+                                            Value = currency.Iso3LetterCode
+                                        }).OrderBy(listitem => listitem.Text);
             }
         }
     }

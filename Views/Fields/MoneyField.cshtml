@@ -3,13 +3,13 @@
     var field = (MoneyField)Model.ContentField;
 }<fieldset>
     <div>
-        @if (!@string.IsNullOrEmpty(field.MoneyPart.Currency.Symbol))
+        @if (!@String.IsNullOrEmpty(field.MoneyValue.Currency.Symbol))
         {
-            @field.MoneyPart.Tostring()
+            @field.MoneyValue.ToString()
         }
         else
         {
-            @Html.Label(string.Format("{0} {1}", @field.Amount, @field.MoneyPart.Currency.Iso3LetterCode))
+            @Html.Label(string.Format("{0} {1}", @field.Amount, @field.MoneyValue.Currency.Iso3LetterCode))
         }
     </div>
 </fieldset>

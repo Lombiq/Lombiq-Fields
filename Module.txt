@@ -1,4 +1,5 @@
-﻿AntiForgery: enabled
+﻿Name: Lombiq Fields
+AntiForgery: enabled
 Author: Lombiq Technologies Ltd.
 Website: http://lombiq.com
 Version: 1.0

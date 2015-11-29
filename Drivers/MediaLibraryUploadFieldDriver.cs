@@ -121,7 +121,7 @@ namespace Lombiq.Fields.Drivers
                             {
                                 if ((settings.ImageMaximumWidth > 0 && image.Width > settings.ImageMaximumWidth) || (settings.ImageMaximumHeight > 0 && image.Height > settings.ImageMaximumHeight))
                                 {
-                                    _notifier.Warning(T("The image \"{0}\" was not uploaded, because it's dimensions exceed the limitations. The maximum allowed file dimensions are {1}x{2} pixels.",
+                                    _notifier.Warning(T("The image \"{0}\" was not uploaded, because its dimensions exceed the limitations. The maximum allowed file dimensions are {1}x{2} pixels.",
                                         file.FileName, settings.ImageMaximumWidth, settings.ImageMaximumHeight));
                                     continue;
                                 }
@@ -131,11 +131,15 @@ namespace Lombiq.Fields.Drivers
                         }
 
                         // At this point we can be sure that the files comply with the settings and limitations, so we can import them.
+                        var user = _wca.GetContext().CurrentUser;
                         var folderPath = _tokenizer.Replace(settings.FolderPath, new Dictionary<string, object>
                         {
                             { "Content", part.ContentItem },
-                            { "User", _wca.GetContext().CurrentUser }
+                            { "User", user }
                         });
+
+                        folderPath = string.IsNullOrEmpty(folderPath) ? "UserUploads/" + user.Id : folderPath;
+
                         var mediaPart = _mediaLibraryService.ImportMedia(file.InputStream, folderPath, file.FileName);
                         _contentManager.Create(mediaPart);
                         mediaPartsCreated.Add(mediaPart);

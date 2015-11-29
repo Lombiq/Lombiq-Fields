@@ -26,7 +26,12 @@
         <li>
             @Html.LabelFor(m => Model.FolderPath, @T("Folder Path"))
             @Html.TextBoxFor(m => m.FolderPath, new { @class = "tokenized text medium" })
-            <span class="hint">@T("Provide a path to a folder where the files will be upload. You can also use tokens.")</span>
+            @Html.Hint(T("Provide a path to a folder where the files will be uploaded. You can also use tokens. The default path is \"UserUploads/[user ID]\"."))
+        </li>
+        <li>
+            @Html.LabelFor(m => Model.MaximumSizeKB, @T("Maximum file size"))
+            @Html.TextBoxFor(m => Model.MaximumSizeKB)
+            @Html.Hint(T("The maximum file size per uploaded file in kilobytes. 0 means no limit."))
         </li>
     </ol>
 </fieldset>
@@ -36,11 +41,6 @@
 <fieldset>
     <legend>@T("Image-specific settings")</legend>
     <ol>
-        <li>
-            @Html.LabelFor(m => Model.ImageMaximumSize, @T("Maximum file size"))
-            @Html.TextBoxFor(m => Model.ImageMaximumSize)
-            <span class="hint">@T("The maximum file size per uploaded image in KB.")</span>
-        </li>
         <li>
             @Html.LabelFor(m => Model.ImageMaximumWidth, @T("Maximum width"))
             @Html.TextBoxFor(m => Model.ImageMaximumWidth)

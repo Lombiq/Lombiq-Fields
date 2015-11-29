@@ -109,15 +109,14 @@ namespace Lombiq.Fields.Drivers
                             continue;
                         }
 
+                        if (settings.MaximumSizeKB > 0 && file.ContentLength > settings.MaximumSizeKB * 1024) {
+                            _notifier.Warning(T("The file \"{0}\" was not uploaded, because its size exceeds the {1} KB limitation.", file.FileName, settings.MaximumSizeKB));
+                            continue;
+                        }
+
                         // Checking against image-specific settings.
                         if (MimeAssistant.GetMimeType(file.FileName.ToLowerInvariant()).StartsWith("image"))
                         {
-                            if (settings.ImageMaximumSize > 0 && file.ContentLength > settings.ImageMaximumSize * 1024)
-                            {
-                                _notifier.Warning(T("The image \"{0}\" was not uploaded, because it's size exceeds the {1} KB limitation.", file.FileName, settings.ImageMaximumSize));
-                                continue;
-                            }
-
                             using (var image = Image.FromStream(file.InputStream))
                             {
                                 if ((settings.ImageMaximumWidth > 0 && image.Width > settings.ImageMaximumWidth) || (settings.ImageMaximumHeight > 0 && image.Height > settings.ImageMaximumHeight))

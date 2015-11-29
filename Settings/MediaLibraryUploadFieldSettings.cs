@@ -10,11 +10,11 @@ namespace Lombiq.Fields.Settings
         public bool Required { get; set; }
         public bool Multiple { get; set; }
         public string AllowedExtensions { get; set; }
-        public string FolderPath { get; set; }        
+        public string FolderPath { get; set; }
+        public int MaximumSizeKB { get; set; }
         #endregion
 
         #region Image-specific settings
-        public int ImageMaximumSize { get; set; }
         public int ImageMaximumWidth { get; set; }
         public int ImageMaximumHeight { get; set; }
         public string MediaProfile { get; set; }

@@ -20,7 +20,7 @@
             @Html.Hint(T("This is the default currency of the field. If you change this later, it will not update the existing fields."))
         </li>
         <li>
-            @Html.LabelFor(m => m.Hint, @T("Help text"))
+            @Html.LabelFor(m => m.Hint, T("Help text"))
             @Html.TextAreaFor(m => m.Hint, new { @class = "text medium", rows = "5" })
             @Html.Hint(T("The help text is written under the field when authors are editing the content item."))
         </li>

@@ -8,13 +8,22 @@
 <fieldset>
     <legend>@field.DisplayName</legend>
     <div class="money-field money-field-@field.DisplayName.HtmlClassify()">
-        @if (!string.IsNullOrEmpty(field.Value.Currency.Symbol))
+        @try
         {
-            @field.Value.ToString()
+            if (!string.IsNullOrEmpty(field.Value.Currency.Symbol))
+            {
+
+                @field.Value.ToString()
+            }
+            else
+            {
+                @field.Amount @field.Value.Currency.Iso3LetterCode
+            }
         }
-        else
+        catch
         {
-            @field.Amount @field.Value.Currency.Iso3LetterCode
+
+            @T("{0} {1}", field.Amount, field.Value.Currency.Iso3LetterCode)
         }
     </div>
 </fieldset>

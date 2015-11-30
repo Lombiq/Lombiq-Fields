@@ -32,7 +32,7 @@
             <li>
                 @Html.CheckBoxFor(m => m.SynchroniseWithDefaultCurrency)
                 @Html.Label("Synchronize with default currency", new { style = "display:inline;" })
-                @Html.Hint(T("The default currency has been changed to {0}, chech this box if you want to synchronize the current currency with the new default currency.", Model.Settings.DefaultCurrency))
+                @Html.Hint(T("The default currency has been changed to {0}, check this box if you want to synchronize the current currency with the new default currency.", Model.Settings.DefaultCurrency))
             </li>
         }
         <li class="money-field-hint hint">

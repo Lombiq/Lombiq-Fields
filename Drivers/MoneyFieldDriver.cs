@@ -40,7 +40,7 @@ namespace Lombiq.Fields.Drivers
                     {
                         Field = field,
                         Settings = settings,
-                        Amount = field.Amount,
+                        Amount = field.Amount.ToString(),
                         CurrencyIso3LetterCode = string.IsNullOrEmpty(field.CurrencyIso3LetterCode) ? settings.DefaultCurrency : field.CurrencyIso3LetterCode
                     };
 
@@ -83,13 +83,21 @@ namespace Lombiq.Fields.Drivers
                     }
                 }
 
-                if (settings.Required && viewModel.Amount == null)
+                if (settings.Required && string.IsNullOrEmpty(viewModel.Amount))
                 {
                     updater.AddModelError("AmountIsRequired", T("Amount is required."));
                 }
                 else
                 {
-                    field.Amount = viewModel.Amount;
+                    decimal amount;
+                    if (decimal.TryParse(viewModel.Amount, out amount))
+                    {
+                        field.Amount = amount;
+                    }
+                    else
+                    {
+                        updater.AddModelError("InvalidAmount", T("Invalid amount was given."));
+                    }
                 }
             }
 
@@ -106,13 +114,13 @@ namespace Lombiq.Fields.Drivers
 
         protected override void Exporting(ContentPart part, MoneyField field, ExportContentContext context)
         {
-            context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Amount", field.Amount.ToString(CultureInfo.InvariantCulture));
+            context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Amount", field.Amount);
             context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("CurrencyIso3LetterCode", !string.IsNullOrEmpty(field.CurrencyIso3LetterCode) ? field.CurrencyIso3LetterCode : Currency.FromCurrentCulture().Iso3LetterCode);
         }
 
         protected override void Describe(DescribeMembersContext context)
         {
-            context.Member("Amount", typeof(decimal), T("Amount"), T("The amount of the money."))
+            context.Member("Amount", typeof(decimal?), T("Amount"), T("The amount of the money."))
                 .Member("Currency", typeof(string), T("Currency"), T("The currency of the money."));
         }
 

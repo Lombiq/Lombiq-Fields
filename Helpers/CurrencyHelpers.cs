@@ -18,16 +18,17 @@ namespace Lombiq.Fields.Helpers
         {
             get
             {
-                object currencyObj = new Currency();
+                var currencyObject = new Currency() as object;
 
+                //None is not a Currency
                 return typeof(Currency).GetFields()
-                    .Where(currency => currency.Name != "None" && currency.Name != "Xxx")
+                    .Where(currency => currency.Name != "None" && currency.FieldType == typeof(Currency))
                     .Select(currency =>
-                                new SelectListItem()
-                                {
-                                    Text = ((Currency)currency.GetValue(currencyObj)).ToString(),
-                                    Value = ((Currency)currency.GetValue(currencyObj)).Iso3LetterCode
-                                }).OrderBy(listitem => listitem.Text);
+                                        new SelectListItem()
+                                        {
+                                            Text = ((Currency)currency.GetValue(currencyObject)).ToString(),
+                                            Value = ((Currency)currency.GetValue(currencyObject)).Iso3LetterCode
+                                        }).OrderBy(listitem => listitem.Text);
             }
         }
     }

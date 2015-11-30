@@ -40,7 +40,7 @@ namespace Lombiq.Fields.Handlers
                             : field.CurrencyIso3LetterCode,
                         out parsedCurrency);
 
-                    return new Money(field.Amount, parsedCurrency);
+                    return new Money(field.Amount.Value, parsedCurrency);
                 });
             }
         }

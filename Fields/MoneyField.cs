@@ -8,9 +8,9 @@ namespace Lombiq.Fields.Fields
     [OrchardFeature("Lombiq.Fields.MoneyField")]
     public class MoneyField : ContentField
     {
-        public decimal Amount
+        public decimal? Amount
         {
-            get { return Storage.Get<decimal>("Amount"); }
+            get { return Storage.Get<decimal?>("Amount"); }
             set { Storage.Set("Amount", value); }
         }
 

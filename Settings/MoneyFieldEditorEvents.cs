@@ -53,6 +53,8 @@ namespace Lombiq.Fields.Settings
                 }
 
                 builder.WithSetting("MoneyFieldSettings.IsCurrencyReadOnly", model.IsCurrencyReadOnly.ToString(CultureInfo.InvariantCulture));
+                builder.WithSetting("MoneyFieldSettings.Hint", model.Hint);
+                builder.WithSetting("MoneyFieldSettings.Required", model.Required.ToString(CultureInfo.InvariantCulture));
             }
             yield return DefinitionTemplate(model);
         }

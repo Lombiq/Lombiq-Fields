@@ -49,7 +49,7 @@ namespace Lombiq.Fields.Drivers
                         Field = field,
                         Settings = settings,
                         Amount = field.Amount,
-                        CurrencyIso3LetterCode = String.IsNullOrEmpty(field.CurrencyIso3LetterCode) ? settings.DefaultCurrency : field.CurrencyIso3LetterCode
+                        CurrencyIso3LetterCode = string.IsNullOrEmpty(field.CurrencyIso3LetterCode) ? settings.DefaultCurrency : field.CurrencyIso3LetterCode
                     };
                     return shapeHelper.EditorTemplate(TemplateName: "Fields/MoneyField.Edit", Model: model, Prefix: GetPrefix(field, part));
                 });
@@ -58,6 +58,7 @@ namespace Lombiq.Fields.Drivers
         protected override DriverResult Editor(ContentPart part, MoneyField field, IUpdateModel updater, dynamic shapeHelper)
         {
             var viewModel = new MoneyFieldViewModel();
+
             var settings = field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>();
 
             if (updater.TryUpdateModel(viewModel, GetPrefix(field, part), null, null))
@@ -83,7 +84,10 @@ namespace Lombiq.Fields.Drivers
                 }
                 else
                 {
-                    field.CurrencyIso3LetterCode = settings.DefaultCurrency;
+                    if (string.IsNullOrEmpty(field.CurrencyIso3LetterCode) || viewModel.SynchroniseWithDefaultCurrency)
+                    {
+                        field.CurrencyIso3LetterCode = settings.DefaultCurrency;
+                    }
                 }
 
                 field.Amount = viewModel.Amount;
@@ -102,7 +106,7 @@ namespace Lombiq.Fields.Drivers
         protected override void Exporting(ContentPart part, MoneyField field, ExportContentContext context)
         {
             context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("Amount", field.Amount.ToString(CultureInfo.InvariantCulture));
-            context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("CurrencyIso3LetterCode", !String.IsNullOrEmpty(field.CurrencyIso3LetterCode) ? field.CurrencyIso3LetterCode : Currency.FromCurrentCulture().Iso3LetterCode);
+            context.Element(field.FieldDefinition.Name + "." + field.Name).SetAttributeValue("CurrencyIso3LetterCode", !string.IsNullOrEmpty(field.CurrencyIso3LetterCode) ? field.CurrencyIso3LetterCode : Currency.FromCurrentCulture().Iso3LetterCode);
         }
 
         protected override void Describe(DescribeMembersContext context)

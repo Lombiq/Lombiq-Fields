@@ -11,7 +11,6 @@ namespace Lombiq.Fields.Settings
         public string DefaultCurrency { get; set; }
         public bool IsCurrencyReadOnly { get; set; }
 
-
         public MoneyFieldSettings()
         {
             DefaultCurrency = Currency.FromCurrentCulture().Iso3LetterCode;

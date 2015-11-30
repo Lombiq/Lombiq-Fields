@@ -15,5 +15,7 @@ namespace Lombiq.Fields.ViewModels
         public string CurrencyIso3LetterCode { get; set; }
 
         public decimal Amount { get; set; }
+
+        public bool SynchroniseWithDefaultCurrency { get; set; }
     }
 }

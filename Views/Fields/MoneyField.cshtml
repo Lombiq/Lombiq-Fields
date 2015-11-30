@@ -1,8 +1,9 @@
 ﻿@using Lombiq.Fields.Fields
+@using Orchard.Utility.Extensions;
 @{
     var field = (MoneyField)Model.ContentField;
 }<fieldset>
-    <div>
+    <div class="money-field money-field-@field.DisplayName.HtmlClassify()">
         @if (!@String.IsNullOrEmpty(field.MoneyValue.Currency.Symbol))
         {
             @field.MoneyValue.ToString()

@@ -2,15 +2,27 @@
 @using Lombiq.Fields.Helpers
 
 <fieldset>
-    <div>
-        @Html.CheckBoxFor(m => m.IsCurrencyReadOnly)
-        @Html.LabelFor(m => m.IsCurrencyReadOnly, @T("The currency is only readable").Text, new { @class = "forcheckbox" })
-        <span class="hint">@T("Check to forbid the user to change the currency.")</span>
-    </div>
-</fieldset>
-<fieldset>
-    <div>
-        @Html.LabelFor(m => m.DefaultCurrency, @T("Default currency:"))
-        @Html.DropDownListFor(m => m.DefaultCurrency, CurrencyHelpers.GetCurrencySelectListItems, new { @class = "text medium" })
-    </div>
+    <legend>@T("Money field settings")</legend>
+    <ol>
+        <li>
+            @Html.CheckBoxFor(m => m.Required)
+            @Html.LabelFor(m => m.Required, @T("The money field is required").Text, new { @class = "forcheckbox" })
+            @Html.Hint(@T("Check to ensure that the user is providing at least one money field."))
+        </li>
+        <li>
+            @Html.CheckBoxFor(m => m.IsCurrencyReadOnly)
+            @Html.LabelFor(m => m.IsCurrencyReadOnly, @T("The currency is only readable").Text, new { @class = "forcheckbox" })
+            @Html.Hint(@T("Check to forbid the user to change the currency."))
+        </li>
+        <li>
+            @Html.LabelFor(m => m.DefaultCurrency, @T("Default currency:"))
+            @Html.DropDownListFor(m => m.DefaultCurrency, CurrencyHelpers.GetCurrencySelectListItems, new { @class = "text medium" })
+            @Html.Hint(@T("This is the default currency of the field. If you change this later, it will not update the existing fields."))
+        </li>
+        <li>
+            @Html.LabelFor(m => m.Hint, @T("Help text"))
+            @Html.TextAreaFor(m => m.Hint, new { @class = "text medium", rows = "5" })
+            @Html.Hint(@T("The help text is written under the field."))
+        </li>
+    </ol>
 </fieldset>

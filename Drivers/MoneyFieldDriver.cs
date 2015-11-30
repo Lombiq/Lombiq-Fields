@@ -15,21 +15,13 @@ namespace Lombiq.Fields.Drivers
     [OrchardFeature("Lombiq.Fields.MoneyField")]
     public class MoneyFieldDriver : ContentFieldDriver<MoneyField>
     {
-        private readonly Lazy<CultureInfo> _cultureInfo;
-        private readonly IOrchardServices _orchardServices;
-
-
         public Localizer T { get; set; }
 
 
-        public MoneyFieldDriver(IOrchardServices orchardServices)
+        public MoneyFieldDriver()
         {
-            _orchardServices = orchardServices;
             T = NullLocalizer.Instance;
-
-            _cultureInfo = new Lazy<CultureInfo>(() => CultureInfo.GetCultureInfo(_orchardServices.WorkContext.CurrentCulture));
         }
-
 
 
         protected override DriverResult Display(ContentPart part, MoneyField field, string displayType, dynamic shapeHelper)
@@ -51,6 +43,7 @@ namespace Lombiq.Fields.Drivers
                         Amount = field.Amount,
                         CurrencyIso3LetterCode = string.IsNullOrEmpty(field.CurrencyIso3LetterCode) ? settings.DefaultCurrency : field.CurrencyIso3LetterCode
                     };
+
                     return shapeHelper.EditorTemplate(TemplateName: "Fields/MoneyField.Edit", Model: model, Prefix: GetPrefix(field, part));
                 });
         }
@@ -90,8 +83,16 @@ namespace Lombiq.Fields.Drivers
                     }
                 }
 
-                field.Amount = viewModel.Amount;
+                if (settings.Required && viewModel.Amount == null)
+                {
+                    updater.AddModelError("AmountIsRequired", T("Amount is required."));
+                }
+                else
+                {
+                    field.Amount = viewModel.Amount;
+                }
             }
+
             return Editor(part, field, shapeHelper);
         }
 
@@ -111,8 +112,8 @@ namespace Lombiq.Fields.Drivers
 
         protected override void Describe(DescribeMembersContext context)
         {
-            context.Member("Amount", typeof(decimal), T("Amount"), T("The amount of the money."));
-            context.Member("Currency", typeof(string), T("Currency"), T("The currency of the money."));
+            context.Member("Amount", typeof(decimal), T("Amount"), T("The amount of the money."))
+                .Member("Currency", typeof(string), T("Currency"), T("The currency of the money."));
         }
 
 

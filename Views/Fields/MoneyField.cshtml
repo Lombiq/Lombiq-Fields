@@ -1,16 +1,20 @@
 ﻿@using Lombiq.Fields.Fields
 @using Orchard.Utility.Extensions;
+
 @{
     var field = (MoneyField)Model.ContentField;
-}<fieldset>
+}
+
+<fieldset>
+    <legend>@field.DisplayName</legend>
     <div class="money-field money-field-@field.DisplayName.HtmlClassify()">
-        @if (!@String.IsNullOrEmpty(field.MoneyValue.Currency.Symbol))
+        @if (!string.IsNullOrEmpty(field.Value.Currency.Symbol))
         {
-            @field.MoneyValue.ToString()
+            @field.Value.ToString()
         }
         else
         {
-            @Html.Label(string.Format("{0} {1}", @field.Amount, @field.MoneyValue.Currency.Iso3LetterCode))
+            @field.Amount @field.Value.Currency.Iso3LetterCode
         }
     </div>
 </fieldset>

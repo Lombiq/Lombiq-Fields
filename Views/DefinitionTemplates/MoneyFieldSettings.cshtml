@@ -6,23 +6,23 @@
     <ol>
         <li>
             @Html.CheckBoxFor(m => m.Required)
-            @Html.LabelFor(m => m.Required, @T("The money field is required").Text, new { @class = "forcheckbox" })
-            @Html.Hint(@T("Check to ensure that the user is providing at least one money field."))
+            @Html.LabelFor(m => m.Required, T("Required").Text, new { @class = "forcheckbox" })
+            @Html.Hint(T("Check to ensure that the user is providing value for money field."))
         </li>
         <li>
             @Html.CheckBoxFor(m => m.IsCurrencyReadOnly)
-            @Html.LabelFor(m => m.IsCurrencyReadOnly, @T("The currency is only readable").Text, new { @class = "forcheckbox" })
-            @Html.Hint(@T("Check to forbid the user to change the currency."))
+            @Html.LabelFor(m => m.IsCurrencyReadOnly, T("Currency is readonly").Text, new { @class = "forcheckbox" })
+            @Html.Hint(T("Check to forbid the user to change the currency."))
         </li>
         <li>
-            @Html.LabelFor(m => m.DefaultCurrency, @T("Default currency:"))
+            @Html.LabelFor(m => m.DefaultCurrency, T("Default currency"))
             @Html.DropDownListFor(m => m.DefaultCurrency, CurrencyHelpers.GetCurrencySelectListItems, new { @class = "text medium" })
-            @Html.Hint(@T("This is the default currency of the field. If you change this later, it will not update the existing fields."))
+            @Html.Hint(T("This is the default currency of the field. If you change this later, it will not update the existing fields."))
         </li>
         <li>
             @Html.LabelFor(m => m.Hint, @T("Help text"))
             @Html.TextAreaFor(m => m.Hint, new { @class = "text medium", rows = "5" })
-            @Html.Hint(@T("The help text is written under the field."))
+            @Html.Hint(T("The help text is written under the field when authors are editing the content item."))
         </li>
     </ol>
 </fieldset>

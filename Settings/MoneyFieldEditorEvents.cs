@@ -22,8 +22,7 @@ namespace Lombiq.Fields.Settings
         {
             if (definition.FieldDefinition.Name.Equals(typeof(MoneyField).Name))
             {
-                var model = definition.Settings.GetModel<MoneyFieldSettings>();
-                yield return DefinitionTemplate(model);
+                yield return DefinitionTemplate(definition.Settings.GetModel<MoneyFieldSettings>());
             }
         }
 

@@ -24,13 +24,13 @@ namespace Lombiq.Fields.Handlers
         {
             base.Loaded(context);
 
-            var fields = context.ContentItem.Parts.SelectMany(x => x.Fields.OfType<MoneyField>());
-
             if (_contentDefinitionManager.GetTypeDefinition(context.ContentItem.ContentType) == null) return;
+
+            var fields = context.ContentItem.Parts.SelectMany(x => x.Fields.OfType<MoneyField>());
 
             foreach (var field in fields)
             {
-                field.MoneyValueField.Loader(() =>
+                field.ValueField.Loader(() =>
                 {
                     Currency parsedCurrency;
 

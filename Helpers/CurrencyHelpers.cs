@@ -1,7 +1,8 @@
-﻿using Lombiq.Fields.Constants;
-using Orchard.Environment.Extensions;
+﻿using Orchard.Environment.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Web.Mvc;
 
 namespace Lombiq.Fields.Helpers
@@ -10,19 +11,24 @@ namespace Lombiq.Fields.Helpers
     public static class CurrencyHelpers
     {
         /// <summary>
-        /// returns a List with SelecListItems from the constans Currencies.
-        /// Its needed for the dropdown as source in he MoneyFieldSettings.cshtml
+        /// Returns a list of SelectListItems built from the list of available Currencies
+        /// for the DropDownList in MoneyFieldSettings.cshtml.
         /// </summary>
         public static IEnumerable<SelectListItem> GetCurrencySelectListItems
         {
             get
             {
-                return MoneyFieldConstants.Currencies.Select(currency =>
-                                        new SelectListItem()
-                                        {
-                                            Text = currency.ToString(),
-                                            Value = currency.Iso3LetterCode
-                                        }).OrderBy(listitem => listitem.Text);
+                object currencyObj = new Currency();
+
+                return typeof(Currency).GetFields()
+                    .Where(currency => currency.Name != "None" && currency.Name != "Xxx")
+                    .Select(currency => (Currency)currency.GetValue(currencyObj))
+                    .Select(currency =>
+                                new SelectListItem()
+                                {
+                                    Text = currency.ToString(),
+                                    Value = currency.Iso3LetterCode
+                                }).OrderBy(listitem => listitem.Text);
             }
         }
     }

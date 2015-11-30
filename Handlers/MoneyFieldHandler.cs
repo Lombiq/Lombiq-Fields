@@ -35,11 +35,11 @@ namespace Lombiq.Fields.Handlers
                     Currency parsedCurrency;
 
                     Currency.TryParse(
-                        string.IsNullOrEmpty(field.CurrencyIso3LetterCode) 
-                            ? field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>().DefaultCurrency 
-                            : field.CurrencyIso3LetterCode, 
-                        out parsedCurrency); 
-                    
+                        string.IsNullOrEmpty(field.CurrencyIso3LetterCode)
+                            ? field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>().DefaultCurrency
+                            : field.CurrencyIso3LetterCode,
+                        out parsedCurrency);
+
                     return new Money(field.Amount, parsedCurrency);
                 });
             }

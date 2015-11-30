@@ -7,6 +7,9 @@ namespace Lombiq.Fields.Constants
     [OrchardFeature("Lombiq.Fields.MoneyField")]
     public static class MoneyFieldConstants
     {
+        /// <summary>
+        /// Its returns a list the all of useable currencies from the Money.dll.
+        /// </summary>
         public static readonly IEnumerable<Currency> Currencies = new[]
         {
           Currency.Aed,

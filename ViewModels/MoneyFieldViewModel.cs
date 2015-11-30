@@ -1,7 +1,6 @@
 ﻿using Lombiq.Fields.Fields;
 using Lombiq.Fields.Settings;
 using Orchard.Environment.Extensions;
-using System;
 
 namespace Lombiq.Fields.ViewModels
 {

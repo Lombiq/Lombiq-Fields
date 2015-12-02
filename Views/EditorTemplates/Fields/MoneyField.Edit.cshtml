@@ -1,0 +1,42 @@
+﻿@model Lombiq.Fields.ViewModels.MoneyFieldViewModel
+@using Lombiq.Fields.Helpers;
+
+<fieldset>
+    <legend>@Model.Field.DisplayName</legend>
+    <ol>
+        @if (Model.Settings.Required)
+        {
+            <li class="required">
+                @Model.Field.DisplayName
+            </li>
+        }
+        <li>
+            @Html.LabelFor(m => m.Amount, T("Amount"))
+            @Html.TextBoxFor(m => m.Amount, new { @class = "text" })
+            @Html.Hint(T("The amount of the money."))
+        </li>
+        <li>
+            @if (Model.Settings.IsCurrencyReadOnly)
+            {
+                @T("Currency: {0}", Model.CurrencyIso3LetterCode)
+            }
+            else
+            {
+                @Html.LabelFor(m => m.CurrencyIso3LetterCode, T("Currency"))
+                @Html.DropDownListFor(m => m.CurrencyIso3LetterCode, CurrencyHelpers.GetCurrencySelectListItems)
+            }
+            @Html.Hint(T("The currency of the money."))
+        </li>
+        @if (Model.Settings.IsCurrencyReadOnly && Model.CurrencyIso3LetterCode != Model.Settings.DefaultCurrency)
+        {
+            <li>
+                @Html.CheckBoxFor(m => m.SynchroniseWithDefaultCurrency)
+                @Html.Label("Synchronize with default currency", new { style = "display:inline;" })
+                @Html.Hint(T("The default currency has been changed to {0}, check this box if you want to synchronize the current currency with the new default currency.", Model.Settings.DefaultCurrency))
+            </li>
+        }
+        <li class="money-field-hint hint">
+            @Model.Settings.Hint
+        </li>
+    </ol>
+</fieldset>

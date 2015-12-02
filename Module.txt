@@ -14,3 +14,8 @@ Features:
         Category: Fields
         Description: A modified version of Media Library Picker Field that enables users to upload files.
         Dependencies: Lombiq.Fields, Orchard.MediaLibrary, Orchard.MediaProcessing, Orchard.Tokens, Piedone.HelpfulLibraries
+    Lombiq.Fields.MoneyField:
+        Name: Money Field
+        Category: Fields
+        Description: A field for storing money-related values such as amount and currency using the .NET Money type.
+        Dependencies: Lombiq.Fields

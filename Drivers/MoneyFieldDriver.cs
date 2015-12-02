@@ -89,14 +89,21 @@ namespace Lombiq.Fields.Drivers
                 }
                 else
                 {
-                    decimal amount;
-                    if (decimal.TryParse(viewModel.Amount, out amount))
+                    if (string.IsNullOrEmpty(viewModel.Amount))
                     {
-                        field.Amount = amount;
+                        field.Amount = null;
                     }
                     else
                     {
-                        updater.AddModelError("InvalidAmount", T("Invalid amount was given."));
+                        decimal amount;
+                        if (decimal.TryParse(viewModel.Amount, out amount))
+                        {
+                            field.Amount = amount;
+                        }
+                        else
+                        {
+                            updater.AddModelError("InvalidAmount", T("Invalid amount was given."));
+                        }
                     }
                 }
             }

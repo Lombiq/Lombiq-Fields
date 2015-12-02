@@ -5,25 +5,28 @@
     var field = (MoneyField)Model.ContentField;
 }
 
-<fieldset>
-    <legend>@field.DisplayName</legend>
-    <div class="money-field money-field-@field.DisplayName.HtmlClassify()">
-        @try
-        {
-            if (!string.IsNullOrEmpty(field.Value.Currency.Symbol))
+@if (field.Value.HasValue)
+{
+    <fieldset>
+        <legend>@field.DisplayName</legend>
+        <div class="money-field money-field-@field.DisplayName.HtmlClassify()">
+            @try
+            {
+                if (!string.IsNullOrEmpty(field.Value.Value.Currency.Symbol))
+                {
+
+                    @field.Value.ToString()
+                }
+                else
+                {
+                    @field.Amount @field.Value.Value.Currency.Iso3LetterCode
+                }
+            }
+            catch
             {
 
-                @field.Value.ToString()
+                @T("{0} {1}", field.Amount, field.Value.Value.Currency.Iso3LetterCode)
             }
-            else
-            {
-                @field.Amount @field.Value.Currency.Iso3LetterCode
-            }
-        }
-        catch
-        {
-
-            @T("{0} {1}", field.Amount, field.Value.Currency.Iso3LetterCode)
-        }
-    </div>
-</fieldset>
+        </div>
+    </fieldset>
+}

@@ -20,9 +20,9 @@ namespace Lombiq.Fields.Fields
             set { Storage.Set("CurrencyIso3LetterCode", value); }
         }
 
-        private readonly LazyField<Money> _value = new LazyField<Money>();
-        internal LazyField<Money> ValueField { get { return _value; } }
-        public Money Value
+        private readonly LazyField<Money?> _value = new LazyField<Money?>();
+        internal LazyField<Money?> ValueField { get { return _value; } }
+        public Money? Value
         {
             get { return _value.Value; }
         }

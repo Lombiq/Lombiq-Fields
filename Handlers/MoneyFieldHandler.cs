@@ -32,15 +32,22 @@ namespace Lombiq.Fields.Handlers
             {
                 field.ValueField.Loader(() =>
                 {
-                    Currency parsedCurrency;
+                    if (field.Amount.HasValue)
+                    {
+                        Currency parsedCurrency;
 
-                    Currency.TryParse(
-                        string.IsNullOrEmpty(field.CurrencyIso3LetterCode)
-                            ? field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>().DefaultCurrency
-                            : field.CurrencyIso3LetterCode,
-                        out parsedCurrency);
+                        Currency.TryParse(
+                            string.IsNullOrEmpty(field.CurrencyIso3LetterCode)
+                                ? field.PartFieldDefinition.Settings.GetModel<MoneyFieldSettings>().DefaultCurrency
+                                : field.CurrencyIso3LetterCode,
+                            out parsedCurrency);
 
-                    return new Money(field.Amount.Value, parsedCurrency);
+                        return new Money(field.Amount.Value, parsedCurrency);
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 });
             }
         }

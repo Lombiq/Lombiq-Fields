@@ -24,11 +24,11 @@ namespace Lombiq.Fields.Helpers
                 return typeof(Currency).GetFields()
                     .Where(currency => currency.Name != "None" && currency.FieldType == typeof(Currency))
                     .Select(currency =>
-                                        new SelectListItem()
-                                        {
-                                            Text = ((Currency)currency.GetValue(currencyObject)).ToString(),
-                                            Value = ((Currency)currency.GetValue(currencyObject)).Iso3LetterCode
-                                        }).OrderBy(listitem => listitem.Text);
+                        new SelectListItem()
+                        {
+                            Text = ((Currency)currency.GetValue(currencyObject)).ToString(),
+                            Value = ((Currency)currency.GetValue(currencyObject)).Iso3LetterCode
+                        }).OrderBy(listitem => listitem.Text);
             }
         }
     }

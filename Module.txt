@@ -1,8 +1,9 @@
-﻿AntiForgery: enabled
+﻿Name: Lombiq Fields
+AntiForgery: enabled
 Author: Lombiq Technologies Ltd.
-Website: http://lombiq.com
+Website: https://github.com/Lombiq/Lombiq-Fields
 Version: 1.0
-OrchardVersion: 1.8
+OrchardVersion: 1.9
 Features:
     Lombiq.Fields:
         Name: Lombiq Fields
@@ -11,5 +12,10 @@ Features:
     Lombiq.Fields.MediaLibraryUploadField:
         Name: Media Library Upload Field
         Category: Fields
-        Description: A modified version of Media Library Picker Field that enables users to upload files.
+        Description: A modified version of Media Library Picker Field that enables users to upload files attached to content items.
         Dependencies: Lombiq.Fields, Orchard.MediaLibrary, Orchard.MediaProcessing, Orchard.Tokens, Piedone.HelpfulLibraries
+    Lombiq.Fields.MoneyField:
+        Name: Money Field
+        Category: Fields
+        Description: A field for storing money-related values such as amount and currency using the .NET Money type.
+        Dependencies: Lombiq.Fields

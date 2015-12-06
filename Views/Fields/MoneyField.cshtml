@@ -1,0 +1,32 @@
+﻿@using Lombiq.Fields.Fields
+@using Orchard.Utility.Extensions;
+
+@{
+    var field = (MoneyField)Model.ContentField;
+}
+
+@if (field.Value.HasValue)
+{
+    <fieldset>
+        <legend>@field.DisplayName</legend>
+        <div class="money-field money-field-@field.DisplayName.HtmlClassify()">
+            @try
+            {
+                if (!string.IsNullOrEmpty(field.Value.Value.Currency.Symbol))
+                {
+
+                    @field.Value.ToString()
+                }
+                else
+                {
+                    @field.Amount @field.Value.Value.Currency.Iso3LetterCode
+                }
+            }
+            catch
+            {
+
+                @T("{0} {1}", field.Amount, field.Value.Value.Currency.Iso3LetterCode)
+            }
+        </div>
+    </fieldset>
+}

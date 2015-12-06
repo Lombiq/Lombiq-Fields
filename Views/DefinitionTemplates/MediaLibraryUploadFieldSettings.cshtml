@@ -6,27 +6,32 @@
         <li>
             @Html.CheckBoxFor(m => Model.Required)
             @Html.LabelFor(m => Model.Required, @T("At least one media item is required").Text, new { @class = "forcheckbox" })
-            <span class="hint">@T("Check to ensure that the user is providing at least one media item.")</span>
+            @Html.Hint(T("Check to ensure that the user is providing at least one media item."))
         </li>
         <li>
             @Html.CheckBoxFor(m => Model.Multiple)
             @Html.LabelFor(m => Model.Multiple, @T("Allow multiple items to be uploaded").Text, new { @class = "forcheckbox" })
-            <span class="hint">@T("Check to allow the user to upload multiple items.")</span>
+            @Html.Hint(T("Check to allow the user to upload multiple items."))
         </li>
         <li>
             @Html.LabelFor(m => Model.Hint, @T("Help text"))
             @Html.TextAreaFor(m => Model.Hint, new { @class = "text medium", rows = "5" })
-            <span class="hint">@T("The help text is written under the field when an author is uploading a file.")</span>
+            @Html.Hint(T("The help text is written under the field when an author is uploading a file."))
         </li>
         <li>
             @Html.LabelFor(m => Model.AllowedExtensions, @T("Allowed file extensions"))
             @Html.TextBoxFor(m => Model.AllowedExtensions, new { @class = "text medium" })
-            <span class="hint">@T("A comma-separated list of the file extensions that are allowed to be uploaded. Leaving it empty will make the field to accept all file types.")</span>
+            @Html.Hint(T("A comma-separated list of the file extensions that are allowed to be uploaded. Leaving it empty will make the field to accept all file types."))
         </li>
         <li>
             @Html.LabelFor(m => Model.FolderPath, @T("Folder Path"))
             @Html.TextBoxFor(m => m.FolderPath, new { @class = "tokenized text medium" })
-            <span class="hint">@T("Provide a path to a folder where the files will be upload. You can also use tokens.")</span>
+            @Html.Hint(T("Provide a path to a folder where the files will be uploaded. You can also use tokens. The default path is \"UserUploads/[user ID]\"."))
+        </li>
+        <li>
+            @Html.LabelFor(m => Model.MaximumSizeKB, @T("Maximum file size"))
+            @Html.TextBoxFor(m => Model.MaximumSizeKB)
+            @Html.Hint(T("The maximum file size per uploaded file in kilobytes. 0 means no limit."))
         </li>
     </ol>
 </fieldset>
@@ -37,24 +42,19 @@
     <legend>@T("Image-specific settings")</legend>
     <ol>
         <li>
-            @Html.LabelFor(m => Model.ImageMaximumSize, @T("Maximum file size"))
-            @Html.TextBoxFor(m => Model.ImageMaximumSize)
-            <span class="hint">@T("The maximum file size per uploaded image in KB.")</span>
-        </li>
-        <li>
             @Html.LabelFor(m => Model.ImageMaximumWidth, @T("Maximum width"))
             @Html.TextBoxFor(m => Model.ImageMaximumWidth)
-            <span class="hint">@T("The maximum width for uploaded images in pixels.")</span>
+            @Html.Hint(T("The maximum width for uploaded images in pixels. 0 means no limit."))
         </li>
         <li>
             @Html.LabelFor(m => Model.ImageMaximumHeight, @T("Maximum height"))
             @Html.TextBoxFor(m => Model.ImageMaximumHeight)
-            <span class="hint">@T("The maximum height for uploaded images in pixels.")</span>
+            @Html.Hint(T("The maximum height for uploaded images in pixels. 0 means no limit."))
         </li>
         <li>
             @Html.LabelFor(m => Model.MediaProfile, @T("Media Profile"))
             @Html.TextBoxFor(m => Model.MediaProfile)
-            <span class="hint">@T("You can optionally specify the name of a Media Profile that will be applied to the images of this field when displaying them.")</span>
+            @Html.Hint(T("You can optionally specify the name of a Media Profile that will be applied to the images of this field when displaying them."))
         </li>
     </ol>
 </fieldset>

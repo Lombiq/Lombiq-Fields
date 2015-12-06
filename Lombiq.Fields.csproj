@@ -48,6 +48,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Money">
+      <HintPath>Libs\Money\Money.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.ComponentModel.DataAnnotations">
@@ -107,18 +110,29 @@
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\DefinitionTemplates\MoneyFieldSettings.cshtml" />
+    <Content Include="Views\EditorTemplates\Fields\MoneyField.Edit.cshtml" />
+    <Content Include="Views\Fields\MoneyField.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\media-library-upload-field.less" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drivers\MediaLibraryUploadFieldDriver.cs" />
+    <Compile Include="Drivers\MoneyFieldDriver.cs" />
     <Compile Include="Fields\MediaLibraryUploadField.cs" />
+    <Compile Include="Fields\MoneyField.cs" />
     <Compile Include="Handlers\MediaLibraryUploadFieldHandler.cs" />
+    <Compile Include="Handlers\MoneyFieldHandler.cs" />
+    <Compile Include="Helpers\CurrencyHelpers.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Settings\MediaLibraryUploadFieldEditorEvents.cs" />
     <Compile Include="Settings\MediaLibraryUploadFieldSettings.cs" />
+    <Compile Include="Settings\MoneyFieldEditorEvents.cs" />
+    <Compile Include="Settings\MoneyFieldSettings.cs" />
     <Compile Include="ViewModels\MediaLibraryUploadFieldViewModel.cs" />
+    <Compile Include="ViewModels\MoneyFieldViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\DefinitionTemplates\MediaLibraryUploadFieldSettings.cshtml" />
@@ -134,6 +148,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Fields\MediaLibraryUpload.SummaryAdmin.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Readme.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Licence.md" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -172,7 +192,7 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>True</UseCustomServer>
+          <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>http://orchard.codeplex.com</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>

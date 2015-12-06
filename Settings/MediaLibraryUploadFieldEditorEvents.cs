@@ -34,7 +34,7 @@ namespace Lombiq.Fields.Settings
                 builder.WithSetting("MediaLibraryUploadFieldSettings.Multiple", model.Multiple.ToString(CultureInfo.InvariantCulture));
                 builder.WithSetting("MediaLibraryUploadFieldSettings.AllowedExtensions", model.AllowedExtensions);
                 builder.WithSetting("MediaLibraryUploadFieldSettings.FolderPath", model.FolderPath);
-                builder.WithSetting("MediaLibraryUploadFieldSettings.ImageMaximumSize", model.ImageMaximumSize.ToString());
+                builder.WithSetting("MediaLibraryUploadFieldSettings.MaximumSizeKB", model.MaximumSizeKB.ToString());
                 builder.WithSetting("MediaLibraryUploadFieldSettings.ImageMaximumWidth", model.ImageMaximumWidth.ToString());
                 builder.WithSetting("MediaLibraryUploadFieldSettings.ImageMaximumHeight", model.ImageMaximumHeight.ToString());
                 builder.WithSetting("MediaLibraryUploadFieldSettings.MediaProfile", model.MediaProfile);

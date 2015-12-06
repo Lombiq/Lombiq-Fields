@@ -11,7 +11,7 @@ The fields have their separate features that you can enable; after this the fiel
 
 The module's source is available in two public source repositories, automatically mirrored in both directions with [Git-hg Mirror](https://githgmirror.com):
 
-- [https://bitbucket.org/Lombiq/smart-notifications](https://bitbucket.org/Lombiq/lombiq-fields) (Mercurial repository)
-- [https://github.com/Lombiq/Smart-Notifications](https://github.com/Lombiq/Lombiq-Fields) (Git repository)
+- [https://bitbucket.org/Lombiq/lombiq-fields](https://bitbucket.org/Lombiq/lombiq-fields) (Mercurial repository)
+- [https://github.com/Lombiq/Lombiq-Fields](https://github.com/Lombiq/Lombiq-Fields) (Git repository)
 
 This project is developed by [Lombiq Technologies Ltd](http://lombiq.com/). Commercial-grade support is available through Lombiq.

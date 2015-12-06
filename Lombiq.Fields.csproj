@@ -149,6 +149,12 @@
   <ItemGroup>
     <Content Include="Views\Fields\MediaLibraryUpload.SummaryAdmin.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Readme.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Licence.md" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -186,7 +192,7 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>True</UseCustomServer>
+          <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>http://orchard.codeplex.com</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>

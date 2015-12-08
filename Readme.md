@@ -9,6 +9,8 @@ An [Orchard CMS](http://orchardproject.net/) module that adds some useful conten
 
 The fields have their separate features that you can enable; after this the fields will be available to be added to content types. Note that the fields also have content type-level settings.
 
+The module is also available for [DotNest](http://dotnest.com/) sites.
+
 The module's source is available in two public source repositories, automatically mirrored in both directions with [Git-hg Mirror](https://githgmirror.com):
 
 - [https://bitbucket.org/Lombiq/lombiq-fields](https://bitbucket.org/Lombiq/lombiq-fields) (Mercurial repository)

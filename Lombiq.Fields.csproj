@@ -121,12 +121,15 @@
   <ItemGroup>
     <Compile Include="Drivers\MediaLibraryUploadFieldDriver.cs" />
     <Compile Include="Drivers\MoneyFieldDriver.cs" />
+    <Compile Include="Fields\MediaLibraryCarouselField.cs" />
     <Compile Include="Fields\MediaLibraryUploadField.cs" />
     <Compile Include="Fields\MoneyField.cs" />
     <Compile Include="Handlers\MediaLibraryUploadFieldHandler.cs" />
     <Compile Include="Handlers\MoneyFieldHandler.cs" />
     <Compile Include="Helpers\CurrencyHelpers.cs" />
     <Compile Include="ResourceManifest.cs" />
+    <Compile Include="Settings\MediaLibraryCarouselFieldSettings.cs" />
+    <Compile Include="Settings\MediaLibraryCarouselFieldEditorEvents.cs" />
     <Compile Include="Settings\MediaLibraryUploadFieldEditorEvents.cs" />
     <Compile Include="Settings\MediaLibraryUploadFieldSettings.cs" />
     <Compile Include="Settings\MoneyFieldEditorEvents.cs" />

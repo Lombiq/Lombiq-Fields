@@ -19,3 +19,8 @@ Features:
         Category: Fields
         Description: A field for storing money-related values such as amount and currency using the .NET Money type.
         Dependencies: Lombiq.Fields
+    Lombiq.Fields.MediaLibraryPickerFieldCarousel:
+        Name: Carousel Element
+        Category: Layouts
+        Description: Adds a Carousel element to the system.
+        Dependencies: Lombiq.Fields, Orchard.MediaLibrary, Orchard.Layouts

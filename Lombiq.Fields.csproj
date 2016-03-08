@@ -71,11 +71,21 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\slick.js" />
+    <Content Include="Scripts\slick.min.js" />
+    <Content Include="Styles\Fonts\slick.svg" />
+    <Content Include="Styles\Images\ajax-loader.gif" />
     <Content Include="Styles\media-library-upload-field.css">
       <DependentUpon>media-library-upload-field.less</DependentUpon>
     </Content>
     <Content Include="Styles\media-library-upload-field.min.css">
       <DependentUpon>media-library-upload-field.css</DependentUpon>
+    </Content>
+    <Content Include="Styles\slick-theme.css">
+      <DependentUpon>slick-theme.less</DependentUpon>
+    </Content>
+    <Content Include="Styles\slick.css">
+      <DependentUpon>slick.less</DependentUpon>
     </Content>
     <Content Include="Web.config" />
     <Content Include="Scripts\Web.config" />

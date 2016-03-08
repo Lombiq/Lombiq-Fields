@@ -121,7 +121,6 @@
   <ItemGroup>
     <Compile Include="Drivers\MediaLibraryUploadFieldDriver.cs" />
     <Compile Include="Drivers\MoneyFieldDriver.cs" />
-    <Compile Include="Fields\MediaLibraryCarouselField.cs" />
     <Compile Include="Fields\MediaLibraryUploadField.cs" />
     <Compile Include="Fields\MoneyField.cs" />
     <Compile Include="Handlers\MediaLibraryUploadFieldHandler.cs" />

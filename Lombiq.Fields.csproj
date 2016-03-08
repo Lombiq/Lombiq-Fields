@@ -160,6 +160,19 @@
   <ItemGroup>
     <Content Include="Views\DefinitionTemplates\MediaLibraryPickerFieldCarouselSettings.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Fields\MediaLibraryPicker.cshtml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Styles\slick-theme.less" />
+    <Content Include="Styles\slick.less" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Styles\Fonts\slick.eot" />
+    <Content Include="Styles\Fonts\slick.ttf" />
+    <Content Include="Styles\Fonts\slick.woff" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -1,0 +1,47 @@
+﻿@using Orchard.ContentManagement;
+@using Orchard.MediaLibrary.Fields
+@using Orchard.Utility.Extensions;
+@using Lombiq.Fields.Settings;
+
+@{
+    Style.Require("SlickTheme");
+    Style.Require("Slick");
+    Script.Require("Slick").AtFoot();
+    
+    var field = (MediaLibraryPickerField)Model.ContentField;
+    string name = field.DisplayName;
+    var contents = field.MediaParts;
+    var isCarousel = field.PartFieldDefinition.Settings.GetModel<MediaLibraryPickerFieldCarouselSettings>().IsCarousel;
+}
+<section class="media-library-picker-field media-library-picker-field-@name.HtmlClassify()">
+    <h3>@name</h3>
+    <div class="media-library-picker-field-carousel-@name.HtmlClassify()">
+        @foreach (var content in contents)
+        {
+            <div>
+                @if (isCarousel)
+                {
+                    @Display(BuildDisplay(content, "Thumbnail"))
+                }
+                else
+                {
+                    @Display(BuildDisplay(content, "Summary"))
+                }
+            </div>
+        }
+        </div>
+</section>
+
+@using (Script.Foot())
+{
+    <script type="text/javascript">
+        //<![CDATA[
+        $(".media-library-picker-field-carousel-@name.HtmlClassify()").slick({
+            dots: true,
+            infinite: true,
+            slidesToShow: 3,
+            slidesToScroll: 3
+        });
+        //]]>
+    </script>
+}

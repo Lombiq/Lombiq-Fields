@@ -2,8 +2,8 @@
 
 namespace Lombiq.Fields.Settings
 {
-    [OrchardFeature("Lombiq.Fields.MediaLibraryCarouselField")]
-    public class MediaLibraryCarouselFieldSettings
+    [OrchardFeature("Lombiq.Fields.MediaLibraryPickerFieldCarousel")]
+    public class MediaLibraryPickerFieldCarouselSettings
     {
         public bool IsCarousel { get; set; }
     }

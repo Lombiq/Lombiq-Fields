@@ -1,0 +1,12 @@
+﻿@model Lombiq.Fields.Settings.MediaLibraryPickerFieldCarouselSettings
+
+<fieldset>
+    <ol>
+        <li>
+            @Html.CheckBoxFor(m => Model.IsCarousel)
+            @Html.LabelFor(m => Model.IsCarousel, @T("Display media items in carousel").Text, new { @class = "forcheckbox" })
+            @Html.Hint(T("Check to display media items in carousel."))
+        </li>
+
+    </ol>
+</fieldset>

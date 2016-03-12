@@ -12,7 +12,7 @@ namespace MediaKitty.Extensions
 
             manifest.DefineStyle("SlickTheme").SetUrl("slick-theme.css");
             manifest.DefineStyle("Slick").SetUrl("slick.css");
-            manifest.DefineScript("Slick").SetUrl("slick.min.js", "slick.js");
+            manifest.DefineScript("Slick").SetUrl("slick.min.js", "slick.js").SetDependencies("jQuery");
         }
     }
 }

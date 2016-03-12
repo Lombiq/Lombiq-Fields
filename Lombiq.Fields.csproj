@@ -129,6 +129,7 @@
     <Content Include="Styles\media-library-upload-field.less" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Drivers\MediaLibraryPickerFieldCarouselDriver.cs" />
     <Compile Include="Drivers\MediaLibraryUploadFieldDriver.cs" />
     <Compile Include="Drivers\MoneyFieldDriver.cs" />
     <Compile Include="Fields\MediaLibraryUploadField.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Settings\MediaLibraryUploadFieldSettings.cs" />
     <Compile Include="Settings\MoneyFieldEditorEvents.cs" />
     <Compile Include="Settings\MoneyFieldSettings.cs" />
+    <Compile Include="ViewModels\MediaLibraryPickerFieldCarouselViewModel.cs" />
     <Compile Include="ViewModels\MediaLibraryUploadFieldViewModel.cs" />
     <Compile Include="ViewModels\MoneyFieldViewModel.cs" />
   </ItemGroup>
@@ -173,7 +175,9 @@
   <ItemGroup>
     <Content Include="Views\Fields\MediaLibraryPicker.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Fields\MediaLibraryPickerFieldCarousel.Edit.cshtml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\slick-theme.less" />
     <Content Include="Styles\slick.less" />

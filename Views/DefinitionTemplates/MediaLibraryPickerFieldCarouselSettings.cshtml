@@ -10,3 +10,39 @@
 
     </ol>
 </fieldset>
+
+<fieldset>
+    <legend>@T("Carousel-specific settings")</legend>
+    <ol>
+        <li>
+            @Html.CheckBoxFor(m => Model.IsSingleItem)
+            @Html.LabelFor(m => Model.IsSingleItem, @T("Show only one item at a time.").Text, new { @class = "forcheckbox" })
+            @Html.Hint(T("Leave unchecked to show multiple items."))
+        </li>
+        <li>
+            @Html.CheckBoxFor(m => Model.IsInfinite)
+            @Html.LabelFor(m => Model.IsInfinite, @T("Infinite srcolling").Text, new { @class = "forcheckbox" })
+            @Html.Hint(T("Check for infinite scrolling."))
+        </li>
+        <li>
+            @Html.LabelFor(m => Model.ItemsToShow, @T("Number of slides to show at a time."))
+            @Html.TextBoxFor(m => Model.ItemsToShow)
+            @Html.Hint(T("The number how many slides appear at a time."))
+        </li>
+        <li>
+            @Html.LabelFor(m => Model.ItemsToScroll, @T("Number of slides to scroll at a time."))
+            @Html.TextBoxFor(m => Model.ItemsToScroll)
+            @Html.Hint(T("The number how many slides scroll at a time."))
+        </li>
+        <li>
+            @Html.CheckBoxFor(m => Model.IsAutoplay)
+            @Html.LabelFor(m => Model.IsAutoplay, @T("Autoplay.").Text, new { @class = "forcheckbox" })
+            @Html.Hint(T("Enables auto play of slides."))
+        </li>
+        <li>
+            @Html.LabelFor(m => Model.AutoplaySpeed, @T("Autoplay speed."))
+            @Html.TextBoxFor(m => Model.AutoplaySpeed)
+            @Html.Hint(T("Auto play change interval. Default: 3000."))
+        </li>
+    </ol>
+</fieldset>

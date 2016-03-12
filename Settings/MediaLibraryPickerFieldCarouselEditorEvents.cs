@@ -30,6 +30,12 @@ namespace Lombiq.Fields.Settings
             if (updateModel.TryUpdateModel(model, typeof(MediaLibraryPickerFieldCarouselSettings).Name, null, null))
             {
                 builder.WithSetting("MediaLibraryPickerFieldCarouselSettings.IsCarousel", model.IsCarousel.ToString(CultureInfo.InvariantCulture));
+                builder.WithSetting("MediaLibraryPickerFieldCarouselSettings.IsSingleItem", model.IsSingleItem.ToString(CultureInfo.InvariantCulture));
+                builder.WithSetting("MediaLibraryPickerFieldCarouselSettings.IsInfinite", model.IsInfinite.ToString(CultureInfo.InvariantCulture));
+                builder.WithSetting("MediaLibraryPickerFieldCarouselSettings.ItemsToShow", model.ItemsToShow.ToString());
+                builder.WithSetting("MediaLibraryPickerFieldCarouselSettings.ItemsToScroll", model.ItemsToScroll.ToString());
+                builder.WithSetting("MediaLibraryPickerFieldCarouselSettings.IsAutoplay", model.IsAutoplay.ToString(CultureInfo.InvariantCulture));
+                builder.WithSetting("MediaLibraryPickerFieldCarouselSettings.AutoplaySpeed", model.AutoplaySpeed.ToString());
             }
 
             yield return DefinitionTemplate(model);

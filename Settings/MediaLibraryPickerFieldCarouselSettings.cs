@@ -6,5 +6,21 @@ namespace Lombiq.Fields.Settings
     public class MediaLibraryPickerFieldCarouselSettings
     {
         public bool IsCarousel { get; set; }
+        public bool IsSingleItem { get; set; }
+        public bool IsInfinite { get; set; }
+        public int ItemsToShow { get; set; }
+        public int ItemsToScroll { get; set; }
+        public bool IsAutoplay { get; set; }
+        public int AutoplaySpeed { get; set; }
+
+        public MediaLibraryPickerFieldCarouselSettings()
+        {
+            IsSingleItem = false;
+            IsInfinite = true;
+            ItemsToShow = 3;
+            ItemsToScroll = 3;
+            IsAutoplay = true;
+            AutoplaySpeed = 3000;
+        }
     }
 }

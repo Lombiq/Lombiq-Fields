@@ -15,6 +15,7 @@ namespace Lombiq.Fields.Settings
 
         public MediaLibraryPickerFieldCarouselSettings()
         {
+            IsCarousel = false;
             IsSingleItem = false;
             IsInfinite = true;
             ItemsToShow = 3;

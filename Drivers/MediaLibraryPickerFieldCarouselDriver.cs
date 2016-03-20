@@ -1,21 +1,24 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
+using Lombiq.Fields.Fields;
 using Lombiq.Fields.Settings;
 using Lombiq.Fields.ViewModels;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.Handlers;
+using Orchard.ContentManagement.MetaData;
+using Orchard.ContentManagement.MetaData.Builders;
 using Orchard.Environment.Extensions;
 using Orchard.Localization;
 using Orchard.MediaLibrary.Fields;
-using Orchard.MediaLibrary.Settings;
 using Orchard.MediaLibrary.ViewModels;
 using Orchard.Utility.Extensions;
 
 namespace Lombiq.Drivers
 {
     [OrchardFeature("Lombiq.Fields.MediaLibraryPickerFieldCarousel")]
-    public class MediaLibraryPickerFieldCarouselDriver : ContentFieldDriver<MediaLibraryPickerField>
+    public class MediaLibraryPickerFieldCarouselDriver : ContentFieldDriver<MediaLibraryPickerCarouselField>
     {
         private readonly IContentManager _contentManager;
 
@@ -29,41 +32,42 @@ namespace Lombiq.Drivers
         }
 
 
-        private static string GetPrefix(MediaLibraryPickerField field, ContentPart part)
+        private static string GetPrefix(MediaLibraryPickerCarouselField field, ContentPart part)
         {
             return part.PartDefinition.Name + "." + field.Name;
         }
 
-        private static string GetDifferentiator(MediaLibraryPickerField field, ContentPart part)
+        private static string GetDifferentiator(MediaLibraryPickerCarouselField field, ContentPart part)
         {
             return field.Name;
         }
 
-        protected override DriverResult Editor(ContentPart part, MediaLibraryPickerField field, dynamic shapeHelper)
+        protected override DriverResult Editor(ContentPart part, MediaLibraryPickerCarouselField field, dynamic shapeHelper)
         {
-            return ContentShape("Fields_MediaLibraryPicker_Edit", GetDifferentiator(field, part),
-                () => {
-                    var model = new MediaLibraryPickerFieldCarouselViewModel
-                    {
-                        Field = field,
-                        Part = part,
-                        ContentItems = _contentManager.GetMany<ContentItem>(field.Ids, VersionOptions.Published, QueryHints.Empty).ToList(),
-                        Settings = field.PartFieldDefinition.Settings.GetModel<MediaLibraryPickerFieldCarouselSettings>()
-                    };
+            // if the content item is new, assign the default value
+            if (!part.HasDraft() && !part.HasPublished())
+            {
+                var settings = part.Fields.Where(x => x.FieldDefinition.Name == typeof(MediaLibraryPickerField).Name).FirstOrDefault().PartFieldDefinition.Settings.GetModel<MediaLibraryPickerFieldCarouselSettings>(); ;
+                var fieldSettings = new MediaLibraryPickerFieldCarouselSettings();
 
-                    model.SelectedIds = string.Concat(",", field.Ids);
+                fieldSettings.IsCarousel = settings.IsCarousel;
+                fieldSettings.IsSingleItem = settings.IsSingleItem;
+                fieldSettings.IsInfinite = settings.IsInfinite;
+                fieldSettings.ItemsToShow = settings.ItemsToShow;
+                fieldSettings.ItemsToScroll = settings.ItemsToScroll;
+                fieldSettings.IsAutoplay = settings.IsAutoplay;
+                fieldSettings.AutoplaySpeed = settings.AutoplaySpeed;
+                field.Settings = fieldSettings;
+            }
 
-                    return shapeHelper.EditorTemplate(TemplateName: "Fields/MediaLibraryPickerFieldCarousel.Edit", Model: model, Prefix: GetPrefix(field, part));
-                });
+            return ContentShape("Fields_MediaLibraryPickerCarousel_Edit", GetDifferentiator(field, part),
+                () => shapeHelper.EditorTemplate(TemplateName: "Fields/MediaLibraryPickerCarousel.Edit", Model: field, Prefix: GetPrefix(field, part)));
         }
 
-        protected override DriverResult Editor(ContentPart part, MediaLibraryPickerField field, IUpdateModel updater, dynamic shapeHelper)
+        protected override DriverResult Editor(ContentPart part, MediaLibraryPickerCarouselField field, IUpdateModel updater, dynamic shapeHelper)
         {
-            var model = new MediaLibraryPickerFieldCarouselViewModel { SelectedIds = string.Join(",", field.Ids) };
+            updater.TryUpdateModel(field, GetPrefix(field, part), null, null);
 
-            updater.TryUpdateModel(model, GetPrefix(field, part), null, null);
-
-            // Update somehow
 
             return Editor(part, field, shapeHelper);
         }

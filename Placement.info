@@ -20,6 +20,10 @@
   <Match DisplayType="SummaryAdmin">
     <Place Fields_MediaLibraryUpload_SummaryAdmin="Content:after" />
   </Match>
+  
+  <!-- MediaLibraryPickerCarouselField -->
+
+  <Place Fields_MediaLibraryPickerCarousel_Edit="Content:after" />
 
   <!-- END FIELDS -->
 </Placement>

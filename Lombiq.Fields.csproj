@@ -132,8 +132,10 @@
     <Compile Include="Drivers\MediaLibraryPickerFieldCarouselDriver.cs" />
     <Compile Include="Drivers\MediaLibraryUploadFieldDriver.cs" />
     <Compile Include="Drivers\MoneyFieldDriver.cs" />
+    <Compile Include="Fields\MediaLibraryPickerCarouselField.cs" />
     <Compile Include="Fields\MediaLibraryUploadField.cs" />
     <Compile Include="Fields\MoneyField.cs" />
+    <Compile Include="Handlers\MediaLibraryPickerFieldCarouselHandler.cs" />
     <Compile Include="Handlers\MediaLibraryUploadFieldHandler.cs" />
     <Compile Include="Handlers\MoneyFieldHandler.cs" />
     <Compile Include="Helpers\CurrencyHelpers.cs" />
@@ -144,7 +146,6 @@
     <Compile Include="Settings\MediaLibraryUploadFieldSettings.cs" />
     <Compile Include="Settings\MoneyFieldEditorEvents.cs" />
     <Compile Include="Settings\MoneyFieldSettings.cs" />
-    <Compile Include="ViewModels\MediaLibraryPickerFieldCarouselViewModel.cs" />
     <Compile Include="ViewModels\MediaLibraryUploadFieldViewModel.cs" />
     <Compile Include="ViewModels\MoneyFieldViewModel.cs" />
   </ItemGroup>

@@ -2,6 +2,9 @@
 @using Orchard.MediaLibrary.Fields
 @using Orchard.Utility.Extensions;
 @using Lombiq.Fields.Settings;
+@using Lombiq.Fields.Fields;
+@using System.Linq;
+@using Piedone.HelpfulLibraries.Contents;
 
 @{
     Style.Require("SlickTheme");
@@ -11,7 +14,10 @@
     var field = (MediaLibraryPickerField)Model.ContentField;
     string name = field.DisplayName;
     var contents = field.MediaParts;
-    var settings = field.PartFieldDefinition.Settings.GetModel<MediaLibraryPickerFieldCarouselSettings>();
+    
+    var part = (ContentPart)Model.ContentPart;
+    var settings = part.AsField<MediaLibraryPickerCarouselField>((string)Model.ContentItem.ContentType, typeof(MediaLibraryPickerCarouselField).Name).Settings;
+    
     var isCarousel = settings.IsCarousel;
     var isSingleItem = settings.IsSingleItem;
     var isInfinite = settings.IsInfinite.ToString().ToLowerInvariant();
@@ -41,19 +47,22 @@
 
 @using (Script.Foot())
 {
-    <script type="text/javascript">
-        //<![CDATA[
-        $(".media-library-picker-field-carousel-@name.HtmlClassify()").slick({
-            @if (!isSingleItem)
+    if (isCarousel)
+    {
+        <script type="text/javascript">
+            //<![CDATA[
+            $(".media-library-picker-field-carousel-@name.HtmlClassify()").slick({
+                @if (!isSingleItem)
             {
                 @:infinite: @isInfinite,
-                @:slidesToShow: @itemsToShow,
-                @:slidesToScroll: @itemsToScroll,
-                @:autoplay: @isAutoplay,
-                @:autoplaySpeed: @autoplaySpeed,
-            }
-            dots: true
-        });
-        //]]>
-    </script>
+                                @:slidesToShow: @itemsToShow,
+                                @:slidesToScroll: @itemsToScroll,
+                                @:autoplay: @isAutoplay,
+                                @:autoplaySpeed: @autoplaySpeed,
+                            }
+                dots: true
+            });
+            //]]>
+        </script>
+    }
 }

@@ -176,7 +176,7 @@
     <Content Include="Views\Fields\MediaLibraryPicker.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\EditorTemplates\Fields\MediaLibraryPickerFieldCarousel.Edit.cshtml" />
+    <Content Include="Views\EditorTemplates\Fields\MediaLibraryPickerCarousel.Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Styles\slick-theme.less" />

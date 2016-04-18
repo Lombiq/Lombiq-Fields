@@ -1,9 +1,9 @@
-﻿Name: Lombiq Fields
+Name: Lombiq Fields
 AntiForgery: enabled
 Author: Lombiq Technologies Ltd.
 Website: https://github.com/Lombiq/Lombiq-Fields
 Version: 1.0
-OrchardVersion: 1.9
+OrchardVersion: 1.9.1
 Features:
     Lombiq.Fields:
         Name: Lombiq Fields

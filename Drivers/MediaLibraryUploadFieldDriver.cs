@@ -19,6 +19,7 @@ using Orchard.Tokens;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
 using Piedone.HelpfulLibraries.Utilities;
+using Orchard.FileSystems.Media;
 
 namespace Lombiq.Fields.Drivers
 {
@@ -30,18 +31,21 @@ namespace Lombiq.Fields.Drivers
         private readonly INotifier _notifier;
         private readonly ITokenizer _tokenizer;
         private readonly IWorkContextAccessor _wca;
+        private readonly IStorageProvider _storageProvider;
 
 
         public Localizer T { get; set; }
 
 
-        public MediaLibraryUploadFieldDriver(IContentManager contentManager, IMediaLibraryService mediaLibraryService, INotifier notifier, ITokenizer tokenizer, IWorkContextAccessor wca)
+        public MediaLibraryUploadFieldDriver(IContentManager contentManager, IMediaLibraryService mediaLibraryService, INotifier notifier, ITokenizer tokenizer, IWorkContextAccessor wca, IStorageProvider storageProvider)
         {
             _contentManager = contentManager;
             _mediaLibraryService = mediaLibraryService;
             _notifier = notifier;
             _tokenizer = tokenizer;
             _wca = wca;
+            _storageProvider = storageProvider;
+
 
             T = NullLocalizer.Instance;
         }
@@ -92,6 +96,8 @@ namespace Lombiq.Fields.Drivers
 
                 var files = ((Controller)updater).Request.Files;
                 var mediaPartsCreated = new List<MediaPart>();
+                double actualSizeMBOfAllContents = 0;
+                
                 for (int i = 0; i < files.Count; i++)
                 {
                     // To make sure that we only process those files that are uploaded using this field's UI control.
@@ -130,7 +136,7 @@ namespace Lombiq.Fields.Drivers
                             file.InputStream.Position = 0;
                         }
 
-                        // At this point we can be sure that the files comply with the settings and limitations, so we can import them.
+                        //Checking maximum size of all contents uploaded by actual user
                         var user = _wca.GetContext().CurrentUser;
                         var folderPath = _tokenizer.Replace(settings.FolderPath, new Dictionary<string, object>
                         {
@@ -140,6 +146,28 @@ namespace Lombiq.Fields.Drivers
 
                         folderPath = string.IsNullOrEmpty(folderPath) ? "UserUploads/" + user.Id : folderPath;
 
+                        if (!string.IsNullOrEmpty(folderPath))
+                        {
+                            double SizeMBOfAlreadyStoredContents = 0;
+                            IEnumerable<IStorageFile> storageFiles = _storageProvider.ListFiles(folderPath);
+
+                            foreach (var f in storageFiles)
+                            {
+                                SizeMBOfAlreadyStoredContents += f.GetSize() / 1024.0 / 1024.0;
+                            }
+
+                            actualSizeMBOfAllContents += file.ContentLength / 1024.0 / 1024.0;
+
+                            if (settings.MaximumSizeMBOfContents != 0 && SizeMBOfAlreadyStoredContents + actualSizeMBOfAllContents > settings.MaximumSizeMBOfContents)
+                            {
+                                _notifier.Warning(T("The file \"{0}\" was not uploaded, because the size of all uploaded files exceed the {1} MB limitation.", file.FileName, settings.MaximumSizeMBOfContents));
+                                continue;
+                            }
+                        }
+
+                        // At this point we can be sure that the files comply with the settings and limitations, so we can import them.
+                        folderPath = string.IsNullOrEmpty(folderPath) ? "UserUploads/" + user.Id : folderPath;
+                        
                         var mediaPart = _mediaLibraryService.ImportMedia(file.InputStream, folderPath, file.FileName);
                         _contentManager.Create(mediaPart);
                         mediaPartsCreated.Add(mediaPart);

@@ -46,7 +46,6 @@ namespace Lombiq.Fields.Drivers
             _wca = wca;
             _storageProvider = storageProvider;
 
-
             T = NullLocalizer.Instance;
         }
 
@@ -109,22 +108,22 @@ namespace Lombiq.Fields.Drivers
                 folderPath = string.IsNullOrEmpty(folderPath) ? "UserUploads/" + user.Id : folderPath;
 
                 // Get the size of already stored and current files.
-                var StoredFiles = _storageProvider.ListFiles(folderPath);
+                var storedFiles = _storageProvider.ListFiles(folderPath);
 
-                foreach(var f in StoredFiles)
+                foreach (var storedFile in storedFiles)
                 {
-                    for (int j = 0; j < alreadyUploadedFiles.Count; j++)
+                    for (int i = 0; i < alreadyUploadedFiles.Count; i++)
                     {
-                        if (f.GetName() == alreadyUploadedFiles[j].FileName)
+                        if (storedFile.GetName() == alreadyUploadedFiles[i].FileName)
                         {
-                            sizeOfAlreadyUploadedFilesForThisFieldMB += f.GetSize() / 1024.0 / 1024.0;
+                            sizeOfAlreadyUploadedFilesForThisFieldMB += storedFile.GetSize() / 1024.0 / 1024.0;
                         }
                     }
                 }
 
                 for (int i = 0; i < files.Count; i++)
                 {
-                    sizeOfCurrentFilesMB  += files[i].ContentLength / 1024.0 / 1024.0;
+                    sizeOfCurrentFilesMB += files[i].ContentLength / 1024.0 / 1024.0;
                 }
 
                 for (int i = 0; i < files.Count; i++)
@@ -139,13 +138,14 @@ namespace Lombiq.Fields.Drivers
                         var allowedExtensions = (settings.AllowedExtensions ?? "").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => string.Format(".{0}", s));
                         if (allowedExtensions.Any() && !allowedExtensions.Contains(Path.GetExtension(file.FileName).ToLowerInvariant()))
                         {
-                            _notifier.Warning(T("The file \"{0}\" was not uploaded, because its extension is not among the accepted ones. The accepted file extensions are: {1}.",
+                            updater.AddModelError("NotAllowedExtension", T("The file \"{0}\" was not uploaded, because its extension is not among the accepted ones. The accepted file extensions are: {1}.",
                                 file.FileName, string.Join(", ", allowedExtensions)));
                             continue;
                         }
 
-                        if (settings.MaximumSizeKB > 0 && file.ContentLength > settings.MaximumSizeKB * 1024) {
-                            _notifier.Warning(T("The file \"{0}\" was not uploaded, because its size exceeds the {1} KB limitation.", file.FileName, settings.MaximumSizeKB));
+                        if (settings.MaximumSizeKB > 0 && file.ContentLength > settings.MaximumSizeKB * 1024)
+                        {
+                            updater.AddModelError("SizeLimitForOneFileExceeded", T("The file \"{0}\" was not uploaded, because its size exceeds the {1} KB limitation.", file.FileName, settings.MaximumSizeKB));
                             continue;
                         }
 
@@ -156,7 +156,7 @@ namespace Lombiq.Fields.Drivers
                             {
                                 if ((settings.ImageMaximumWidth > 0 && image.Width > settings.ImageMaximumWidth) || (settings.ImageMaximumHeight > 0 && image.Height > settings.ImageMaximumHeight))
                                 {
-                                    _notifier.Warning(T("The image \"{0}\" was not uploaded, because its dimensions exceed the limitations. The maximum allowed file dimensions are {1}x{2} pixels.",
+                                    updater.AddModelError("ImageError", T("The image \"{0}\" was not uploaded, because its dimensions exceed the limitations. The maximum allowed file dimensions are {1}x{2} pixels.",
                                         file.FileName, settings.ImageMaximumWidth, settings.ImageMaximumHeight));
                                     continue;
                                 }
@@ -168,7 +168,8 @@ namespace Lombiq.Fields.Drivers
                         // Checking if the size of all uploaded files and stored files exceed the limit for this field.
                         if (settings.FieldStorageUserQuotaMB > 0 && sizeOfAlreadyUploadedFilesForThisFieldMB + sizeOfCurrentFilesMB > settings.FieldStorageUserQuotaMB)
                         {
-                            _notifier.Warning(T("The files were not uploaded, because their size and the alrady stored files size exceed the {0} MB limitation. The size of current files are {1} MB more than it is allowed.", settings.FieldStorageUserQuotaMB, (int)((sizeOfAlreadyUploadedFilesForThisFieldMB + sizeOfCurrentFilesMB) - settings.FieldStorageUserQuotaMB)));
+                            updater.AddModelError("SizeLimitForAllFilesForThisFieldExceeded", T("The files were not uploaded, because their size and the alrady stored files size exceed the {0} MB limitation. The size of current files are {1} MB more than it is allowed.", 
+                                settings.FieldStorageUserQuotaMB, (int)((sizeOfAlreadyUploadedFilesForThisFieldMB + sizeOfCurrentFilesMB) - settings.FieldStorageUserQuotaMB)));
                             continue;
                         }
 
@@ -186,7 +187,7 @@ namespace Lombiq.Fields.Drivers
                 }
             }
 
-            if (settings.Required && field.Ids.Length == 0) 
+            if (settings.Required && field.Ids.Length == 0)
                 updater.AddModelError("Id", T("You need to have or upload at least one file for the field {0}.", field.Name.CamelFriendly()));
 
             return Editor(part, field, shapeHelper);

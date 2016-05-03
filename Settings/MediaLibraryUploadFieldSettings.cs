@@ -12,7 +12,7 @@ namespace Lombiq.Fields.Settings
         public string AllowedExtensions { get; set; }
         public string FolderPath { get; set; }
         public int MaximumSizeKB { get; set; }
-        public int MaximumSizeMBOfContents { get; set; }
+        public int FieldStorageUserQuotaMB { get; set; }
         #endregion
 
         #region Image-specific settings

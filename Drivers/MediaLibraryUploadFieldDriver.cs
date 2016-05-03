@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Web.Mvc;
-using Lombiq.Fields.Fields;
+﻿using Lombiq.Fields.Fields;
 using Lombiq.Fields.Settings;
 using Lombiq.Fields.ViewModels;
 using Orchard;
@@ -12,6 +6,7 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Environment.Extensions;
+using Orchard.FileSystems.Media;
 using Orchard.Localization;
 using Orchard.MediaLibrary.Models;
 using Orchard.MediaLibrary.Services;
@@ -19,7 +14,12 @@ using Orchard.Tokens;
 using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
 using Piedone.HelpfulLibraries.Utilities;
-using Orchard.FileSystems.Media;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Lombiq.Fields.Drivers
 {
@@ -96,8 +96,37 @@ namespace Lombiq.Fields.Drivers
 
                 var files = ((Controller)updater).Request.Files;
                 var mediaPartsCreated = new List<MediaPart>();
-                double actualSizeMBOfAllContents = 0;
-                
+                var sizeOfAlreadyUploadedFilesForThisFieldMB = 0.0;
+                var sizeOfCurrentFilesMB = 0.0;
+                var alreadyUploadedFiles = field.MediaParts.ToList();
+                var user = _wca.GetContext().CurrentUser;
+                var folderPath = _tokenizer.Replace(settings.FolderPath, new Dictionary<string, object>
+                {
+                    { "Content", part.ContentItem },
+                    { "User", user }
+                });
+
+                folderPath = string.IsNullOrEmpty(folderPath) ? "UserUploads/" + user.Id : folderPath;
+
+                // Get the size of already stored and current files.
+                var StoredFiles = _storageProvider.ListFiles(folderPath);
+
+                foreach(var f in StoredFiles)
+                {
+                    for (int j = 0; j < alreadyUploadedFiles.Count; j++)
+                    {
+                        if (f.GetName() == alreadyUploadedFiles[j].FileName)
+                        {
+                            sizeOfAlreadyUploadedFilesForThisFieldMB += f.GetSize() / 1024.0 / 1024.0;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < files.Count; i++)
+                {
+                    sizeOfCurrentFilesMB  += files[i].ContentLength / 1024.0 / 1024.0;
+                }
+
                 for (int i = 0; i < files.Count; i++)
                 {
                     // To make sure that we only process those files that are uploaded using this field's UI control.
@@ -136,38 +165,14 @@ namespace Lombiq.Fields.Drivers
                             file.InputStream.Position = 0;
                         }
 
-                        //Checking maximum size of all contents uploaded by actual user
-                        var user = _wca.GetContext().CurrentUser;
-                        var folderPath = _tokenizer.Replace(settings.FolderPath, new Dictionary<string, object>
+                        // Checking if the size of all uploaded files and stored files exceed the limit for this field.
+                        if (settings.FieldStorageUserQuotaMB > 0 && sizeOfAlreadyUploadedFilesForThisFieldMB + sizeOfCurrentFilesMB > settings.FieldStorageUserQuotaMB)
                         {
-                            { "Content", part.ContentItem },
-                            { "User", user }
-                        });
-
-                        folderPath = string.IsNullOrEmpty(folderPath) ? "UserUploads/" + user.Id : folderPath;
-
-                        if (!string.IsNullOrEmpty(folderPath))
-                        {
-                            double SizeMBOfAlreadyStoredContents = 0;
-                            IEnumerable<IStorageFile> storageFiles = _storageProvider.ListFiles(folderPath);
-
-                            foreach (var f in storageFiles)
-                            {
-                                SizeMBOfAlreadyStoredContents += f.GetSize() / 1024.0 / 1024.0;
-                            }
-
-                            actualSizeMBOfAllContents += file.ContentLength / 1024.0 / 1024.0;
-
-                            if (settings.MaximumSizeMBOfContents != 0 && SizeMBOfAlreadyStoredContents + actualSizeMBOfAllContents > settings.MaximumSizeMBOfContents)
-                            {
-                                _notifier.Warning(T("The file \"{0}\" was not uploaded, because the size of all uploaded files exceed the {1} MB limitation.", file.FileName, settings.MaximumSizeMBOfContents));
-                                continue;
-                            }
+                            _notifier.Warning(T("The files were not uploaded, because their size and the alrady stored files size exceed the {0} MB limitation. The size of current files are {1} MB more than it is allowed.", settings.FieldStorageUserQuotaMB, (int)((sizeOfAlreadyUploadedFilesForThisFieldMB + sizeOfCurrentFilesMB) - settings.FieldStorageUserQuotaMB)));
+                            continue;
                         }
 
                         // At this point we can be sure that the files comply with the settings and limitations, so we can import them.
-                        folderPath = string.IsNullOrEmpty(folderPath) ? "UserUploads/" + user.Id : folderPath;
-                        
                         var mediaPart = _mediaLibraryService.ImportMedia(file.InputStream, folderPath, file.FileName);
                         _contentManager.Create(mediaPart);
                         mediaPartsCreated.Add(mediaPart);

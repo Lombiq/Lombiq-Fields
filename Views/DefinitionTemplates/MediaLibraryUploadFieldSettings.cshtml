@@ -34,9 +34,9 @@
             @Html.Hint(T("The maximum file size per uploaded file in kilobytes. 0 means no limit."))
         </li>
         <li>
-            @Html.LabelFor(m => Model.MaximumSizeMBOfContents, @T("Maximum size of all contents"))
-            @Html.TextBoxFor(m => Model.MaximumSizeMBOfContents)
-            @Html.Hint(T("The maximum file size of all uploaded files in megabytes. 0 means no limit."))
+            @Html.LabelFor(m => Model.FieldStorageUserQuotaMB, @T("Maximum size of all uploaded files for this field"))
+            @Html.TextBoxFor(m => Model.FieldStorageUserQuotaMB)
+            @Html.Hint(T("The maximum size of all uploaded files for this field. 0 means no limit."))
         </li>
     </ol>
 </fieldset>

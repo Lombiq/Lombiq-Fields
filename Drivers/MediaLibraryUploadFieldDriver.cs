@@ -97,7 +97,6 @@ namespace Lombiq.Fields.Drivers
                 var mediaPartsCreated = new List<MediaPart>();
                 var sizeOfAlreadyUploadedFilesForThisFieldMB = 0.0;
                 var sizeOfCurrentFilesMB = 0.0;
-                var alreadyUploadedFiles = field.MediaParts.ToList();
                 var user = _wca.GetContext().CurrentUser;
                 var folderPath = _tokenizer.Replace(settings.FolderPath, new Dictionary<string, object>
                 {
@@ -107,16 +106,20 @@ namespace Lombiq.Fields.Drivers
 
                 folderPath = string.IsNullOrEmpty(folderPath) ? "UserUploads/" + user.Id : folderPath;
 
-                // Get the size of already stored and current files.
-                var storedFiles = _storageProvider.ListFiles(folderPath);
-
-                foreach (var storedFile in storedFiles)
+                // Gets the size of already stored and current files.
+                if (field.MediaParts != null && _storageProvider.FolderExists(folderPath))
                 {
-                    for (int i = 0; i < alreadyUploadedFiles.Count; i++)
+                    var alreadyUploadedFiles = field.MediaParts.ToList();
+                    var storedFiles = _storageProvider.ListFiles(folderPath);
+
+                    foreach (var storedFile in storedFiles)
                     {
-                        if (storedFile.GetName() == alreadyUploadedFiles[i].FileName)
+                        foreach (var file in alreadyUploadedFiles)
                         {
-                            sizeOfAlreadyUploadedFilesForThisFieldMB += storedFile.GetSize() / 1024.0 / 1024.0;
+                            if (storedFile.GetName() == file.FileName)
+                            {
+                                sizeOfAlreadyUploadedFilesForThisFieldMB += storedFile.GetSize() / 1024.0 / 1024.0;
+                            }
                         }
                     }
                 }

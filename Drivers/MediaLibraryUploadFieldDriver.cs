@@ -92,19 +92,16 @@ namespace Lombiq.Fields.Drivers
             if (updater.TryUpdateModel(model, GetPrefix(field, part), null, null))
             {
                 field.Ids = String.IsNullOrEmpty(model.SelectedIds) ? new int[0] : model.SelectedIds.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
-
-                var files = ((Controller)updater).Request.Files;
-                var mediaPartsCreated = new List<MediaPart>();
-                var sizeOfAlreadyUploadedFilesForThisFieldMB = 0.0;
-                var sizeOfCurrentFilesMB = 0.0;
+                
                 var user = _wca.GetContext().CurrentUser;
                 var folderPath = _tokenizer.Replace(settings.FolderPath, new Dictionary<string, object>
                 {
                     { "Content", part.ContentItem },
                     { "User", user }
                 });
-
                 folderPath = string.IsNullOrEmpty(folderPath) ? "UserUploads/" + user.Id : folderPath;
+
+                var sizeOfAlreadyUploadedFilesForThisFieldMB = 0.0;
 
                 // Gets the size of already stored and current files.
                 if (field.MediaParts != null && _storageProvider.FolderExists(folderPath))
@@ -125,6 +122,8 @@ namespace Lombiq.Fields.Drivers
                     }
                 }
 
+                var files = ((Controller)updater).Request.Files;
+                var sizeOfCurrentFilesMB = 0.0;
                 for (int i = 0; i < files.Count; i++)
                 {
                     sizeOfCurrentFilesMB += files[i].ContentLength / 1024.0 / 1024.0;
@@ -136,57 +135,61 @@ namespace Lombiq.Fields.Drivers
                     updater.AddModelError("SizeLimitForAllFilesForThisFieldExceeded", T("The files were not uploaded, because their size and the alrady stored files size exceed the {0} MB limitation. The size of current files are {1} MB more than it is allowed.",
                         settings.FieldStorageUserQuotaMB, (int)((sizeOfAlreadyUploadedFilesForThisFieldMB + sizeOfCurrentFilesMB) - settings.FieldStorageUserQuotaMB)));
                 }
-
-                for (int i = 0; i < files.Count; i++)
+                else
                 {
-                    // To make sure that we only process those files that are uploaded using this field's UI control.
-                    if (files.AllKeys[i].Equals(string.Format("MediaLibraryUploadField-{0}-{1}[]", part.PartDefinition.Name, field.Name)))
+                    var mediaPartsCreated = new List<MediaPart>();
+
+                    for (int i = 0; i < files.Count; i++)
                     {
-                        var file = files[i];
-
-                        if (file.ContentLength == 0) continue;
-
-                        var allowedExtensions = (settings.AllowedExtensions ?? "").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => string.Format(".{0}", s));
-                        if (allowedExtensions.Any() && !allowedExtensions.Contains(Path.GetExtension(file.FileName).ToLowerInvariant()))
+                        // To make sure that we only process those files that are uploaded using this field's UI control.
+                        if (files.AllKeys[i].Equals(string.Format("MediaLibraryUploadField-{0}-{1}[]", part.PartDefinition.Name, field.Name)))
                         {
-                            updater.AddModelError("NotAllowedExtension", T("The file \"{0}\" was not uploaded, because its extension is not among the accepted ones. The accepted file extensions are: {1}.",
-                                file.FileName, string.Join(", ", allowedExtensions)));
-                            continue;
-                        }
+                            var file = files[i];
 
-                        if (settings.MaximumSizeKB > 0 && file.ContentLength > settings.MaximumSizeKB * 1024)
-                        {
-                            updater.AddModelError("SizeLimitForOneFileExceeded", T("The file \"{0}\" was not uploaded, because its size exceeds the {1} KB limitation.", file.FileName, settings.MaximumSizeKB));
-                            continue;
-                        }
+                            if (file.ContentLength == 0) continue;
 
-                        // Checking against image-specific settings.
-                        if (MimeAssistant.GetMimeType(file.FileName.ToLowerInvariant()).StartsWith("image"))
-                        {
-                            using (var image = Image.FromStream(file.InputStream))
+                            var allowedExtensions = (settings.AllowedExtensions ?? "").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => string.Format(".{0}", s));
+                            if (allowedExtensions.Any() && !allowedExtensions.Contains(Path.GetExtension(file.FileName).ToLowerInvariant()))
                             {
-                                if ((settings.ImageMaximumWidth > 0 && image.Width > settings.ImageMaximumWidth) || (settings.ImageMaximumHeight > 0 && image.Height > settings.ImageMaximumHeight))
-                                {
-                                    updater.AddModelError("ImageError", T("The image \"{0}\" was not uploaded, because its dimensions exceed the limitations. The maximum allowed file dimensions are {1}x{2} pixels.",
-                                        file.FileName, settings.ImageMaximumWidth, settings.ImageMaximumHeight));
-                                    continue;
-                                }
+                                updater.AddModelError("NotAllowedExtension", T("The file \"{0}\" was not uploaded, because its extension is not among the accepted ones. The accepted file extensions are: {1}.",
+                                    file.FileName, string.Join(", ", allowedExtensions)));
+                                continue;
                             }
 
-                            file.InputStream.Position = 0;
-                        }
-                        
-                        // At this point we can be sure that the files comply with the settings and limitations, so we can import them.
-                        var mediaPart = _mediaLibraryService.ImportMedia(file.InputStream, folderPath, file.FileName);
-                        _contentManager.Create(mediaPart);
-                        mediaPartsCreated.Add(mediaPart);
-                    }
-                }
+                            if (settings.MaximumSizeKB > 0 && file.ContentLength > settings.MaximumSizeKB * 1024)
+                            {
+                                updater.AddModelError("SizeLimitForOneFileExceeded", T("The file \"{0}\" was not uploaded, because its size exceeds the {1} KB limitation.", file.FileName, settings.MaximumSizeKB));
+                                continue;
+                            }
 
-                if (mediaPartsCreated.Any())
-                {
-                    field.Ids = field.Ids.Union(mediaPartsCreated.Select(m => m.ContentItem.Id)).ToArray();
-                    _notifier.Information(T("The following items were successfully uploaded: {0}.", string.Join(", ", mediaPartsCreated.Select(mp => mp.FileName))));
+                            // Checking against image-specific settings.
+                            if (MimeAssistant.GetMimeType(file.FileName.ToLowerInvariant()).StartsWith("image"))
+                            {
+                                using (var image = Image.FromStream(file.InputStream))
+                                {
+                                    if ((settings.ImageMaximumWidth > 0 && image.Width > settings.ImageMaximumWidth) || (settings.ImageMaximumHeight > 0 && image.Height > settings.ImageMaximumHeight))
+                                    {
+                                        updater.AddModelError("ImageError", T("The image \"{0}\" was not uploaded, because its dimensions exceed the limitations. The maximum allowed file dimensions are {1}x{2} pixels.",
+                                            file.FileName, settings.ImageMaximumWidth, settings.ImageMaximumHeight));
+                                        continue;
+                                    }
+                                }
+
+                                file.InputStream.Position = 0;
+                            }
+
+                            // At this point we can be sure that the files comply with the settings and limitations, so we can import them.
+                            var mediaPart = _mediaLibraryService.ImportMedia(file.InputStream, folderPath, file.FileName);
+                            _contentManager.Create(mediaPart);
+                            mediaPartsCreated.Add(mediaPart);
+                        }
+                    }
+
+                    if (mediaPartsCreated.Any())
+                    {
+                        field.Ids = field.Ids.Union(mediaPartsCreated.Select(m => m.ContentItem.Id)).ToArray();
+                        _notifier.Information(T("The following items were successfully uploaded: {0}.", string.Join(", ", mediaPartsCreated.Select(mp => mp.FileName))));
+                    }
                 }
             }
 

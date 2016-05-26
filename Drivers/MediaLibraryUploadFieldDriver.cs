@@ -119,6 +119,7 @@ namespace Lombiq.Fields.Drivers
                             if (storedFile.GetName() == file.FileName)
                             {
                                 sizeOfAlreadyUploadedFilesForThisFieldMB += storedFile.GetSize() / 1024.0 / 1024.0;
+                                break;
                             }
                         }
                     }
@@ -127,6 +128,13 @@ namespace Lombiq.Fields.Drivers
                 for (int i = 0; i < files.Count; i++)
                 {
                     sizeOfCurrentFilesMB += files[i].ContentLength / 1024.0 / 1024.0;
+                }
+
+                // Checking if the size of all uploaded files and stored files exceed the limit for this field.
+                if (settings.FieldStorageUserQuotaMB > 0 && sizeOfAlreadyUploadedFilesForThisFieldMB + sizeOfCurrentFilesMB > settings.FieldStorageUserQuotaMB)
+                {
+                    updater.AddModelError("SizeLimitForAllFilesForThisFieldExceeded", T("The files were not uploaded, because their size and the alrady stored files size exceed the {0} MB limitation. The size of current files are {1} MB more than it is allowed.",
+                        settings.FieldStorageUserQuotaMB, (int)((sizeOfAlreadyUploadedFilesForThisFieldMB + sizeOfCurrentFilesMB) - settings.FieldStorageUserQuotaMB)));
                 }
 
                 for (int i = 0; i < files.Count; i++)
@@ -167,15 +175,7 @@ namespace Lombiq.Fields.Drivers
 
                             file.InputStream.Position = 0;
                         }
-
-                        // Checking if the size of all uploaded files and stored files exceed the limit for this field.
-                        if (settings.FieldStorageUserQuotaMB > 0 && sizeOfAlreadyUploadedFilesForThisFieldMB + sizeOfCurrentFilesMB > settings.FieldStorageUserQuotaMB)
-                        {
-                            updater.AddModelError("SizeLimitForAllFilesForThisFieldExceeded", T("The files were not uploaded, because their size and the alrady stored files size exceed the {0} MB limitation. The size of current files are {1} MB more than it is allowed.", 
-                                settings.FieldStorageUserQuotaMB, (int)((sizeOfAlreadyUploadedFilesForThisFieldMB + sizeOfCurrentFilesMB) - settings.FieldStorageUserQuotaMB)));
-                            continue;
-                        }
-
+                        
                         // At this point we can be sure that the files comply with the settings and limitations, so we can import them.
                         var mediaPart = _mediaLibraryService.ImportMedia(file.InputStream, folderPath, file.FileName);
                         _contentManager.Create(mediaPart);

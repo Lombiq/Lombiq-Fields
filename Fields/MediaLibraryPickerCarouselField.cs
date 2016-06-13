@@ -10,48 +10,52 @@ namespace Lombiq.Fields.Fields
     [OrchardFeature("Lombiq.Fields.MediaLibraryPickerFieldCarousel")]
     public class MediaLibraryPickerCarouselField : ContentField
     {
-        private static readonly char[] _separators = new[] { '{', '}', ',' };
-        public MediaLibraryPickerFieldCarouselSettings Settings
+        public bool IsCarousel
         {
-            get { return DecodeSettings(Storage.Get<string>()); }
-            set { Storage.Set(EncodeSettings(value)); }
+            get { return Storage.Get<bool>("IsCarousel"); }
+            set { Storage.Set("IsCarousel", value); }
         }
 
-        private string EncodeSettings(MediaLibraryPickerFieldCarouselSettings settings)
-        {
-            if (settings == null)
-            {
-                return string.Empty;
-            }
 
-            return "{" + settings.IsCarousel.ToString() + "},{"
-                + settings.IsSingleItem.ToString() + "},{"
-                + settings.IsInfinite.ToString() + "},{"
-                + settings.ItemsToShow.ToString() + "},{"
-                + settings.ItemsToScroll.ToString() + "},{"
-                + settings.IsAutoplay.ToString() + "},{"
-                + settings.AutoplaySpeed.ToString() + "}";
+        public bool IsSingleItem
+        {
+            get { return Storage.Get<bool>("IsSingleItem"); }
+            set { Storage.Set("IsSingleItem", value); }
         }
 
-        private MediaLibraryPickerFieldCarouselSettings DecodeSettings(string settings)
+
+        public bool IsInfinite
         {
-            if (String.IsNullOrWhiteSpace(settings))
-            {
-                return null;
-            }
+            get { return Storage.Get<bool>("IsInfinite"); }
+            set { Storage.Set("IsInfinite", value); }
+        }
 
-            var storedSettings = settings.Split(_separators, StringSplitOptions.RemoveEmptyEntries);
-            var carouselSettings = new MediaLibraryPickerFieldCarouselSettings();
 
-            carouselSettings.IsCarousel = bool.Parse(storedSettings[0]);
-            carouselSettings.IsSingleItem = bool.Parse(storedSettings[1]);
-            carouselSettings.IsInfinite = bool.Parse(storedSettings[2]);
-            carouselSettings.ItemsToShow = int.Parse(storedSettings[3]);
-            carouselSettings.ItemsToScroll = int.Parse(storedSettings[4]);
-            carouselSettings.IsAutoplay = bool.Parse(storedSettings[5]);
-            carouselSettings.AutoplaySpeed = int.Parse(storedSettings[6]);
+        public int ItemsToShow
+        {
+            get { return Storage.Get<int>("ItemsToShow"); }
+            set { Storage.Set("ItemsToShow", value); }
+        }
 
-            return carouselSettings;
+
+        public int ItemsToScroll
+        {
+            get { return Storage.Get<int>("ItemsToScroll"); }
+            set { Storage.Set("ItemsToScroll", value); }
+        }
+
+
+        public bool IsAutoplay
+        {
+            get { return Storage.Get<bool>("IsAutoplay"); }
+            set { Storage.Set("IsAutoplay", value); }
+        }
+
+
+        public int AutoplaySpeed
+        {
+            get { return Storage.Get<int>("AutoplaySpeed"); }
+            set { Storage.Set("AutoplaySpeed", value); }
         }
     }
 }

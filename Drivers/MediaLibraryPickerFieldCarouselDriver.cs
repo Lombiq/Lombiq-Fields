@@ -44,20 +44,17 @@ namespace Lombiq.Drivers
 
         protected override DriverResult Editor(ContentPart part, MediaLibraryPickerCarouselField field, dynamic shapeHelper)
         {
-            // if the content item is new, assign the default value
+            // If the content item is new, assign the default value.
             if (!part.HasDraft() && !part.HasPublished())
             {
                 var settings = part.Fields.Where(x => x.FieldDefinition.Name == typeof(MediaLibraryPickerField).Name).FirstOrDefault().PartFieldDefinition.Settings.GetModel<MediaLibraryPickerFieldCarouselSettings>(); ;
-                var fieldSettings = new MediaLibraryPickerFieldCarouselSettings();
-
-                fieldSettings.IsCarousel = settings.IsCarousel;
-                fieldSettings.IsSingleItem = settings.IsSingleItem;
-                fieldSettings.IsInfinite = settings.IsInfinite;
-                fieldSettings.ItemsToShow = settings.ItemsToShow;
-                fieldSettings.ItemsToScroll = settings.ItemsToScroll;
-                fieldSettings.IsAutoplay = settings.IsAutoplay;
-                fieldSettings.AutoplaySpeed = settings.AutoplaySpeed;
-                field.Settings = fieldSettings;
+                
+                field.IsCarousel = settings.IsCarousel;
+                field.IsInfinite = settings.IsInfinite;
+                field.ItemsToShow = settings.ItemsToShow;
+                field.ItemsToScroll = settings.ItemsToScroll;
+                field.IsAutoplay = settings.IsAutoplay;
+                field.AutoplaySpeed = settings.AutoplaySpeed;
             }
 
             return ContentShape("Fields_MediaLibraryPickerCarousel_Edit", GetDifferentiator(field, part),
@@ -67,7 +64,6 @@ namespace Lombiq.Drivers
         protected override DriverResult Editor(ContentPart part, MediaLibraryPickerCarouselField field, IUpdateModel updater, dynamic shapeHelper)
         {
             updater.TryUpdateModel(field, GetPrefix(field, part), null, null);
-
 
             return Editor(part, field, shapeHelper);
         }

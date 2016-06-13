@@ -13,6 +13,7 @@ namespace Lombiq.Fields.Handlers
     {
         private readonly IContentDefinitionManager _contentDefinitionManager;
 
+
         public MediaLibraryPickerFieldCarouselHandler(IContentDefinitionManager contentDefinitionManager)
         {
             _contentDefinitionManager = contentDefinitionManager;
@@ -22,19 +23,16 @@ namespace Lombiq.Fields.Handlers
         {
             base.Initializing(context);
 
-            var partsWithMediaLibraryPickerField = context.ContentItem.Parts.SelectMany(x => x.Fields.OfType<MediaLibraryPickerField>());
-            if (partsWithMediaLibraryPickerField.Any())
+            var partsWithMediaLibraryPickerField = context.ContentItem.Parts.SelectMany(part => part.Fields.OfType<MediaLibraryPickerField>());
+            var partsWithMediaLibraryPickerCarouselField = context.ContentItem.Parts.SelectMany(part => part.Fields.OfType<MediaLibraryPickerCarouselField>());
+            if (partsWithMediaLibraryPickerField.Any() && !partsWithMediaLibraryPickerCarouselField.Any())
             {
-                var partsWithCarouselField = context.ContentItem.Parts.SelectMany(x => x.Fields.OfType<MediaLibraryPickerCarouselField>());
-                if (!partsWithCarouselField.Any())
-                {
-                    _contentDefinitionManager.AlterPartDefinition(context.ContentItem.Parts.Where(
-                        x => x.PartDefinition.Name == context.ContentItem.ContentType).FirstOrDefault()
-                        .TypePartDefinition.PartDefinition.Name,
-                        cfg => cfg.WithField(typeof(MediaLibraryPickerCarouselField).Name,
-                            f => f.OfType(typeof(MediaLibraryPickerCarouselField).Name)
-                                .WithDisplayName(typeof(MediaLibraryPickerCarouselField).Name)));
-                }
+                _contentDefinitionManager.AlterPartDefinition(context.ContentItem.Parts.Where(
+                    part => part.PartDefinition.Name == context.ContentItem.ContentType).FirstOrDefault()
+                    .TypePartDefinition.PartDefinition.Name,
+                    cfg => cfg.WithField(typeof(MediaLibraryPickerCarouselField).Name,
+                        f => f.OfType(typeof(MediaLibraryPickerCarouselField).Name)
+                            .WithDisplayName(typeof(MediaLibraryPickerCarouselField).Name)));
             }
         }
     }

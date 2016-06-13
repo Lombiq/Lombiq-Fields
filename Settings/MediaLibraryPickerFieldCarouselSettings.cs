@@ -6,7 +6,6 @@ namespace Lombiq.Fields.Settings
     public class MediaLibraryPickerFieldCarouselSettings
     {
         public bool IsCarousel { get; set; }
-        public bool IsSingleItem { get; set; }
         public bool IsInfinite { get; set; }
         public int ItemsToShow { get; set; }
         public int ItemsToScroll { get; set; }
@@ -16,7 +15,6 @@ namespace Lombiq.Fields.Settings
         public MediaLibraryPickerFieldCarouselSettings()
         {
             IsCarousel = false;
-            IsSingleItem = false;
             IsInfinite = true;
             ItemsToShow = 3;
             ItemsToScroll = 3;

@@ -16,7 +16,7 @@
     var contents = field.MediaParts;
     
     var part = (ContentPart)Model.ContentPart;
-    var settings = part.AsField<MediaLibraryPickerCarouselField>((string)Model.ContentItem.ContentType, typeof(MediaLibraryPickerCarouselField).Name).Settings;
+    var settings = part.AsField<MediaLibraryPickerCarouselField>((string)Model.ContentItem.ContentType, typeof(MediaLibraryPickerCarouselField).Name);
     
     var isCarousel = settings.IsCarousel;
     var isSingleItem = settings.IsSingleItem;

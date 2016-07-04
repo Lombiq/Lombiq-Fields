@@ -4,8 +4,8 @@
 <fieldset>
     <ol>
         <li>
-            @Html.CheckBoxFor(m => m.Settings.IsCarousel)
-            @Html.LabelFor(m => m.Settings.IsCarousel, @T("Display media items in carousel").Text, new { @class = "forcheckbox" })
+            @Html.CheckBoxFor(m => m.IsCarousel)
+            @Html.LabelFor(m => m.IsCarousel, @T("Display media items in carousel").Text, new { @class = "forcheckbox" })
             @Html.Hint(T("Check to display media items in carousel."))
         </li>
     </ol>
@@ -15,33 +15,28 @@
     <legend>@T("Carousel-specific settings")</legend>
     <ol>
         <li>
-            @Html.CheckBoxFor(m => m.Settings.IsSingleItem)
-            @Html.LabelFor(m => m.Settings.IsSingleItem, @T("Show only one item at a time.").Text, new { @class = "forcheckbox" })
-            @Html.Hint(T("Leave unchecked to show multiple items."))
-        </li>
-        <li>
-            @Html.CheckBoxFor(m => m.Settings.IsInfinite)
-            @Html.LabelFor(m => m.Settings.IsInfinite, @T("Infinite srcolling").Text, new { @class = "forcheckbox" })
+            @Html.CheckBoxFor(m => m.IsInfinite)
+            @Html.LabelFor(m => m.IsInfinite, @T("Infinite srcolling").Text, new { @class = "forcheckbox" })
             @Html.Hint(T("Check for infinite scrolling."))
         </li>
         <li>
-            @Html.LabelFor(m => m.Settings.ItemsToShow, @T("Number of slides to show at a time."))
-            @Html.TextBoxFor(m => m.Settings.ItemsToShow)
+            @Html.LabelFor(m => m.ItemsToShow, @T("Number of slides to show at a time."))
+            @Html.TextBoxFor(m => m.ItemsToShow)
             @Html.Hint(T("The number how many slides appear at a time."))
         </li>
         <li>
-            @Html.LabelFor(m => m.Settings.ItemsToScroll, @T("Number of slides to scroll at a time."))
-            @Html.TextBoxFor(m => m.Settings.ItemsToScroll)
+            @Html.LabelFor(m => m.ItemsToScroll, @T("Number of slides to scroll at a time."))
+            @Html.TextBoxFor(m => m.ItemsToScroll)
             @Html.Hint(T("The number how many slides scroll at a time."))
         </li>
         <li>
-            @Html.CheckBoxFor(m => m.Settings.IsAutoplay)
-            @Html.LabelFor(m => m.Settings.IsAutoplay, @T("Autoplay.").Text, new { @class = "forcheckbox" })
+            @Html.CheckBoxFor(m => m.IsAutoplay)
+            @Html.LabelFor(m => m.IsAutoplay, @T("Autoplay.").Text, new { @class = "forcheckbox" })
             @Html.Hint(T("Enables auto play of slides."))
         </li>
         <li>
-            @Html.LabelFor(m => m.Settings.AutoplaySpeed, @T("Autoplay speed."))
-            @Html.TextBoxFor(m => m.Settings.AutoplaySpeed)
+            @Html.LabelFor(m => m.AutoplaySpeed, @T("Autoplay speed."))
+            @Html.TextBoxFor(m => m.AutoplaySpeed)
             @Html.Hint(T("Auto play change interval. Default: 3000."))
         </li>
     </ol>

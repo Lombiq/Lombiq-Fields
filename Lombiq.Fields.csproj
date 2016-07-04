@@ -71,23 +71,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\slick.js" />
-    <Content Include="Scripts\slick.min.js" />
-    <Content Include="Styles\Fonts\slick.svg" />
-    <Content Include="Styles\Images\ajax-loader.gif" />
+    <Content Include="Content\Slick\.gitignore" />
+    <Content Include="Content\Slick\index.html" />
+    <Content Include="Content\Slick\slick\ajax-loader.gif" />
+    <Content Include="Content\Slick\slick\fonts\slick.svg" />
+    <Content Include="Content\Slick\slick\slick-theme.css" />
+    <Content Include="Content\Slick\slick\slick.css" />
+    <Content Include="Content\Slick\slick\slick.js" />
+    <Content Include="Content\Slick\slick\slick.min.js" />
     <Content Include="Styles\media-library-upload-field.css">
       <DependentUpon>media-library-upload-field.less</DependentUpon>
     </Content>
     <Content Include="Styles\media-library-upload-field.min.css">
       <DependentUpon>media-library-upload-field.css</DependentUpon>
     </Content>
-    <Content Include="Styles\slick-theme.css">
-      <DependentUpon>slick-theme.less</DependentUpon>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
     </Content>
-    <Content Include="Styles\slick.css">
-      <DependentUpon>slick.less</DependentUpon>
-    </Content>
-    <Content Include="Web.config" />
     <Content Include="Scripts\Web.config" />
     <Content Include="Styles\Web.config" />
     <Content Include="Properties\AssemblyInfo.cs" />
@@ -181,15 +181,6 @@
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Fields\MediaLibraryPickerCarousel.Edit.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Styles\slick-theme.less" />
-    <Content Include="Styles\slick.less" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Styles\Fonts\slick.eot" />
-    <Content Include="Styles\Fonts\slick.ttf" />
-    <Content Include="Styles\Fonts\slick.woff" />
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -235,5 +226,29 @@
   </ProjectExtensions>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Slick\slick\config.rb" />
+    <Content Include="Content\Slick\slick\fonts\slick.eot" />
+    <Content Include="Content\Slick\slick\fonts\slick.ttf" />
+    <Content Include="Content\Slick\slick\fonts\slick.woff" />
+    <Content Include="Content\Slick\slick\slick-theme.less" />
+    <Content Include="Content\Slick\slick\slick-theme.scss" />
+    <Content Include="Content\Slick\slick\slick.less" />
+    <Content Include="Content\Slick\slick\slick.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Slick\bower.json" />
+    <Content Include="Content\Slick\component.json" />
+    <Content Include="Content\Slick\CONTRIBUTING.markdown" />
+    <Content Include="Content\Slick\ISSUE_TEMPLATE.md" />
+    <Content Include="Content\Slick\LICENSE" />
+    <Content Include="Content\Slick\Makefile" />
+    <Content Include="Content\Slick\package.json" />
+    <Content Include="Content\Slick\README.markdown" />
+    <Content Include="Content\Slick\slick.jquery.json" />
   </ItemGroup>
 </Project>

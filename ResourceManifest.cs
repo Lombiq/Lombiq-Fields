@@ -10,9 +10,9 @@ namespace MediaKitty.Extensions
 
             manifest.DefineStyle("MediaLibraryUploadField").SetUrl("media-library-upload-field.min.css", "media-library-upload-field.css");
 
-            manifest.DefineStyle("SlickTheme").SetUrl("slick-theme.css");
-            manifest.DefineStyle("Slick").SetUrl("slick.css");
-            manifest.DefineScript("Slick").SetUrl("slick.min.js", "slick.js").SetDependencies("jQuery");
+            manifest.DefineStyle("SlickTheme").SetUrl("../Content/Slick/slick/slick-theme.css");
+            manifest.DefineStyle("Slick").SetUrl("../Content/Slick/slick/slick.css");
+            manifest.DefineScript("Slick").SetUrl("../Content/Slick/slick/slick.min.js", "slick.js").SetDependencies("jQuery");
         }
     }
 }

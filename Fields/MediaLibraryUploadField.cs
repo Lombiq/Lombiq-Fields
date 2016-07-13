@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.FieldStorage;
-using Orchard.Core.Common.Utilities;
+using Orchard.ContentManagement.Utilities;
 using Orchard.Environment.Extensions;
 using Orchard.MediaLibrary.Models;
 

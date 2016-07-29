@@ -102,11 +102,11 @@ namespace Lombiq.Fields.Drivers
                 folderPath = string.IsNullOrEmpty(folderPath) ? "UserUploads/" + user.Id : folderPath;
 
                 var sizeOfAlreadyUploadedFilesForThisFieldMB = 0.0;
+                var alreadyUploadedFiles = field.MediaParts.ToList();
 
                 // Gets the size of already stored and current files.
                 if (field.MediaParts != null && _storageProvider.FolderExists(folderPath))
                 {
-                    var alreadyUploadedFiles = field.MediaParts.ToList();
                     var storedFiles = _storageProvider.ListFiles(folderPath);
 
                     foreach (var storedFile in storedFiles)
@@ -124,6 +124,11 @@ namespace Lombiq.Fields.Drivers
 
                 var files = ((Controller)updater).Request.Files;
                 var sizeOfCurrentFilesMB = 0.0;
+
+                if (!settings.Multiple && files.Count + alreadyUploadedFiles.Count > 1)
+                {
+                    updater.AddModelError("MultipleItemsNotAllowed", T("You can upload only one file. Please remove content before adding another."));
+                }
                 for (int i = 0; i < files.Count; i++)
                 {
                     sizeOfCurrentFilesMB += files[i].ContentLength / 1024.0 / 1024.0;

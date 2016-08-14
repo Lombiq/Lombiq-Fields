@@ -125,10 +125,14 @@ namespace Lombiq.Fields.Drivers
                 var files = ((Controller)updater).Request.Files;
                 var sizeOfCurrentFilesMB = 0.0;
 
-                if (!settings.Multiple && files.Count + alreadyUploadedFiles.Count > 1)
+                if (files[0] != null && files[0].ContentLength != 0)
                 {
-                    updater.AddModelError("MultipleItemsNotAllowed", T("You can upload only one file. Please remove content before adding another."));
+                    if (!settings.Multiple && files.Count + alreadyUploadedFiles.Count > 1)
+                    {
+                        updater.AddModelError("MultipleItemsNotAllowed", T("You can upload only one file. Please remove content before adding another."));
+                    }
                 }
+                
                 for (int i = 0; i < files.Count; i++)
                 {
                     sizeOfCurrentFilesMB += files[i].ContentLength / 1024.0 / 1024.0;

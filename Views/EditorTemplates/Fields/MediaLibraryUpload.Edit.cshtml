@@ -21,7 +21,6 @@
     var fileExtensions = (settings.AllowedExtensions ?? "").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
     var acceptedMimeTypes = !fileExtensions.Any() || fileExtensions.Contains("*") ?
         "*.*" : string.Join(",", fileExtensions.Select(e => MimeAssistant.GetMimeType(string.Format("myfile.{0}", e))));
-    var multipleErrorText = T("You can upload only one file. Please remove content before adding another.");
 }
 
 <div class="media-library-upload-field-container">
@@ -142,7 +141,7 @@
 
         $(document).on('click', "#media-library-upload-field-@fieldIdForIds", function (event) {
             if ("@multiple" == "" && $("div[data-fieldid=@fieldIdForIds]").val() != null) {
-                alert("@multipleErrorText");
+                alert("@HttpUtility.JavaScriptStringEncode(T("You can upload only one file. Please remove content before adding another.").Text)");
                 event.preventDefault();
             }
         });

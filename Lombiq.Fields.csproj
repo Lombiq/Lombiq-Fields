@@ -134,6 +134,7 @@
     <Content Include="Styles\media-library-upload-field.less" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bindings\MediaLibraryUploadFieldBindings.cs" />
     <Compile Include="Drivers\MediaLibraryUploadFieldDriver.cs" />
     <Compile Include="Drivers\MediaLibraryUploadFieldElementDriver.cs" />
     <Compile Include="Drivers\MoneyFieldDriver.cs" />

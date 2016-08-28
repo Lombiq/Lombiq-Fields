@@ -28,9 +28,10 @@ namespace Orchard.DynamicForms.Drivers
         protected override EditorResult OnBuildEditor(MediaLibraryUploadField element, ElementEditorContext context)
         {
             var formShape = BuildForms(context);
+            var mediaFieldEditor = BuildForm(context, "MediaLibraryUploadField");
             var mediaButtonValidation = BuildForm(context, "MediaLibraryUploadFieldValidation", "Validation:10");
 
-            return Editor(context, formShape, mediaButtonValidation);
+            return Editor(context, formShape, mediaFieldEditor, mediaButtonValidation);
         }
 
         protected override void DescribeForm(DescribeContext context)

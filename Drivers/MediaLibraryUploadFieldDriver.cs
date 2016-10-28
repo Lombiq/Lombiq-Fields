@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Web.Mvc;
 
 namespace Lombiq.Fields.Drivers
 {
@@ -92,8 +91,9 @@ namespace Lombiq.Fields.Drivers
             if (updater.TryUpdateModel(model, GetPrefix(field, part), null, null))
             {
                 field.Ids = String.IsNullOrEmpty(model.SelectedIds) ? new int[0] : model.SelectedIds.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
-                
-                var user = _wca.GetContext().CurrentUser;
+
+                var workContext = _wca.GetContext();
+                var user = workContext.CurrentUser;
                 var folderPath = _tokenizer.Replace(settings.FolderPath, new Dictionary<string, object>
                 {
                     { "Content", part.ContentItem },
@@ -122,7 +122,7 @@ namespace Lombiq.Fields.Drivers
                     }
                 }
 
-                var files = ((Controller)updater).Request.Files;
+                var files = workContext.HttpContext.Request.Files;
                 var sizeOfCurrentFilesMB = 0.0;
                 bool fileHasContentLength = false;
 

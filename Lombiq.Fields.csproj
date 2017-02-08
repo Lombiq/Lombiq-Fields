@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -14,8 +14,7 @@
     <AssemblyName>Lombiq.Fields</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
+    <FileUpgradeFlags></FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation />
     <TargetFrameworkProfile />
@@ -95,18 +94,6 @@
       <Name>Orchard.Core</Name>
       <Private>false</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Orchard.DynamicForms\Orchard.DynamicForms.csproj">
-      <Project>{82190f52-2901-46d6-8a4c-34649959483f}</Project>
-      <Name>Orchard.DynamicForms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Orchard.Forms\Orchard.Forms.csproj">
-      <Project>{642a49d7-8752-4177-80d6-bfbbcfad3de0}</Project>
-      <Name>Orchard.Forms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Orchard.Layouts\Orchard.Layouts.csproj">
-      <Project>{6bd8b2fa-f2e3-4ac8-a4c3-2925a653889a}</Project>
-      <Name>Orchard.Layouts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Orchard.MediaLibrary\Orchard.MediaLibrary.csproj">
       <Project>{73a7688a-5bd3-4f7e-adfa-ce36c5a10e3b}</Project>
       <Name>Orchard.MediaLibrary</Name>
@@ -134,11 +121,8 @@
     <Content Include="Styles\media-library-upload-field.less" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bindings\MediaLibraryUploadFieldBindings.cs" />
     <Compile Include="Drivers\MediaLibraryUploadFieldDriver.cs" />
-    <Compile Include="Drivers\MediaLibraryUploadFieldElementDriver.cs" />
     <Compile Include="Drivers\MoneyFieldDriver.cs" />
-    <Compile Include="Elements\MediaLibraryUploadField.cs" />
     <Compile Include="Fields\MediaLibraryUploadField.cs" />
     <Compile Include="Fields\MoneyField.cs" />
     <Compile Include="Handlers\MediaLibraryUploadFieldHandler.cs" />
@@ -149,8 +133,6 @@
     <Compile Include="Settings\MediaLibraryUploadFieldSettings.cs" />
     <Compile Include="Settings\MoneyFieldEditorEvents.cs" />
     <Compile Include="Settings\MoneyFieldSettings.cs" />
-    <Compile Include="Validators\MediaLibraryUploadFieldValidator.cs" />
-    <Compile Include="Validators\Settings\MediaLibraryUploadFieldValidationSettings.cs" />
     <Compile Include="ViewModels\MediaLibraryUploadFieldViewModel.cs" />
     <Compile Include="ViewModels\MoneyFieldViewModel.cs" />
   </ItemGroup>
@@ -209,10 +191,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>45979</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl></IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
+          <UseCustomServer>True</UseCustomServer>
           <CustomServerUrl>http://orchard.codeplex.com</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
@@ -221,10 +202,5 @@
   </ProjectExtensions>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <Content Include="Views\Elements\MediaLibraryUploadField.cshtml" />
-    <Content Include="Views\Elements\MediaLibraryUploadField.Design.cshtml" />
   </ItemGroup>
 </Project>

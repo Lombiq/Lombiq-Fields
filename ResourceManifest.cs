@@ -1,6 +1,6 @@
 ﻿using Orchard.UI.Resources;
 
-namespace MediaKitty.Extensions
+namespace Lombiq.Fields
 {
     public class ResourceManifest : IResourceManifestProvider
     {

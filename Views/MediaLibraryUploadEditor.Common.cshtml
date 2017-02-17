@@ -1,0 +1,160 @@
+﻿@*This file is shared by MediaLibraryUpload.Edit.cshtml for the simple field and by MediaLibraryUploadField.cshtml for the DynamicForms element.
+    Keep in mind when you edit this file test the result with both editors.*@
+
+@using Orchard.ContentManagement;
+@using Orchard.Utility.Extensions;
+@using Piedone.HelpfulLibraries.Utilities;
+
+@{
+    Script.Require("jQueryUI_Sortable").AtFoot();
+
+    Style.Require("MediaLibraryUploadField");
+
+    // Input parameters.
+    var required = (bool)Model.Required;
+    var displayName = (string)Model.DisplayName;
+    var fieldIdForSelectedIds = (string)Model.FieldIdForSelectedIds;
+    var fieldNameForSelectedIds = (string)Model.FieldNameForSelectedIds;
+    var fieldIdForIds = (string)Model.FieldIdForIds;
+    var fieldNameForIds = (string)Model.FieldNameForIds;
+    var multiple = (bool)Model.Multiple;
+    var allowedExtensions = (string)Model.AllowedExtensions;
+    var contentItems = (IEnumerable<ContentItem>)Model.ContentItems;
+    var hint = (string)Model.Hint;
+    var selectedIds = (string)Model.SelectedIds;
+
+    var contentManager = WorkContext.Resolve<IContentManager>();
+
+    var multipleItems = multiple ? "multiple" : "";
+    var fileExtensions = (allowedExtensions ?? "").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+    var acceptedMimeTypes = !fileExtensions.Any() || fileExtensions.Contains("*") ?
+        "*.*" : string.Join(",", fileExtensions.Select(e => MimeAssistant.GetMimeType(string.Format("myfile.{0}", e))));
+}
+
+<div class="media-library-upload-field-container">
+    <fieldset>
+        <label @if (required) { <text> class="required" </text> }>@displayName</label>
+        <div id="save-message-@fieldIdForIds" class="message message-Warning media-library-upload-message">@T("You need to save your changes.")</div>
+        <div id="media-library-upload-@fieldIdForIds" class="items media-library-upload" data-summary="@displayName">
+            <ul>
+                @foreach (var contentItem in contentItems)
+                {
+                    var editRouteValues = contentManager.GetItemMetadata(contentItem).EditorRouteValues;
+                    var editUrl = Url.Action(Convert.ToString(editRouteValues["action"]), editRouteValues.Merge(new RouteValueDictionary { { "ReturnUrl", Request.RawUrl } }));
+                    <li>
+                        <div data-id="@contentItem.Id" data-fieldid="@fieldIdForIds" class="media-library-upload-item">
+                            <div class="thumbnail">
+                                @Display(contentManager.BuildDisplay(contentItem, "Thumbnail"))
+                                <div class="overlay">
+                                    <h3>@Html.ItemDisplayText(contentItem)</h3>
+                                </div>
+
+                            </div>
+                        </div>
+                        <a href="#" data-id="@contentItem.Id" class="media-library-upload-remove">@T("Remove")</a>@T(" | ")
+                        <a href="@editUrl">@T("Edit")</a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="media-library-upload-wrapper">
+            <div class="media-library-upload-wrap-file">
+                <input id="media-library-upload-field-@fieldIdForIds" name="@fieldNameForIds" class="button media-library-upload-field" type="file" @multiple value="@T("Browse")" size="100" accept="@acceptedMimeTypes" />
+            </div>
+            <div id="media-library-upload-filename-@fieldIdForIds" class="media-library-upload-filename"></div>
+        </div>
+
+        <input id="@fieldIdForSelectedIds" type="hidden" name="@fieldNameForSelectedIds" value="@selectedIds" />
+        <div class="media-library-upload-hint">@hint</div>
+    </fieldset>
+</div>
+
+@using (Script.Foot())
+{
+    <script type="text/javascript">
+        //<![CDATA[
+        (function ($) {
+            var inputFieldParentFormElement = $("#media-library-upload-field-@fieldIdForIds").closest("form");
+            if (!inputFieldParentFormElement.is("enctype") || $inputFieldParentFormElement.attr("enctype") == "multipart/form-data") {
+                // This is required to be able to upload files using the POST body.
+                inputFieldParentFormElement.attr("enctype", "multipart/form-data");
+            }
+
+            var refreshMediaContentItemIds = function () {
+                var id = $("#@fieldIdForSelectedIds");
+                id.val("");
+                $("div[data-fieldid = @fieldIdForIds]").each(function () {
+                    id.val(id.val() + "," + $(this).attr("data-id"));
+                });
+
+                var itemsCount = $("div[data-fieldid = @fieldIdForIds]").length;
+            };
+
+            window.mediaLibraryDirty = false;
+
+            var showUnsavedChangedMessage = function () {
+                $("#save-message-@fieldIdForIds").show();
+                window.mediaLibraryDirty = true;
+            };
+
+            if (!window.mediaLibraryNavigateAway) {
+                $(window).on("beforeunload", window.mediaLibraryNavigateAway = function () {
+                    if (window.mediaLibraryDirty) {
+                        return "@HttpUtility.JavaScriptStringEncode(T("You have unsaved changes. Please only accept to leave if you don't mind losing those changes.").Text)";
+                    }
+                });
+                $("#@(fieldIdForSelectedIds)").closest("form").on("submit", function () {
+                    window.mediaLibraryDirty = false;
+                });
+            }
+
+            refreshMediaContentItemIds();
+
+            $(document).on("click", "#media-library-upload-@fieldIdForIds .media-library-upload-remove", function (e) {
+                e.preventDefault();
+                if (!confirm("@HttpUtility.JavaScriptStringEncode(T("Do you really want to remove that media?").Text)")) return false;
+                $(this).closest("li").remove();
+                refreshMediaContentItemIds();
+                showUnsavedChangedMessage();
+                return false;
+            });
+
+            $("#media-library-upload-@fieldIdForIds ul").sortable({
+                handle: ".thumbnail",
+                stop: function () {
+                    refreshMediaContentItemIds();
+                    showUnsavedChangedMessage();
+                }
+            }).disableSelection();
+
+            $("#media-library-upload-field-@fieldIdForIds").change(function () {
+                var fileNameList = new Array();
+                for (var i = 0; i < $(this)[0].files.length; i++) {
+                    fileNameList.push($(this)[0].files[i].name);
+                }
+
+                var filenames = fileNameList.join(", ");
+                if (filenames) {
+                    $("#media-library-upload-filename-@fieldIdForIds")
+                    .addClass("media-library-upload-filename-has-file")
+                    .html(filenames);
+                    showUnsavedChangedMessage();
+                } else {
+                    $("#media-library-upload-filename-@fieldIdForIds")
+                        .removeClass("media-library-upload-filename-has-file")
+                        .empty();
+                }
+            });
+
+            $(document).on('click', "#media-library-upload-field-@fieldIdForIds", function (event) {
+                if ("@multipleItems" == "" && $("div[data-fieldid=@fieldIdForIds]").val() != null) {
+                    alert("@HttpUtility.JavaScriptStringEncode(T("You can upload only one file. Please remove content before adding another.").Text)");
+                    event.preventDefault();
+                }
+            });
+
+        })(jQuery);
+        //]]>
+    </script>
+}

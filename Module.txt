@@ -14,6 +14,11 @@ Features:
         Category: Fields
         Description: A modified version of Media Library Picker Field that enables users to upload files attached to content items.
         Dependencies: Lombiq.Fields, Orchard.MediaLibrary, Orchard.MediaProcessing, Orchard.Tokens, Piedone.HelpfulLibraries
+    Lombiq.Fields.MediaLibraryUploadField.DynamicForms:
+        Name: Media Library Upload Field Dynamic Forms
+        Category: Fields
+        Description: A modified version of Media Library Picker Field that enables users to upload files attached to content items in Dynamic Forms.
+        Dependencies: Lombiq.Fields.MediaLibraryUploadField, Orchard.DynamicForms, Orchard.Forms, Orchard.Layouts
     Lombiq.Fields.MoneyField:
         Name: Money Field
         Category: Fields

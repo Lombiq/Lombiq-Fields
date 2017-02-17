@@ -1,6 +1,7 @@
 ﻿using Lombiq.Fields.Models;
 using Orchard;
 using Orchard.ContentManagement;
+using Orchard.Environment.Extensions;
 using Orchard.FileSystems.Media;
 using Orchard.Localization;
 using Orchard.MediaLibrary.Models;
@@ -17,6 +18,7 @@ using System.Web;
 
 namespace Lombiq.Fields.Services
 {
+    [OrchardFeature("Lombiq.Fields.MediaLibraryUploadField")]
     public class MediaLibraryUploadFieldPostHandlerService : IMediaLibraryUploadFieldPostHandlerService
     {
         private readonly IWorkContextAccessor _wca;

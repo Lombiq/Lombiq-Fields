@@ -1,4 +1,5 @@
-﻿using Lombiq.Fields.Models;
+﻿using Lombiq.Fields.Fields;
+using Lombiq.Fields.Models;
 using Orchard;
 
 namespace Lombiq.Fields.Services
@@ -12,7 +13,7 @@ namespace Lombiq.Fields.Services
         /// <summary>
         /// Validates and stores the files uploaded with either version of the field.
         /// </summary>
-        /// <param name="context">The common context which is can be created by either version of the field.</param>
+        /// <param name="context">The common context which can be created by either version of the field.</param>
         void Handle(MediaLibraryUploadFieldPostHandlerContext context);
     }
 }

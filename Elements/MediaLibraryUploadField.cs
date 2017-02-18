@@ -14,6 +14,10 @@ namespace Lombiq.Fields.Elements
         public static string NameForSelectedIdsHiddenInput = "medialibraryuploadfield-selectedids-hiddeninput";
 
 
+        public int[] Ids { get; set; }
+
+        #region Field settings
+
         public string DisplayName
         {
             get { return this.Retrieve(x => x.DisplayName); }
@@ -80,6 +84,6 @@ namespace Lombiq.Fields.Elements
             set { this.Store(x => x.MediaProfile, value); }
         }
 
-        public int[] Ids { get; set; }
+        #endregion
     }
 }

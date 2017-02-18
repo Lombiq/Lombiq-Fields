@@ -55,8 +55,15 @@ namespace Lombiq.Fields.Handlers
             var mediaLibraryUploadElement = element as MediaLibraryUploadField;
 
             var workContext = _wca.GetContext();
-            var selectedIdsHiddenInputValue = workContext.HttpContext.Request.Form[MediaLibraryUploadField.NameForSelectedIdsHiddenInput];
-            mediaLibraryUploadElement.Ids = string.IsNullOrEmpty(selectedIdsHiddenInputValue) ? new int[0] : selectedIdsHiddenInputValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
+            var selectedIdsHiddenInputValue =
+                workContext.HttpContext.Request.Form[MediaLibraryUploadField.NameForSelectedIdsHiddenInput];
+            mediaLibraryUploadElement.Ids =
+                string.IsNullOrEmpty(selectedIdsHiddenInputValue)
+                ? new int[0]
+                : selectedIdsHiddenInputValue
+                    .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
+                    .Select(int.Parse)
+                    .ToArray();
 
             _mediaLibraryUploadFieldPostHandlerService.Handle(new MediaLibraryUploadFieldPostHandlerContext
             {
@@ -66,7 +73,10 @@ namespace Lombiq.Fields.Handlers
                 MaximumSizeKB = mediaLibraryUploadElement.MaximumSizeKB,
                 ImageMaximumWidth = mediaLibraryUploadElement.ImageMaximumWidth,
                 ImageMaximumHeight = mediaLibraryUploadElement.ImageMaximumHeight,
-                AlreadyUploadedFiles = _contentManager.GetMany<MediaPart>(mediaLibraryUploadElement.Ids, VersionOptions.Published, QueryHints.Empty).ToList(),
+                AlreadyUploadedFiles =
+                    _contentManager
+                    .GetMany<MediaPart>(mediaLibraryUploadElement.Ids, VersionOptions.Published, QueryHints.Empty)
+                    .ToList(),
                 Multiple = mediaLibraryUploadElement.Multiple,
                 FolderPath = _tokenizer.Replace(mediaLibraryUploadElement.FolderPath, new Dictionary<string, object>
                     {

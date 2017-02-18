@@ -12,8 +12,8 @@ namespace Lombiq.Fields.Bindings
     {
         public void Describe(BindingDescribeContext context)
         {
-            context.For<MediaLibraryUploadField>().Binding("Ids", (contentItem, field, s) =>
-                field.Ids = MediaLibraryUploadHelper.DecodeIds(s));
+            context.For<MediaLibraryUploadField>().Binding("Ids", (contentItem, field, value) =>
+                field.Ids = MediaLibraryUploadHelper.DecodeIds(value));
         }
     }
 }

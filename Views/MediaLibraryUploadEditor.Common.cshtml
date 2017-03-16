@@ -1,5 +1,5 @@
-﻿@*This file is shared by MediaLibraryUpload.Edit.cshtml for the simple field and by MediaLibraryUploadField.cshtml for the DynamicForms element.
-    Keep in mind when you edit this file test the result with both editors.*@
+﻿@*This editor shape is the common part of the EditorTemplates/Fields/MediaLibraryUpload.Edit.cshtml and the Elements/MediaLibraryUploadField.cshtml
+    used for the DynamicForms element. Keep this in mind when you edit this file, test it with both editors.*@
 
 @using Orchard.ContentManagement;
 @using Orchard.Utility.Extensions;
@@ -33,7 +33,7 @@
 
 <div class="media-library-upload-field-container">
     <fieldset>
-        <label @if (required) { <text> class="required" </text> }>@displayName</label>
+        <label @if (required) { <text> class="required" </text>  }>@displayName</label>
         <div id="save-message-@fieldIdForIds" class="message message-Warning media-library-upload-message">@T("You need to save your changes.")</div>
         <div id="media-library-upload-@fieldIdForIds" class="items media-library-upload" data-summary="@displayName">
             <ul>

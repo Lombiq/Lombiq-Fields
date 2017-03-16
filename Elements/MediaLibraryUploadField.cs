@@ -9,7 +9,7 @@ namespace Lombiq.Fields.Elements
     {
         /// <summary>
         /// The name of the hidden field which stores the already selected IDs. This is neccessary because we can't use
-        /// the built one ProcessedVale because we want set it dynamically.
+        /// the built-in ProcessedValue because we want to set it dynamically.
         /// </summary>
         public static string NameForSelectedIdsHiddenInput = "medialibraryuploadfield-selectedids-hiddeninput";
 

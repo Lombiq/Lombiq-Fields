@@ -19,7 +19,7 @@ using System.Web;
 namespace Lombiq.Fields.Services
 {
     [OrchardFeature("Lombiq.Fields.MediaLibraryUploadField")]
-    public class MediaLibraryUploadFieldPostHandlerService : IMediaLibraryUploadFieldPostHandlerService
+    public class MediaLibraryUploadService : IMediaLibraryUploadService
     {
         private readonly IWorkContextAccessor _wca;
         private readonly IStorageProvider _storageProvider;
@@ -31,7 +31,7 @@ namespace Lombiq.Fields.Services
         public Localizer T { get; set; }
 
 
-        public MediaLibraryUploadFieldPostHandlerService(
+        public MediaLibraryUploadService(
              IWorkContextAccessor wca,
             IStorageProvider storageProvider,
             IMediaLibraryService mediaLibraryService,

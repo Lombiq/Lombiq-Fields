@@ -24,18 +24,18 @@ namespace Lombiq.Fields.Drivers
         private readonly IContentManager _contentManager;
         private readonly ITokenizer _tokenizer;
         private readonly IWorkContextAccessor _wca;
-        private readonly IMediaLibraryUploadFieldPostHandlerService _mediaLibraryUploadFieldPostHandlerService;
+        private readonly IMediaLibraryUploadService _mediaLibraryUploadService;
 
 
         public Localizer T { get; set; }
 
 
-        public MediaLibraryUploadFieldDriver(IContentManager contentManager, ITokenizer tokenizer, IWorkContextAccessor wca, IMediaLibraryUploadFieldPostHandlerService mediaLibraryUploadFieldPostHandlerService)
+        public MediaLibraryUploadFieldDriver(IContentManager contentManager, ITokenizer tokenizer, IWorkContextAccessor wca, IMediaLibraryUploadService mediaLibraryUploadService)
         {
             _contentManager = contentManager;
             _tokenizer = tokenizer;
             _wca = wca;
-            _mediaLibraryUploadFieldPostHandlerService = mediaLibraryUploadFieldPostHandlerService;
+            _mediaLibraryUploadService = mediaLibraryUploadService;
 
             T = NullLocalizer.Instance;
         }
@@ -86,7 +86,7 @@ namespace Lombiq.Fields.Drivers
 
                 var workContext = _wca.GetContext();
 
-                _mediaLibraryUploadFieldPostHandlerService.Handle(new MediaLibraryUploadFieldPostHandlerContext
+                _mediaLibraryUploadService.Handle(new MediaLibraryUploadFieldPostHandlerContext
                 {
                     FileFieldName = $"MediaLibraryUploadField-{part.PartDefinition.Name}-{field.Name}[]",
                     AllowedExtensions = settings.AllowedExtensions,

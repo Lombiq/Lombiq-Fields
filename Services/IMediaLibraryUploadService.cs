@@ -8,7 +8,7 @@ namespace Lombiq.Fields.Services
     /// Service for handling the files posted by <see cref="MediaLibraryUploadField"/> and the DynamicForms version of
     /// it <see cref="Lombiq.Fields.Elements.MediaLibraryUploadField"/>
     /// </summary>
-    public interface IMediaLibraryUploadFieldPostHandlerService : IDependency
+    public interface IMediaLibraryUploadService : IDependency
     {
         /// <summary>
         /// Validates and stores the files uploaded with either version of the field.

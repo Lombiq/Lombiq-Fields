@@ -163,7 +163,7 @@
     <Compile Include="Drivers\MediaLibraryUploadFieldElementDriver.cs" />
     <Compile Include="Drivers\MoneyFieldDriver.cs" />
     <Compile Include="Elements\MediaLibraryUploadField.cs" />
-    <Compile Include="Handlers\MediaLibraryFieldElementDynamicFormEventHandler.cs" />
+    <Compile Include="Handlers\MediaLibraryUploadFieldElementDynamicFormEventHandler.cs" />
     <Compile Include="Fields\MediaLibraryUploadField.cs" />
     <Compile Include="Fields\MoneyField.cs" />
     <Compile Include="Handlers\MediaLibraryUploadFieldElementHandler.cs" />
@@ -173,8 +173,8 @@
     <Compile Include="Helpers\MediaLibraryUploadHelper.cs" />
     <Compile Include="Models\MediaLibraryUploadFieldPostHandlerContext.cs" />
     <Compile Include="ResourceManifest.cs" />
-    <Compile Include="Services\IMediaLibraryUploadFieldPostHandlerService.cs" />
-    <Compile Include="Services\MediaLibraryUploadFieldPostHandlerService.cs" />
+    <Compile Include="Services\IMediaLibraryUploadService.cs" />
+    <Compile Include="Services\MediaLibraryUploadService.cs" />
     <Compile Include="Settings\MediaLibraryUploadFieldEditorEvents.cs" />
     <Compile Include="Settings\MediaLibraryUploadFieldSettings.cs" />
     <Compile Include="Settings\MoneyFieldEditorEvents.cs" />

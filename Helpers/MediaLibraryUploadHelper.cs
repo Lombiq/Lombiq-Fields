@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Lombiq.Fields.Helpers
 {
-    public static class MediaLibraryUploadHelper
+    internal static class MediaLibraryUploadHelper
     {
         private static readonly char[] _separators = new[] { '{', '}', ',' };
 

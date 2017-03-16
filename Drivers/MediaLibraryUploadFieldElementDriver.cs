@@ -18,7 +18,10 @@ namespace Lombiq.Fields.Drivers
         private readonly IContentManager _contentManager;
 
 
-        public MediaLibraryUploadFieldElementDriver(IFormsBasedElementServices formsServices, ITokenizer tokenizer, IContentManager contentManager) : base(formsServices)
+        public MediaLibraryUploadFieldElementDriver(
+            IFormsBasedElementServices formsServices,
+            ITokenizer tokenizer,
+            IContentManager contentManager) : base(formsServices)
         {
             _tokenizer = tokenizer;
             _contentManager = contentManager;
@@ -28,8 +31,7 @@ namespace Lombiq.Fields.Drivers
         protected override EditorResult OnBuildEditor(MediaLibraryUploadField element, ElementEditorContext context) =>
             Editor(context, BuildForm(context, "MediaLibraryUploadField"));
 
-        protected override void DescribeForm(DescribeContext context)
-        {
+        protected override void DescribeForm(DescribeContext context) =>
             context.Form("MediaLibraryUploadField", factory =>
             {
                 var shape = (dynamic)factory;
@@ -101,7 +103,6 @@ namespace Lombiq.Fields.Drivers
 
                 return form;
             });
-        }
 
         protected override void OnDisplaying(MediaLibraryUploadField element, ElementDisplayingContext context)
         {

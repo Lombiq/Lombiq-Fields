@@ -67,23 +67,17 @@ namespace Lombiq.Fields.Handlers
 
             _mediaLibraryUploadService.Handle(new MediaLibraryUploadFieldPostHandlerContext
             {
+                MediaLibraryUploadSettings = mediaLibraryUploadElement,
                 FileFieldName = $"MediaLibraryUploadField-{mediaLibraryUploadElement.Name}[]",
-                AllowedExtensions = mediaLibraryUploadElement.AllowedExtensions,
                 Updater = context.Updater,
-                MaximumSizeKB = mediaLibraryUploadElement.MaximumSizeKB,
-                ImageMaximumWidth = mediaLibraryUploadElement.ImageMaximumWidth,
-                ImageMaximumHeight = mediaLibraryUploadElement.ImageMaximumHeight,
                 AlreadyUploadedFiles =
                     _contentManager
                     .GetMany<MediaPart>(mediaLibraryUploadElement.Ids, VersionOptions.Published, QueryHints.Empty)
                     .ToList(),
-                Multiple = mediaLibraryUploadElement.Multiple,
                 FolderPath = _tokenizer.Replace(mediaLibraryUploadElement.FolderPath, new Dictionary<string, object>
                     {
                         { "User", workContext.CurrentUser }
                     }),
-                FieldStorageUserQuotaMB = mediaLibraryUploadElement.FieldStorageUserQuotaMB,
-                Required = mediaLibraryUploadElement.Required,
                 StoreIds = (ids) => mediaLibraryUploadElement.Ids = mediaLibraryUploadElement.Ids.Union(ids).ToArray(),
             });
 

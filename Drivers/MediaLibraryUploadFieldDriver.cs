@@ -88,21 +88,15 @@ namespace Lombiq.Fields.Drivers
 
                 _mediaLibraryUploadService.Handle(new MediaLibraryUploadFieldPostHandlerContext
                 {
+                    MediaLibraryUploadSettings = settings,
                     FileFieldName = $"MediaLibraryUploadField-{part.PartDefinition.Name}-{field.Name}[]",
-                    AllowedExtensions = settings.AllowedExtensions,
                     Updater = updater,
-                    MaximumSizeKB = settings.MaximumSizeKB,
-                    ImageMaximumWidth = settings.ImageMaximumWidth,
-                    ImageMaximumHeight = settings.ImageMaximumHeight,
                     AlreadyUploadedFiles = field.MediaParts != null ? field.MediaParts.ToList() : new List<MediaPart>(),
-                    Multiple = settings.Multiple,
                     FolderPath = _tokenizer.Replace(settings.FolderPath, new Dictionary<string, object>
                     {
                         { "Content", part.ContentItem },
                         { "User", workContext.CurrentUser }
                     }),
-                    FieldStorageUserQuotaMB = settings.FieldStorageUserQuotaMB,
-                    Required = settings.Required,
                     StoreIds = (ids) => field.Ids = field.Ids.Union(ids).ToArray(),
                 });
             }

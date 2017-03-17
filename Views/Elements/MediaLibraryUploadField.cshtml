@@ -13,7 +13,7 @@
 @Html.ValidationSummary()
 
 @Display(New.MediaLibraryUploadEditor_Common(
-Required: element.Required,
+MediaLibraryUploadSettings: element,
 DisplayName: element.DisplayName,
 FieldIdForSelectedIds: processedName,
 // This is the name of the hidden field which stores the selected ids. In case of a DynamicForms element we shouldn't
@@ -23,9 +23,6 @@ FieldIdForSelectedIds: processedName,
 FieldNameForSelectedIds: MediaLibraryUploadField.NameForSelectedIdsHiddenInput,
 FieldIdForIds: processedName,
 FieldNameForIds: "MediaLibraryUploadField-" + processedName + "[]",
-Multiple: element.Multiple,
-AllowedExtensions: element.AllowedExtensions,
 ContentItems: Model.ContentItems,
-Hints: element.Hint,
 SelectedIds: processedValue
 ))

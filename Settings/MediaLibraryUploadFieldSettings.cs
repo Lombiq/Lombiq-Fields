@@ -1,9 +1,10 @@
-﻿using Orchard.Environment.Extensions;
+﻿using Lombiq.Fields.Models;
+using Orchard.Environment.Extensions;
 
 namespace Lombiq.Fields.Settings
 {
     [OrchardFeature("Lombiq.Fields.MediaLibraryUploadField")]
-    public class MediaLibraryUploadFieldSettings
+    public class MediaLibraryUploadFieldSettings : IMediaLibraryUploadSettings
     {
         #region General field settings
         public string Hint { get; set; }

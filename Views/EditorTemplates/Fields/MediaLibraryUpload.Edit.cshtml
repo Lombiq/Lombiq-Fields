@@ -7,15 +7,12 @@
 }
 
 @Display(New.MediaLibraryUploadEditor_Common(
-Required: settings.Required,
+MediaLibraryUploadSettings: settings,
 DisplayName: Model.Field.DisplayName,
 FieldIdForSelectedIds: Html.FieldIdFor(m => m.SelectedIds),
 FieldNameForSelectedIds: Html.FieldNameFor(m => m.SelectedIds),
 FieldIdForIds: Html.FieldIdFor(m => m.Field.Ids),
 FieldNameForIds: "MediaLibraryUploadField-" + Model.Part.PartDefinition.Name + "-" + Model.Field.Name + "[]",
-Multiple: settings.Multiple,
-AllowedExtensions: settings.AllowedExtensions,
 ContentItems: Model.ContentItems,
-Hints: settings.Hint,
 SelectedIds: Model.SelectedIds
 ))

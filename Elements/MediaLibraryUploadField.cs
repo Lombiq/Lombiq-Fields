@@ -1,11 +1,12 @@
-﻿using Orchard.DynamicForms.Elements;
+﻿using Lombiq.Fields.Models;
+using Orchard.DynamicForms.Elements;
 using Orchard.Environment.Extensions;
 using Orchard.Layouts.Helpers;
 
 namespace Lombiq.Fields.Elements
 {
     [OrchardFeature("Lombiq.Fields.MediaLibraryUploadField.DynamicForms")]
-    public class MediaLibraryUploadField : FormElement
+    public class MediaLibraryUploadField : FormElement, IMediaLibraryUploadSettings
     {
         /// <summary>
         /// The name of the hidden field which stores the already selected IDs. This is neccessary because we can't use

@@ -171,6 +171,7 @@
     <Compile Include="Handlers\MoneyFieldHandler.cs" />
     <Compile Include="Helpers\CurrencyHelpers.cs" />
     <Compile Include="Helpers\MediaLibraryUploadHelper.cs" />
+    <Compile Include="Models\IMediaLibraryUploadSettings.cs" />
     <Compile Include="Models\MediaLibraryUploadFieldPostHandlerContext.cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Services\IMediaLibraryUploadService.cs" />

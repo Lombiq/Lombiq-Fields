@@ -65,7 +65,7 @@ namespace Lombiq.Fields.Services
                 // Making sure that only those files are processed that are uploaded through the current field's editor.
                 if (file.ContentLength > 0 && files.Keys[i] == context.FileFieldName)
                 {
-                    var allowedExtensions = (context.AllowedExtensions ?? "").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => string.Format(".{0}", s));
+                    var allowedExtensions = (context.MediaLibraryUploadSettings.AllowedExtensions ?? "").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => string.Format(".{0}", s));
 
                     // Validating against allowed file extension.
                     if (allowedExtensions.Any() && !allowedExtensions.Contains(Path.GetExtension(file.FileName).ToLowerInvariant()))
@@ -76,9 +76,9 @@ namespace Lombiq.Fields.Services
                         continue;
                     }
                     // Validating against individual files size limitation.
-                    else if (context.MaximumSizeKB > 0 && file.ContentLength > context.MaximumSizeKB * 1024)
+                    else if (context.MediaLibraryUploadSettings.MaximumSizeKB > 0 && file.ContentLength > context.MediaLibraryUploadSettings.MaximumSizeKB * 1024)
                     {
-                        context.Updater.AddModelError("FileSizeLimitExceeded", T("The file \"{0}\" was not uploaded, because its size exceeds the {1} KB limitation.", file.FileName, context.MaximumSizeKB));
+                        context.Updater.AddModelError("FileSizeLimitExceeded", T("The file \"{0}\" was not uploaded, because its size exceeds the {1} KB limitation.", file.FileName, context.MediaLibraryUploadSettings.MaximumSizeKB));
 
                         continue;
                     }
@@ -87,10 +87,10 @@ namespace Lombiq.Fields.Services
                     {
                         using (var image = Image.FromStream(file.InputStream))
                         {
-                            if ((context.ImageMaximumWidth > 0 && image.Width > context.ImageMaximumWidth) || (context.ImageMaximumHeight > 0 && image.Height > context.ImageMaximumHeight))
+                            if ((context.MediaLibraryUploadSettings.ImageMaximumWidth > 0 && image.Width > context.MediaLibraryUploadSettings.ImageMaximumWidth) || (context.MediaLibraryUploadSettings.ImageMaximumHeight > 0 && image.Height > context.MediaLibraryUploadSettings.ImageMaximumHeight))
                             {
                                 context.Updater.AddModelError("ImageError", T("The image \"{0}\" was not uploaded, because its dimensions exceed the limitations. The maximum allowed file dimensions are {1}x{2} pixels.",
-                                    file.FileName, context.ImageMaximumWidth, context.ImageMaximumHeight));
+                                    file.FileName, context.MediaLibraryUploadSettings.ImageMaximumWidth, context.MediaLibraryUploadSettings.ImageMaximumHeight));
 
                                 continue;
                             }
@@ -114,7 +114,7 @@ namespace Lombiq.Fields.Services
                 #region Validating against the setting to allow multiple files to uploaded/selected.
 
                 var alreadyUploadedFiles = context.AlreadyUploadedFiles;
-                if (!context.Multiple && validFiles.Count + alreadyUploadedFiles.Count > 1)
+                if (!context.MediaLibraryUploadSettings.Multiple && validFiles.Count + alreadyUploadedFiles.Count > 1)
                 {
                     context.Updater.AddModelError("MultipleItemsNotAllowed", T("This field only allows one file to be selected. Please remove content before adding another."));
                     canUpload = false;
@@ -144,13 +144,13 @@ namespace Lombiq.Fields.Services
                         });
                 }
 
-                long fieldStorageUserQuotaInBytes = context.FieldStorageUserQuotaMB * 1024 * 1024;
+                long fieldStorageUserQuotaInBytes = context.MediaLibraryUploadSettings.FieldStorageUserQuotaMB * 1024 * 1024;
 
                 // Checking if the size of all uploaded files and stored files exceed the limit for this field.
                 if (fieldStorageUserQuotaInBytes > 0 && uploadedFilesSizeInBytes + uploadingFilesSizeInBytes > fieldStorageUserQuotaInBytes)
                 {
                     context.Updater.AddModelError("FieldStorageUserQuotaExceeded", T("The files were not uploaded, because their size and the alrady stored files size exceed the {0} MB limitation by {1} bytes.",
-                        context.FieldStorageUserQuotaMB, (int)((uploadedFilesSizeInBytes + uploadingFilesSizeInBytes) - fieldStorageUserQuotaInBytes)));
+                        context.MediaLibraryUploadSettings.FieldStorageUserQuotaMB, (int)((uploadedFilesSizeInBytes + uploadingFilesSizeInBytes) - fieldStorageUserQuotaInBytes)));
                     canUpload = false;
                 }
 

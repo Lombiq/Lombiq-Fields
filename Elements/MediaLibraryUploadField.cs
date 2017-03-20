@@ -8,13 +8,6 @@ namespace Lombiq.Fields.Elements
     [OrchardFeature("Lombiq.Fields.MediaLibraryUploadField.DynamicForms")]
     public class MediaLibraryUploadField : FormElement, IMediaLibraryUploadSettings
     {
-        /// <summary>
-        /// The name of the hidden field which stores the already selected IDs. This is neccessary because we can't use
-        /// the built-in ProcessedValue because we want to set it dynamically.
-        /// </summary>
-        public static string NameForSelectedIdsHiddenInput = "medialibraryuploadfield-selectedids-hiddeninput";
-
-
         public int[] Ids { get; set; }
 
         #region Field settings
@@ -86,5 +79,11 @@ namespace Lombiq.Fields.Elements
         }
 
         #endregion
+
+        /// <summary>
+        /// The name of the hidden field which stores the already selected IDs. This is neccessary because we can't use
+        /// the built-in ProcessedValue because we want to set it dynamically.
+        /// </summary>
+        public string GetNameForSelectedIdsHiddenInput() => "medialibraryuploadfield-selectedids-hiddeninput-" + Name;
     }
 }

@@ -20,7 +20,7 @@ FieldIdForSelectedIds: processedName,
 // post this field with the element's name so we don't give it the processedName but an another name to workaround the
 // binding problems. The MediaLibraryUploadFieldElementHandler will provide (through the ReadElementValuesContext)
 // the value for the MediaLibraryUploadFieldBindings. This trick is the only way to bind the ids to the new content item.
-FieldNameForSelectedIds: MediaLibraryUploadField.NameForSelectedIdsHiddenInput,
+FieldNameForSelectedIds: element.GetNameForSelectedIdsHiddenInput(),
 FieldIdForIds: processedName,
 FieldNameForIds: "MediaLibraryUploadField-" + processedName + "[]",
 ContentItems: Model.ContentItems,

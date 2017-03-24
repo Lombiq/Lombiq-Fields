@@ -86,7 +86,7 @@ namespace Lombiq.Fields.Handlers
 
                 if (mediaLibraryUploadElement.Required && mediaLibraryUploadElement.Ids.Length == 0)
                 {
-                    context.Updater.AddModelError("Id", T("You need to have or upload at least one file for the field {0}.", mediaLibraryUploadElement.Name.CamelFriendly()));
+                    context.Updater.AddModelError(mediaLibraryUploadElement.Name, T("You need to have or upload at least one file for the field {0}.", mediaLibraryUploadElement.Name.CamelFriendly()));
                 }
 
                 // Set the element's value so the submission event handler can find the value for this element. 

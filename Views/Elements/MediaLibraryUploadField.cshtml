@@ -10,8 +10,6 @@
     var processedValue = (string)Model.ProcessedValue;
 }
 
-@Html.ValidationSummary()
-
 @Display(New.MediaLibraryUploadEditor_Common(
 MediaLibraryUploadSettings: element,
 DisplayName: element.DisplayName,
@@ -26,3 +24,5 @@ FieldNameForIds: "MediaLibraryUploadField-" + processedName + "[]",
 ContentItems: Model.ContentItems,
 SelectedIds: processedValue
 ))
+
+@Html.ValidationMessage(element.Name)

@@ -1,6 +1,6 @@
 ﻿using Lombiq.Fields.Fields;
 using Lombiq.Fields.Models;
-using Lombiq.Fields.Services;
+using Lombiq.Fields.Handlers;
 using Lombiq.Fields.Settings;
 using Lombiq.Fields.ViewModels;
 using Orchard;
@@ -24,18 +24,18 @@ namespace Lombiq.Fields.Drivers
         private readonly IContentManager _contentManager;
         private readonly ITokenizer _tokenizer;
         private readonly IWorkContextAccessor _wca;
-        private readonly IMediaLibraryUploadService _mediaLibraryUploadService;
+        private readonly IMediaLibraryUploadHandler _mediaLibraryUploadHandler;
 
 
         public Localizer T { get; set; }
 
 
-        public MediaLibraryUploadFieldDriver(IContentManager contentManager, ITokenizer tokenizer, IWorkContextAccessor wca, IMediaLibraryUploadService mediaLibraryUploadService)
+        public MediaLibraryUploadFieldDriver(IContentManager contentManager, ITokenizer tokenizer, IWorkContextAccessor wca, IMediaLibraryUploadHandler mediaLibraryUploadHandler)
         {
             _contentManager = contentManager;
             _tokenizer = tokenizer;
             _wca = wca;
-            _mediaLibraryUploadService = mediaLibraryUploadService;
+            _mediaLibraryUploadHandler = mediaLibraryUploadHandler;
 
             T = NullLocalizer.Instance;
         }
@@ -86,7 +86,7 @@ namespace Lombiq.Fields.Drivers
 
                 var workContext = _wca.GetContext();
 
-                _mediaLibraryUploadService.Handle(new MediaLibraryUploadFieldPostHandlerContext
+                _mediaLibraryUploadHandler.ValidateAndStore(new MediaLibraryUploadFieldPostHandlerContext
                 {
                     MediaLibraryUploadSettings = settings,
                     FileFieldName = $"MediaLibraryUploadField-{part.PartDefinition.Name}-{field.Name}[]",

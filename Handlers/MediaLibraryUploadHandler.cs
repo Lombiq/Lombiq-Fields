@@ -16,10 +16,10 @@ using System.IO;
 using System.Linq;
 using System.Web;
 
-namespace Lombiq.Fields.Services
+namespace Lombiq.Fields.Handlers
 {
     [OrchardFeature("Lombiq.Fields.MediaLibraryUploadField")]
-    public class MediaLibraryUploadService : IMediaLibraryUploadService
+    public class MediaLibraryUploadHandler : IMediaLibraryUploadHandler
     {
         private readonly IWorkContextAccessor _wca;
         private readonly IStorageProvider _storageProvider;
@@ -31,7 +31,7 @@ namespace Lombiq.Fields.Services
         public Localizer T { get; set; }
 
 
-        public MediaLibraryUploadService(
+        public MediaLibraryUploadHandler(
              IWorkContextAccessor wca,
             IStorageProvider storageProvider,
             IMediaLibraryService mediaLibraryService,
@@ -48,7 +48,7 @@ namespace Lombiq.Fields.Services
         }
 
 
-        public void Handle(MediaLibraryUploadFieldPostHandlerContext context)
+        public void ValidateAndStore(MediaLibraryUploadFieldPostHandlerContext context)
         {
             // Collecting files that this field should handle.
             var workContext = _wca.GetContext();

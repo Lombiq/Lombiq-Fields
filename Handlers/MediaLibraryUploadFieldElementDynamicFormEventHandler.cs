@@ -1,7 +1,7 @@
 ﻿using Lombiq.Fields.Elements;
 using Lombiq.Fields.Helpers;
 using Lombiq.Fields.Models;
-using Lombiq.Fields.Services;
+using Lombiq.Fields.Handlers;
 using Orchard;
 using Orchard.ContentManagement;
 using Orchard.DynamicForms.Elements;
@@ -21,7 +21,7 @@ namespace Lombiq.Fields.Handlers
     [OrchardFeature("Lombiq.Fields.MediaLibraryUploadField.DynamicForms")]
     public class MediaLibraryUploadFieldElementDynamicFormEventHandler : IDynamicFormEventHandler
     {
-        private readonly IMediaLibraryUploadService _mediaLibraryUploadService;
+        private readonly IMediaLibraryUploadHandler _mediaLibraryUploadHandler;
         private readonly IContentManager _contentManager;
         private readonly ITokenizer _tokenizer;
         private readonly IWorkContextAccessor _wca;
@@ -31,12 +31,12 @@ namespace Lombiq.Fields.Handlers
 
 
         public MediaLibraryUploadFieldElementDynamicFormEventHandler(
-            IMediaLibraryUploadService mediaLibraryUploadService,
+            IMediaLibraryUploadHandler mediaLibraryUploadHandler,
             IContentManager contentManager,
             ITokenizer tokenizer,
             IWorkContextAccessor wca)
         {
-            _mediaLibraryUploadService = mediaLibraryUploadService;
+            _mediaLibraryUploadHandler = mediaLibraryUploadHandler;
             _contentManager = contentManager;
             _tokenizer = tokenizer;
             _wca = wca;
@@ -68,7 +68,7 @@ namespace Lombiq.Fields.Handlers
                         .Select(int.Parse)
                         .ToArray();
 
-                _mediaLibraryUploadService.Handle(new MediaLibraryUploadFieldPostHandlerContext
+                _mediaLibraryUploadHandler.ValidateAndStore(new MediaLibraryUploadFieldPostHandlerContext
                 {
                     MediaLibraryUploadSettings = mediaLibraryUploadElement,
                     FileFieldName = $"MediaLibraryUploadField-{mediaLibraryUploadElement.Name}[]",

@@ -174,8 +174,8 @@
     <Compile Include="Models\IMediaLibraryUploadSettings.cs" />
     <Compile Include="Models\MediaLibraryUploadFieldPostHandlerContext.cs" />
     <Compile Include="ResourceManifest.cs" />
-    <Compile Include="Services\IMediaLibraryUploadService.cs" />
-    <Compile Include="Services\MediaLibraryUploadService.cs" />
+    <Compile Include="Handlers\IMediaLibraryUploadHandler.cs" />
+    <Compile Include="Handlers\MediaLibraryUploadHandler.cs" />
     <Compile Include="Settings\MediaLibraryUploadFieldEditorEvents.cs" />
     <Compile Include="Settings\MediaLibraryUploadFieldSettings.cs" />
     <Compile Include="Settings\MoneyFieldEditorEvents.cs" />

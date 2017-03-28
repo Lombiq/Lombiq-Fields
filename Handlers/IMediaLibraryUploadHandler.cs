@@ -5,7 +5,7 @@ using Orchard.Events;
 namespace Lombiq.Fields.Handlers
 {
     /// <summary>
-    /// Handler for the files posted by <see cref="MediaLibraryUploadField"/> and the DynamicForms version of
+    /// Events for the files posted by <see cref="MediaLibraryUploadField"/> and the DynamicForms version of
     /// it (<see cref="Lombiq.Fields.Elements.MediaLibraryUploadField"/>).
     /// </summary>
     public interface IMediaLibraryUploadHandler : IEventHandler

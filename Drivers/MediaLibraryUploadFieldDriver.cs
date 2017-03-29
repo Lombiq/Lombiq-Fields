@@ -86,7 +86,7 @@ namespace Lombiq.Fields.Drivers
 
                 var workContext = _wca.GetContext();
 
-                _mediaLibraryUploadHandler.ValidateAndStore(new MediaLibraryUploadFieldPostHandlerContext
+                _mediaLibraryUploadHandler.ValidateAndStore(new MediaLibraryUploadingContext
                 {
                     MediaLibraryUploadSettings = settings,
                     FileFieldName = $"MediaLibraryUploadField-{part.PartDefinition.Name}-{field.Name}[]",

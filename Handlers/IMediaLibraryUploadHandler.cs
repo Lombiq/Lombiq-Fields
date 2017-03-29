@@ -14,6 +14,6 @@ namespace Lombiq.Fields.Handlers
         /// Validates and stores the files uploaded with either version of the field.
         /// </summary>
         /// <param name="context">The common context which can be created by either version of the field.</param>
-        void ValidateAndStore(MediaLibraryUploadFieldPostHandlerContext context);
+        void ValidateAndStore(MediaLibraryUploadingContext context);
     }
 }

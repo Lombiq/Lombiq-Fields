@@ -172,7 +172,7 @@
     <Compile Include="Helpers\CurrencyHelpers.cs" />
     <Compile Include="Helpers\MediaLibraryUploadHelper.cs" />
     <Compile Include="Models\IMediaLibraryUploadSettings.cs" />
-    <Compile Include="Models\MediaLibraryUploadFieldPostHandlerContext.cs" />
+    <Compile Include="Models\MediaLibraryUploadingContext .cs" />
     <Compile Include="ResourceManifest.cs" />
     <Compile Include="Handlers\IMediaLibraryUploadHandler.cs" />
     <Compile Include="Handlers\MediaLibraryUploadHandler.cs" />

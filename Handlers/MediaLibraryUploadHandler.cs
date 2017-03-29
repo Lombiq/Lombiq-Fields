@@ -48,7 +48,7 @@ namespace Lombiq.Fields.Handlers
         }
 
 
-        public void ValidateAndStore(MediaLibraryUploadFieldPostHandlerContext context)
+        public void ValidateAndStore(MediaLibraryUploadingContext context)
         {
             // Collecting files that this field should handle.
             var workContext = _wca.GetContext();

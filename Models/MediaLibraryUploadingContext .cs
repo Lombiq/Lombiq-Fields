@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace Lombiq.Fields.Models
 {
     [OrchardFeature("Lombiq.Fields.MediaLibraryUploadField.DynamicForms")]
-    public class MediaLibraryUploadFieldPostHandlerContext
+    public class MediaLibraryUploadingContext
     {
         public IMediaLibraryUploadSettings MediaLibraryUploadSettings { get; set; }
         public string FileFieldName { get; set; }

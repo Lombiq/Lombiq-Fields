@@ -68,7 +68,7 @@ namespace Lombiq.Fields.Handlers
                         .Select(int.Parse)
                         .ToArray();
 
-                _mediaLibraryUploadHandler.ValidateAndStore(new MediaLibraryUploadFieldPostHandlerContext
+                _mediaLibraryUploadHandler.ValidateAndStore(new MediaLibraryUploadingContext
                 {
                     MediaLibraryUploadSettings = mediaLibraryUploadElement,
                     FileFieldName = $"MediaLibraryUploadField-{mediaLibraryUploadElement.Name}[]",

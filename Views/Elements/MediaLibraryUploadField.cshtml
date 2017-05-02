@@ -1,0 +1,28 @@
+﻿@using Lombiq.Fields.Elements
+
+@{
+    Script.Require("jQueryUI_Sortable").AtFoot();
+
+    Style.Require("MediaLibraryUploadField");
+
+    var element = (MediaLibraryUploadField)Model.Element;
+    var processedName = (string)Model.ProcessedName;
+    var processedValue = (string)Model.ProcessedValue;
+}
+
+@Display(New.MediaLibraryUploadEditor_Common(
+MediaLibraryUploadSettings: element,
+DisplayName: element.DisplayName,
+FieldIdForSelectedIds: processedName,
+// This is the name of the hidden field which stores the selected ids. In case of a DynamicForms element we shouldn't
+// post this field with the element's name so we don't give it the processedName but an another name to workaround the
+// binding problems. The MediaLibraryUploadFieldElementHandler will provide (through the ReadElementValuesContext)
+// the value for the MediaLibraryUploadFieldBindings. This trick is the only way to bind the ids to the new content item.
+FieldNameForSelectedIds: element.GetNameForSelectedIdsHiddenInput(),
+FieldIdForIds: processedName,
+FieldNameForIds: "MediaLibraryUploadField-" + processedName + "[]",
+ContentItems: Model.ContentItems,
+SelectedIds: processedValue
+))
+
+@Html.ValidationMessage(element.Name)

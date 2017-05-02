@@ -1,4 +1,6 @@
 ﻿using Lombiq.Fields.Fields;
+using Lombiq.Fields.Models;
+using Lombiq.Fields.Handlers;
 using Lombiq.Fields.Settings;
 using Lombiq.Fields.ViewModels;
 using Orchard;
@@ -6,20 +8,13 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Environment.Extensions;
-using Orchard.FileSystems.Media;
 using Orchard.Localization;
 using Orchard.MediaLibrary.Models;
-using Orchard.MediaLibrary.Services;
 using Orchard.Tokens;
-using Orchard.UI.Notify;
 using Orchard.Utility.Extensions;
-using Piedone.HelpfulLibraries.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Web;
 
 namespace Lombiq.Fields.Drivers
 {
@@ -27,24 +22,20 @@ namespace Lombiq.Fields.Drivers
     public class MediaLibraryUploadFieldDriver : ContentFieldDriver<MediaLibraryUploadField>
     {
         private readonly IContentManager _contentManager;
-        private readonly IMediaLibraryService _mediaLibraryService;
-        private readonly INotifier _notifier;
         private readonly ITokenizer _tokenizer;
         private readonly IWorkContextAccessor _wca;
-        private readonly IStorageProvider _storageProvider;
+        private readonly IMediaLibraryUploadHandler _mediaLibraryUploadHandler;
 
 
         public Localizer T { get; set; }
 
 
-        public MediaLibraryUploadFieldDriver(IContentManager contentManager, IMediaLibraryService mediaLibraryService, INotifier notifier, ITokenizer tokenizer, IWorkContextAccessor wca, IStorageProvider storageProvider)
+        public MediaLibraryUploadFieldDriver(IContentManager contentManager, ITokenizer tokenizer, IWorkContextAccessor wca, IMediaLibraryUploadHandler mediaLibraryUploadHandler)
         {
             _contentManager = contentManager;
-            _mediaLibraryService = mediaLibraryService;
-            _notifier = notifier;
             _tokenizer = tokenizer;
             _wca = wca;
-            _storageProvider = storageProvider;
+            _mediaLibraryUploadHandler = mediaLibraryUploadHandler;
 
             T = NullLocalizer.Instance;
         }
@@ -93,134 +84,21 @@ namespace Lombiq.Fields.Drivers
             {
                 field.Ids = string.IsNullOrEmpty(model.SelectedIds) ? new int[0] : model.SelectedIds.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
 
-                // Collecting files that this field should handle.
                 var workContext = _wca.GetContext();
-                var files = workContext.HttpContext.Request.Files;
-                var validFiles = new List<HttpPostedFileBase>();
-                long uploadingFilesSizeInBytes = 0;
 
-                #region Validation against different file properties and collecting valid files.
-
-                for (int i = 0; i < files.Count; i++)
+                _mediaLibraryUploadHandler.ValidateAndStore(new MediaLibraryUploadingContext
                 {
-                    var file = files[i];
-
-                    // Making sure that only those files are processed that are uploaded through the current field's editor.
-                    if (file.ContentLength > 0 && files.Keys[i] == $"MediaLibraryUploadField-{part.PartDefinition.Name}-{field.Name}[]")
-                    {
-                        var allowedExtensions = (settings.AllowedExtensions ?? "").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(s => string.Format(".{0}", s));
-
-                        // Validating against allowed file extension.
-                        if (allowedExtensions.Any() && !allowedExtensions.Contains(Path.GetExtension(file.FileName).ToLowerInvariant()))
-                        {
-                            updater.AddModelError("FileExtensionNotAllowed", T("The file \"{0}\" was not uploaded, because its extension is not among the accepted ones. The accepted file extensions are: {1}.",
-                                file.FileName, string.Join(", ", allowedExtensions)));
-
-                            continue;
-                        }
-                        // Validating against individual files size limitation.
-                        else if (settings.MaximumSizeKB > 0 && file.ContentLength > settings.MaximumSizeKB * 1024)
-                        {
-                            updater.AddModelError("FileSizeLimitExceeded", T("The file \"{0}\" was not uploaded, because its size exceeds the {1} KB limitation.", file.FileName, settings.MaximumSizeKB));
-
-                            continue;
-                        }
-                        // Checking against image-specific settings.
-                        else if (MimeAssistant.GetMimeType(file.FileName.ToLowerInvariant()).StartsWith("image"))
-                        {
-                            using (var image = Image.FromStream(file.InputStream))
-                            {
-                                if ((settings.ImageMaximumWidth > 0 && image.Width > settings.ImageMaximumWidth) || (settings.ImageMaximumHeight > 0 && image.Height > settings.ImageMaximumHeight))
-                                {
-                                    updater.AddModelError("ImageError", T("The image \"{0}\" was not uploaded, because its dimensions exceed the limitations. The maximum allowed file dimensions are {1}x{2} pixels.",
-                                        file.FileName, settings.ImageMaximumWidth, settings.ImageMaximumHeight));
-
-                                    continue;
-                                }
-                            }
-
-                            file.InputStream.Position = 0;
-                        }
-
-                        // The individual file is valid, further validation will happen later.
-                        validFiles.Add(files[i]);
-                        uploadingFilesSizeInBytes += files[i].ContentLength;
-                    }
-                }
-
-                #endregion
-
-                if (validFiles.Any())
-                {
-                    var canUpload = true;
-
-                    #region Validating against the setting to allow multiple files to uploaded/selected.
-
-                    var alreadyUploadedFiles = field.MediaParts != null ? field.MediaParts.ToList() : new List<MediaPart>();
-                    if (!settings.Multiple && validFiles.Count + alreadyUploadedFiles.Count > 1)
-                    {
-                        updater.AddModelError("MultipleItemsNotAllowed", T("This field only allows one file to be selected. Please remove content before adding another."));
-                        canUpload = false;
-                    }
-
-                    #endregion
-
-                    #region Validating against field storage user quota.
-
-                    var user = workContext.CurrentUser;
-                    // Determining the path to the folder where this field stores files and should save new ones.
-                    var folderPath = _tokenizer.Replace(settings.FolderPath, new Dictionary<string, object>
+                    MediaLibraryUploadSettings = settings,
+                    FileFieldName = $"MediaLibraryUploadField-{part.PartDefinition.Name}-{field.Name}[]",
+                    Updater = updater,
+                    AlreadyUploadedFiles = field.MediaParts != null ? field.MediaParts.ToList() : new List<MediaPart>(),
+                    FolderPath = _tokenizer.Replace(settings.FolderPath, new Dictionary<string, object>
                     {
                         { "Content", part.ContentItem },
-                        { "User", user }
-                    });
-                    folderPath = string.IsNullOrEmpty(folderPath) ? "UserUploads/" + user.Id : folderPath;
-                    long uploadedFilesSizeInBytes = 0;
-
-                    // Calculating the size of the files that are already uploaded for this field.
-                    if (alreadyUploadedFiles.Any() && _storageProvider.FolderExists(folderPath))
-                    {
-                        var storedFiles = _storageProvider.ListFiles(folderPath);
-
-                        _storageProvider.ListFiles(folderPath)
-                            .Where(stored => alreadyUploadedFiles.Any(uploaded => uploaded.FileName == stored.GetName()))
-                            .Select(file =>
-                            {
-                                uploadedFilesSizeInBytes += file.GetSize();
-
-                                return file;
-                            });
-                    }
-
-                    long fieldStorageUserQuotaInBytes = settings.FieldStorageUserQuotaMB * 1024 * 1024;
-
-                    // Checking if the size of all uploaded files and stored files exceed the limit for this field.
-                    if (fieldStorageUserQuotaInBytes > 0 && uploadedFilesSizeInBytes + uploadingFilesSizeInBytes > fieldStorageUserQuotaInBytes)
-                    {
-                        updater.AddModelError("FieldStorageUserQuotaExceeded", T("The files were not uploaded, because their size and the alrady stored files size exceed the {0} MB limitation by {1} bytes.",
-                            settings.FieldStorageUserQuotaMB, (int)((uploadedFilesSizeInBytes + uploadingFilesSizeInBytes) - fieldStorageUserQuotaInBytes)));
-                        canUpload = false;
-                    }
-
-                    #endregion
-
-                    // The files comply with the settings and limitations, so we can proceed with importing them.
-                    if (canUpload)
-                    {
-                        var mediaPartsCreated = new List<MediaPart>();
-
-                        foreach (var file in validFiles)
-                        {
-                            var mediaPart = _mediaLibraryService.ImportMedia(file.InputStream, folderPath, file.FileName);
-                            _contentManager.Create(mediaPart);
-                            mediaPartsCreated.Add(mediaPart);
-                        }
-
-                        field.Ids = field.Ids.Union(mediaPartsCreated.Select(m => m.ContentItem.Id)).ToArray();
-
-                        _notifier.Information(T("The following items were successfully uploaded: {0}.", string.Join(", ", mediaPartsCreated.Select(mp => mp.FileName))));
-                    } 
-                }
+                        { "User", workContext.CurrentUser }
+                    }),
+                    StoreIds = (ids) => field.Ids = field.Ids.Union(ids).ToArray(),
+                });
             }
 
             if (settings.Required && field.Ids.Length == 0)

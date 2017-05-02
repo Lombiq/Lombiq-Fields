@@ -1,0 +1,18 @@
+﻿@using Lombiq.Fields.Elements
+
+@{
+    var element = (MediaLibraryUploadField)Model.Element;
+}
+
+<div class="media-library-upload-field-container">
+    <fieldset>
+        <label @if (element.Required) { <text> class="required" </text> }>@element.DisplayName</label>
+        <div class="media-library-upload-wrapper">
+            <div class="media-library-upload-wrap-file">
+                <input class="button media-library-upload-field" type="file" @element.Multiple value="@T("Browse")" size="100" />
+            </div>
+            <div class="media-library-upload-filename"></div>
+        </div>
+        <div class="media-library-upload-hint">@element.Hint</div>
+    </fieldset>
+</div>

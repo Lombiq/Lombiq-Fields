@@ -1,20 +1,19 @@
-﻿using Lombiq.Fields.Elements;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Lombiq.Fields.Elements;
 using Lombiq.Fields.Helpers;
 using Lombiq.Fields.Models;
-using Lombiq.Fields.Handlers;
 using Orchard;
 using Orchard.ContentManagement;
-using Orchard.DynamicForms.Elements;
 using Orchard.DynamicForms.Services;
 using Orchard.DynamicForms.Services.Models;
 using Orchard.Environment.Extensions;
+using Orchard.Layouts.Helpers;
 using Orchard.Localization;
 using Orchard.MediaLibrary.Models;
 using Orchard.Tokens;
 using Orchard.Utility.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Lombiq.Fields.Handlers
 {
@@ -50,6 +49,7 @@ namespace Lombiq.Fields.Handlers
             var elements = context
                 .Form
                 .Elements
+                .Flatten()
                 .Where(formElement => formElement.Type == "Lombiq.Fields.Elements.MediaLibraryUploadField");
             if (!elements.Any()) return;
 

@@ -16,4 +16,4 @@ The module's source is available in two public source repositories, automaticall
 - [https://bitbucket.org/Lombiq/lombiq-fields](https://bitbucket.org/Lombiq/lombiq-fields) (Mercurial repository)
 - [https://github.com/Lombiq/Lombiq-Fields](https://github.com/Lombiq/Lombiq-Fields) (Git repository)
 
-This project is developed by [Lombiq Technologies Ltd](http://lombiq.com/). Commercial-grade support is available through Lombiq.
+This project is developed by [Lombiq Technologies Ltd](https://lombiq.com/). Commercial-grade support is available through Lombiq.

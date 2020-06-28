@@ -1,6 +1,8 @@
-# Lombiq Fields Orchard module readme
+# Lombiq Fields Orchard module
 
 
+
+## About
 
 An [Orchard CMS](http://orchardproject.net/) module that adds some useful content fields:
 
@@ -11,9 +13,9 @@ The fields have their separate features that you can enable; after this the fiel
 
 The module is also available for [DotNest](http://dotnest.com/) sites.
 
-The module's source is available in two public source repositories, automatically mirrored in both directions with [Git-hg Mirror](https://githgmirror.com):
 
-- [https://bitbucket.org/Lombiq/lombiq-fields](https://bitbucket.org/Lombiq/lombiq-fields) (Mercurial repository)
-- [https://github.com/Lombiq/Lombiq-Fields](https://github.com/Lombiq/Lombiq-Fields) (Git repository)
+## Contributing and support
 
-This project is developed by [Lombiq Technologies Ltd](https://lombiq.com/). Commercial-grade support is available through Lombiq.
+Bug reports, feature requests, comments, questions, code contributions, and love letters are warmly welcome, please do so via GitHub issues and pull requests. Please adhere to our [open-source guidelines](https://lombiq.com/open-source-guidelines) while doing so.
+
+This project is developed by [Lombiq Technologies](https://lombiq.com/). Commercial-grade support is available through Lombiq.
